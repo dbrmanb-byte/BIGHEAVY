@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="manifest" href="./manifest.webmanifest">
+<script>window.__BH_APP_ID = "casebook";</script>
+<script src="./entitlements.js"></script>
 <link rel="icon" href="./favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <meta name="theme-color" content="#0E1A20">
@@ -119,6 +121,40 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
 .about .facts li{display:flex;gap:12px;align-items:baseline;font-size:15px;line-height:1.5;}
 .about .facts li b{font-family:var(--mono);color:var(--gold);font-weight:600;flex:0 0 auto;min-width:64px;}
 .about .note{border-left:2px solid var(--line);padding:2px 0 2px 16px;color:var(--text-dim);font-family:var(--read);font-size:14.5px;line-height:1.55;}
+
+/* ---------- locked / upgrade ---------- */
+.len.locked{opacity:.72;}
+.len.locked:hover{border-color:var(--gold);opacity:1;}
+.pro-chip{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:3px 8px;white-space:nowrap;
+}
+.opt.locked span{opacity:.72;}
+.upgrade-scrim{
+  position:fixed;inset:0;background:rgba(6,12,15,.72);opacity:0;pointer-events:none;
+  transition:opacity .16s;z-index:60;
+}
+.upgrade-scrim.on{opacity:1;pointer-events:auto;}
+.upgrade{
+  position:fixed;z-index:61;left:50%;top:50%;transform:translate(-50%,-48%) scale(.98);
+  width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 48px);overflow-y:auto;
+  background:var(--surface);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(22px,4vw,30px);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.8);
+}
+.upgrade.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+.upgrade h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;}
+.upgrade .why{color:var(--text-dim);font-family:var(--read);font-size:15px;line-height:1.5;margin:0 0 20px;}
+.plan{
+  border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin-bottom:10px;
+  display:flex;gap:14px;align-items:baseline;
+}
+.plan.best{border-color:var(--gold);}
+.plan .nm{font-weight:700;font-size:15px;flex:0 0 auto;}
+.plan .pr{font-family:var(--mono);color:var(--gold);font-size:13px;margin-left:auto;white-space:nowrap;}
+.plan .ds{display:block;color:var(--text-dim);font-size:13px;line-height:1.45;margin-top:3px;}
+.upgrade .acts{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.upgrade .fine{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text-dim);margin:14px 0 0;line-height:1.6;}
 
 /* ---------- the case card (signature) ---------- */
 .card{
@@ -483,11 +519,11 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
     <p class="kicker">About Casebook</p>
     <h1>Study that fits in your pocket and works anywhere.</h1>
 
-    <p>Casebook is a free, offline study companion for the <b>ASWB</b> social work licensing exam. It pulls the exam's core content into one place — a glossary to learn from, spaced-repetition drills to lock it in, and full-length practice vignettes to test whether you can actually apply it under pressure — and it keeps working on a train, on a plane, or anywhere the signal drops.</p>
+    <p>Casebook is an offline study companion for the <b>ASWB</b> social work licensing exam, <b>free to start</b>. It pulls the exam's core content into one place — a glossary to learn from, spaced-repetition drills to lock it in, and full-length practice vignettes to test whether you can actually apply it under pressure — and it keeps working on a train, on a plane, or anywhere the signal drops.</p>
 
     <!-- TODO: personalize — replace this paragraph with your own words on why you built it. -->
     <h2>Why I built it</h2>
-    <p class="sub">Preparing for a licensing exam is stressful, and the tools for it are often expensive, cluttered with ads, or locked behind a subscription — none of which helps when you're anxious and just want to study. I wanted something clean, honest, and free: an app that respects your attention, runs on the phone already in your hand, and never sends your progress or your questions to anyone. This exam is a real gate in front of a career built on helping people, and I wanted the path to it to feel a little less lonely.</p>
+    <p class="sub">Preparing for a licensing exam is stressful, and the tools for it are often expensive, cluttered with ads, or locked down until you pay — none of which helps when you're anxious and just want to study. I wanted something clean and honest: the glossary and the drills free forever, no ads, no tracking, and everything running on the phone already in your hand. This exam is a real gate in front of a career built on helping people, and I wanted the path to it to feel a little less lonely.</p>
 
     <h2>What's inside</h2>
     <ul class="facts">
@@ -498,7 +534,10 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
     </ul>
 
     <h2>Your privacy</h2>
-    <p class="note">Everything happens in your browser. Your progress, your answers, and anything you ask the tutor stay on your device — nothing is uploaded, tracked, or shared. The tutor downloads its model once, then works with no connection at all.</p>
+    <p class="note">Everything happens in your browser. Your progress, your answers, and anything you ask the tutor stay on your device — nothing is uploaded, tracked, or shared, and the tutor's model runs locally once downloaded. If you subscribe, payment is handled by the billing provider and only your subscription status comes back to the app.</p>
+
+    <h2>Plans</h2>
+    <p class="sub">Free keeps the full glossary, unlimited drills, and a 10-question practice set. Pro unlocks the full bank, exam simulation, and the tutor. <a href="./pricing.html" style="color:var(--gold);">See the plans</a>.</p>
 
     <h2>Honest limits</h2>
     <p class="note">Casebook is a study aid, not official ASWB material, and the tutor is a small model that can be wrong. Verify anything you rely on against the current DSM-5-TR, the NASW Code of Ethics, and your jurisdiction's statutes.</p>
@@ -511,12 +550,37 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
   </p>
 </main>
 
+<div class="upgrade-scrim" id="upScrim"></div>
+<div class="upgrade" id="upModal" role="dialog" aria-modal="true" aria-labelledby="upTitle">
+  <h3 id="upTitle">Unlock the full bank</h3>
+  <p class="why" id="upWhy"></p>
+  <div class="plan best">
+    <span class="nm">Pro<span class="ds">Everything in Casebook — all 217 vignettes, timed exam simulation, weak-area targeting, and the on-device tutor.</span></span>
+    <span class="pr">$7.99<small>/mo</small></span>
+  </div>
+  <div class="plan">
+    <span class="nm">Unlimited<span class="ds">All ten study apps unlocked, one subscription. Best value if you are studying for more than one exam.</span></span>
+    <span class="pr">$14.99<small>/mo</small></span>
+  </div>
+  <div class="acts">
+    <button class="btn primary" id="upGo">See plans</button>
+    <button class="btn" id="upClose">Not now</button>
+  </div>
+  <p class="fine">Free keeps the full glossary, unlimited flashcard drills, and a 10-question practice set.</p>
+</div>
+
 <div class="scrim" id="scrim"></div>
 <aside class="tutor" id="tutor" aria-label="Tutor">
   <header>
     <h2>Tutor</h2>
     <button class="x" id="tutorClose" aria-label="Close tutor">&times;</button>
   </header>
+
+  <div class="setup hide" id="tutorLocked">
+    <p>The tutor is part of <b>Pro</b>. It runs a small language model entirely on this device — nothing you type leaves your computer — and answers only from the 207 terms and 217 rationales in this app.</p>
+    <p style="color:var(--text-dim);font-size:14px;">Free includes the full glossary, unlimited drills, and a 10-question practice set.</p>
+    <button class="btn primary" id="tutorUpgrade">See plans</button>
+  </div>
 
   <div class="setup" id="tutorSetup">
     <p>The tutor runs a small language model <b>entirely on this device</b> — nothing you type leaves your computer. It has to download the model once, then works offline forever after.</p>
@@ -582,6 +646,7 @@ const S = {
 };
 
 const $ = id => document.getElementById(id);
+const ENT = window.Entitlements;
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
 
@@ -709,18 +774,39 @@ function renderSetup(){
 
   const grid = $("lenGrid"); grid.innerHTML = "";
   LENGTHS.forEach(L => {
+    const locked = !lenAllowed(L);
     const b = document.createElement("button");
-    b.className = "len";
+    b.className = "len" + (locked ? " locked" : "");
     b.innerHTML = '<b>' + L.n + '</b><span class="txt"><span>' + L.name +
-      '</span><small>' + L.sub + '</small></span><span class="dur">' +
-      fmtDur(L.n * SEC_PER_Q) + '</span>';
-    b.onclick = () => startSet(L);
+      '</span><small>' + L.sub + '</small></span>' +
+      (locked ? '<span class="pro-chip">Pro</span>'
+              : '<span class="dur">' + fmtDur(L.n * SEC_PER_Q) + '</span>');
+    b.onclick = locked
+      ? () => openUpgrade(L.exam
+          ? "Timed exam simulation is part of Pro."
+          : "Practice sets longer than " + ENT.FREE_QUIZ_LIMIT + " questions are part of Pro.")
+      : () => startSet(L);
     grid.append(b);
   });
+
+  const weakLabel = $("optWeak").closest(".opt");
+  if(weakLabel) weakLabel.classList.toggle("locked", !ENT.can("stats.weak"));
+}
+/* A length is free only when it is the short set and needs no exam simulation. */
+function lenAllowed(L){
+  if(L.exam) return ENT.can("exam.sim");
+  if(L.n > ENT.FREE_QUIZ_LIMIT) return ENT.can("quiz.full");
+  return true;
 }
 ["optFeedback","optTimer","optWeak"].forEach((id,i) => {
   $(id).onchange = e => {
-    S.cfg[["hold","timed","weak"][i]] = e.target.checked;
+    const key = ["hold","timed","weak"][i];
+    if(key === "weak" && e.target.checked && !ENT.can("stats.weak")){
+      e.target.checked = false;
+      openUpgrade("Weighting sets toward your weakest areas is part of Pro.");
+      return;
+    }
+    S.cfg[key] = e.target.checked;
     store.set("cb.cfg", S.cfg);
   };
 });
@@ -728,7 +814,8 @@ function renderSetup(){
 /* ---- drawing a set ---- */
 function drawQuestions(n){
   const pool = DATA.questions.slice();
-  if(!S.cfg.weak) return shuffle(pool).slice(0, n);
+  // A stored preference must not outlive the entitlement that allowed it.
+  if(!S.cfg.weak || !ENT.can("stats.weak")) return shuffle(pool).slice(0, n);
   const acc = {};
   Object.entries(S.stats).forEach(([c,v]) => { if(v.seen >= 4) acc[c] = v.right / v.seen; });
   const weighted = [];
@@ -1051,7 +1138,32 @@ function setEngineState(s, note){
   d.className = "dot" + (s==="ready" ? " on" : s==="loading" ? " load" : "");
   if(note !== undefined) $("loadNote").textContent = note;
 }
-function openTutor(){ $("tutor").classList.add("open"); $("scrim").classList.add("on"); }
+/* ---------------- upgrade prompt ---------------- */
+function openUpgrade(why){
+  $("upWhy").textContent = why || "";
+  $("upModal").classList.add("on");
+  $("upScrim").classList.add("on");
+  $("upClose").focus();
+}
+function closeUpgrade(){
+  $("upModal").classList.remove("on");
+  $("upScrim").classList.remove("on");
+}
+$("upClose").onclick = closeUpgrade;
+$("upScrim").onclick = closeUpgrade;
+$("upGo").onclick = () => { location.href = "./pricing.html"; };
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && $("upModal").classList.contains("on")) closeUpgrade();
+});
+$("tutorUpgrade").onclick = () => { closeTutor(); openUpgrade("The tutor is part of Pro."); };
+
+function openTutor(){
+  const paid = ENT.can("tutor");
+  $("tutorLocked").classList.toggle("hide", paid);
+  // Only show the model picker to someone who may actually use it.
+  if(!paid && S.engineState !== "ready") $("tutorSetup").classList.add("hide");
+  $("tutor").classList.add("open"); $("scrim").classList.add("on");
+}
 function closeTutor(){ $("tutor").classList.remove("open"); $("scrim").classList.remove("on"); }
 $("tutorBtn").onclick = openTutor;
 $("aboutBtn").onclick = () => setMode("about");
@@ -1059,6 +1171,7 @@ $("tutorClose").onclick = closeTutor;
 $("scrim").onclick = closeTutor;
 
 $("loadModel").onclick = async () => {
+  if(!ENT.can("tutor")){ openUpgrade("The tutor is part of Pro."); return; }
   if(!navigator.gpu){
     setEngineState("off");
     $("loadNote").innerHTML = "This browser can't run the model — it needs WebGPU. Chrome or Edge 113+ on desktop works. Everything else in Casebook works fine without it.";
@@ -1098,6 +1211,7 @@ function pushMsg(kind, html){
   return d;
 }
 function askAbout(prompt){
+  if(!ENT.can("tutor")){ openUpgrade("Asking the tutor about a card is part of Pro."); return; }
   openTutor();
   if(S.engineState !== "ready"){
     S.pending = prompt;

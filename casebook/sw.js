@@ -3,10 +3,12 @@
    Deliberately does NOT touch model weight downloads — WebLLM manages its own
    multi-gigabyte cache, and duplicating it here would double the disk cost. */
 
-const VERSION = "casebook-v2";
+const VERSION = "casebook-v3";
 const SHELL = [
   "./",
   "./index.html",
+  "./pricing.html",
+  "./entitlements.js",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",
@@ -49,16 +51,23 @@ self.addEventListener("fetch", event => {
   if (!/^https?:$/.test(url.protocol)) return;
   if (PASSTHROUGH.test(url.hostname)) return;
 
-  // Navigations: serve the cached shell instantly, refresh it in the background.
+  // Navigations: serve the cached page instantly, refresh it in the background.
+  // Match the requested page first — there is more than one now — and only fall
+  // back to the app shell when the request is for something we do not have.
   if (req.mode === "navigate") {
     event.respondWith(
-      caches.match("./index.html").then(hit => {
-        const net = fetch(req).then(res => {
-          if (res && res.ok) caches.open(VERSION).then(c => c.put("./index.html", res.clone()));
-          return res;
-        }).catch(() => hit);
-        return hit || net;
-      })
+      caches.match(req, {ignoreSearch: true})
+        .then(hit => hit || caches.match("./index.html"))
+        .then(hit => {
+          const net = fetch(req).then(res => {
+            if (res && res.ok && url.origin === self.location.origin) {
+              const copy = res.clone();
+              caches.open(VERSION).then(c => c.put(req, copy));
+            }
+            return res;
+          }).catch(() => hit);
+          return hit || net;
+        })
     );
     return;
   }
