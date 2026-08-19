@@ -71,6 +71,15 @@ a.app:hover{border-color:var(--accent,var(--gold));transform:translateY(-2px);}
 .app .soonlist{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;line-height:1.9;
   color:var(--text-dim);margin:0 0 16px;}
 
+/* companion ebooks */
+.books{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:16px;}
+.book{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:16px 16px 16px 24px;display:flex;flex-direction:column;gap:6px;overflow:hidden;}
+.book .spine{position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--accent,var(--gold));opacity:.85;}
+.book .spine::after{content:"";position:absolute;left:7px;top:0;bottom:0;width:2px;background:rgba(0,0,0,.35);}
+.book .btitle{font-family:var(--read);font-size:15.5px;line-height:1.35;color:var(--text);}
+.book .bmeta{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);}
+
 /* tiers */
 .tiers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:18px;}
 .tier{border:1px solid var(--line);border-radius:7px;padding:20px;background:var(--surface);}

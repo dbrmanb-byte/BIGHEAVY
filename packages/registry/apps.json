@@ -12,7 +12,12 @@
       "status": "live",
       "url": "/casebook/",
       "terms": 207,
-      "questions": 217
+      "questions": 217,
+      "ebook": {
+        "title": "The ASWB Vocabulary Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "casebook-lcsw",
@@ -25,7 +30,12 @@
       "status": "live",
       "url": "/casebook-lcsw/",
       "terms": 159,
-      "questions": 84
+      "questions": 84,
+      "ebook": {
+        "title": "The LCSW Clinical Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "casebook-lbsw",
@@ -38,7 +48,12 @@
       "status": "live",
       "url": "/casebook-lbsw/",
       "terms": 125,
-      "questions": 52
+      "questions": 52,
+      "ebook": {
+        "title": "The LBSW Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "casebook-nursing",
@@ -51,7 +66,12 @@
       "status": "live",
       "url": "/casebook-nursing/",
       "terms": 115,
-      "questions": 200
+      "questions": 200,
+      "ebook": {
+        "title": "The NCLEX Clinical Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "forge-cloud",
@@ -64,7 +84,12 @@
       "status": "live",
       "url": "/forge-cloud/",
       "terms": 75,
-      "questions": 29
+      "questions": 29,
+      "ebook": {
+        "title": "The Cloud Architecture Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "forge-security",
@@ -77,7 +102,12 @@
       "status": "live",
       "url": "/forge-security/",
       "terms": 69,
-      "questions": 33
+      "questions": 33,
+      "ebook": {
+        "title": "The Cybersecurity Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "forge-systems",
@@ -90,7 +120,12 @@
       "status": "live",
       "url": "/forge-systems/",
       "terms": 53,
-      "questions": 24
+      "questions": 24,
+      "ebook": {
+        "title": "The Systems & Infrastructure Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "forge-management",
@@ -103,7 +138,12 @@
       "status": "live",
       "url": "/forge-management/",
       "terms": 40,
-      "questions": 18
+      "questions": 18,
+      "ebook": {
+        "title": "The Technical Management Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "forge-trades",
@@ -116,7 +156,12 @@
       "status": "live",
       "url": "/forge-trades/",
       "terms": 117,
-      "questions": 88
+      "questions": 88,
+      "ebook": {
+        "title": "The Electrician's Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     },
     {
       "slug": "keystone",
@@ -129,7 +174,17 @@
       "status": "live",
       "url": "/keystone/",
       "terms": 156,
-      "questions": 94
+      "questions": 94,
+      "ebook": {
+        "title": "The Real Estate Companion",
+        "format": "PDF",
+        "included": "pro"
+      }
     }
-  ]
+  ],
+  "ebooks": {
+    "comment": "Each app ships a companion PDF. The tiers.js `ebook` gate makes it a Pro perk rather than a separate purchase.",
+    "included": "pro",
+    "count": 10
+  }
 }
