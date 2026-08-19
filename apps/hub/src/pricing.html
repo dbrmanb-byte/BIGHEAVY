@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plans — BIGHEAVYINK</title>
+<meta name="description" content="Free stays useful. Pro unlocks one app. Unlimited unlocks all of them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<meta property="og:title" content="BIGHEAVYINK — Plans">
+<meta property="og:description" content="Free stays useful. Pro unlocks one app. Unlimited unlocks all of them.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="./site.css">
+<style>
+.plans{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));align-items:start;margin-bottom:12px;}
+.plan{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:24px 22px;display:flex;flex-direction:column;height:100%;}
+.plan.feature{border-color:var(--gold);box-shadow:0 18px 40px -22px rgba(0,0,0,.8);}
+.plan .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:#141414;background:var(--gold);border-radius:3px;padding:3px 8px;align-self:flex-start;margin-bottom:12px;}
+.plan h2{font-size:19px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px;text-transform:none;color:var(--text);font-family:var(--display);}
+.price{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--gold);letter-spacing:-.02em;margin:6px 0 2px;}
+.price small{font-size:12px;color:var(--text-dim);letter-spacing:.04em;}
+.plan .blurb{font-family:var(--read);font-size:14.5px;line-height:1.5;color:var(--text-dim);margin:8px 0 18px;}
+ul.feats{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:9px;}
+ul.feats li{font-size:14px;line-height:1.45;display:flex;gap:9px;align-items:flex-start;font-family:var(--display);color:var(--text);margin:0;}
+ul.feats li::before{content:"—";color:var(--gold);flex:0 0 auto;}
+ul.feats li.no{color:var(--text-dim);}
+ul.feats li.no::before{content:"·";color:var(--text-dim);}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:500;}
+td.c,th.c{text-align:center;}
+.yes{color:var(--good);}
+td.no{color:var(--text-dim);}
+.tablewrap{overflow-x:auto;}
+.faq{display:grid;gap:18px;}
+.faq h4{font-size:15px;margin:0 0 5px;}
+.faq p{font-family:var(--read);font-size:14.5px;line-height:1.55;color:var(--text-dim);margin:0;max-width:62ch;}
+</style>
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./about.html">About</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap page">
+  <p class="kicker">Plans</p>
+  <h1>Study free. Upgrade when you need the full bank.</h1>
+  <p class="dim">The glossary and the flashcard drills are free forever — those are the parts you use every day. Paying unlocks the full question bank, timed exam simulation, and the on-device tutor. One price, no per-feature add-ons.</p>
+
+  <div class="plans">
+    <div class="plan">
+      <h2>Free</h2>
+      <div class="price">$0</div>
+      <p class="blurb">Genuinely useful on its own. No account needed, no time limit.</p>
+      <ul class="feats">
+        <li>The complete glossary</li>
+        <li>Unlimited spaced-repetition drills</li>
+        <li>One 10-question practice set</li>
+        <li>Works offline</li>
+        <li class="no">No timed exam simulation</li>
+        <li class="no">No AI tutor</li>
+      </ul>
+      <a class="cta" href="/casebook/">Start studying</a>
+    </div>
+
+    <div class="plan feature">
+      <span class="tag">Most popular</span>
+      <h2>Pro</h2>
+      <div class="price">$7.99<small> /month</small></div>
+      <p class="blurb">One app, completely unlocked. Pick the exam you are actually sitting.</p>
+      <ul class="feats">
+        <li>Everything in Free</li>
+        <li>The full question bank with rationales</li>
+        <li>Long practice sets</li>
+        <li>Timed full exam simulation</li>
+        <li>Weak-area targeting</li>
+        <li>The on-device AI tutor</li>
+      </ul>
+      <a class="cta primary" href="#" data-plan="pro">Choose Pro</a>
+    </div>
+
+    <div class="plan">
+      <h2>Unlimited</h2>
+      <div class="price">$14.99<small> /month</small></div>
+      <p class="blurb">Every app, one subscription. Worth it the moment you study for a second exam.</p>
+      <ul class="feats">
+        <li>Everything in Pro</li>
+        <li>Every study app unlocked</li>
+        <li>New apps included as they launch</li>
+        <li>One login across everything</li>
+      </ul>
+      <a class="cta" href="#" data-plan="unlimited">Choose Unlimited</a>
+    </div>
+  </div>
+
+  <h2>Compared</h2>
+  <div class="tablewrap">
+  <table>
+    <thead>
+      <tr><th>Feature</th><th class="c">Free</th><th class="c">Pro</th><th class="c">Unlimited</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Glossary</td><td class="c yes">Yes</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td>Flashcard drills</td><td class="c yes">Yes</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td>Practice questions</td><td class="c no">10</td><td class="c yes">Full bank</td><td class="c yes">Full bank</td></tr>
+      <tr><td>Timed exam simulation</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td>Weak-area targeting</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td>On-device AI tutor</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td>Works offline</td><td class="c yes">Yes</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td>Apps included</td><td class="c no">All, limited</td><td class="c yes">1</td><td class="c yes">All</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Questions</h2>
+  <div class="faq">
+    <div>
+      <h4>Does studying still work offline?</h4>
+      <p>Yes, on every plan. The apps run entirely in your browser; once loaded, drills, questions and the glossary keep working with no connection. The tutor downloads its model once and then runs on your device too.</p>
+    </div>
+    <div>
+      <h4>What happens to my progress if I cancel?</h4>
+      <p>It stays where it always was — on your device. Cancelling returns you to the free tier; it does not erase your drill history or what you have learned.</p>
+    </div>
+    <div>
+      <h4>Is the tutor sending my questions somewhere?</h4>
+      <p>No. It runs a small language model locally. What you type never leaves your computer, on any plan.</p>
+    </div>
+    <div>
+      <h4>Can I switch which app Pro covers?</h4>
+      <p>Yes. Pro covers one app at a time and you can change which one. If you are studying for more than one exam, Unlimited costs less than two Pro subscriptions.</p>
+    </div>
+    <div>
+      <h4>Is there a student or hardship rate?</h4>
+      <p>If the price is the thing standing between you and sitting the exam, get in touch. The free tier is deliberately built to be enough to study from.</p>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* No billing provider is connected yet. Say so rather than sending anyone to a
+   dead link — replace with the provider's checkout URL when billing lands. */
+document.querySelectorAll("[data-plan]").forEach(a => {
+  a.addEventListener("click", e => {
+    e.preventDefault();
+    alert("Checkout isn't connected yet — this is a preview of the plans. "
+        + "Everything on the free tier works today.");
+  });
+});
+</script>
+</body>
+</html>

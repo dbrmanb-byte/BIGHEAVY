@@ -1,0 +1,18 @@
+{
+  "comment": "The catalogue of verticals. The hub renders its directory from this file at runtime, so adding an app is a matter of adding an entry here — no hub code changes. slug must match the app's directory under apps/ and the __BH_APP_ID it declares, because a Pro subscription is matched against that id.",
+  "planned": 10,
+  "apps": [
+    {
+      "slug": "casebook",
+      "name": "Casebook",
+      "exam": "ASWB",
+      "audience": "Social work licensure",
+      "blurb": "207 terms, 217 exam vignettes with rationales, spaced-repetition drills, and a tutor that runs on your own device.",
+      "accent": "#EBA83A",
+      "status": "live",
+      "url": "/casebook/",
+      "terms": 207,
+      "questions": 217
+    }
+  ]
+}

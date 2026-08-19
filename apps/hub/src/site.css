@@ -1,0 +1,104 @@
+/* Hub styles. Deliberately shares the palette and type stack of the apps so the
+   marketing site and the products read as one thing. */
+
+:root{
+  --ground:#132229; --ground-2:#0E1A20; --surface:#1B2F38; --surface-2:#223B46;
+  --line:#2E4A56; --text:#DCE8ED; --text-dim:#8FA8B3;
+  --gold:#EBA83A; --good:#5FB86B;
+  --display:"Bricolage Grotesque",'Segoe UI',system-ui,sans-serif;
+  --read:"Newsreader",Georgia,'Times New Roman',serif;
+  --mono:"IBM Plex Mono",ui-monospace,'SF Mono',Menlo,monospace;
+  --pad:clamp(16px,4vw,32px);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--text);font-family:var(--display);-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px;}
+.wrap{max-width:1000px;margin:0 auto;}
+
+/* rail */
+.rail{display:flex;align-items:center;gap:22px;padding:14px var(--pad);
+  border-bottom:1px solid var(--line);background:var(--ground-2);flex-wrap:wrap;
+  position:sticky;top:0;z-index:10;}
+.brand{display:flex;align-items:baseline;gap:9px;margin-right:auto;text-decoration:none;}
+.brand b{font-weight:800;letter-spacing:-.03em;font-size:18px;}
+.brand span{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--text-dim);text-transform:uppercase;}
+.nav{display:flex;gap:20px;flex-wrap:wrap;}
+.nav a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);text-decoration:none;}
+.nav a:hover{color:var(--gold);}
+
+main{padding:0 var(--pad);}
+
+/* hero */
+.hero{padding:clamp(48px,9vw,92px) 0 clamp(30px,5vw,50px);}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 16px;}
+h1{font-weight:800;letter-spacing:-.03em;font-size:clamp(30px,6.4vw,54px);line-height:1.06;margin:0 0 18px;max-width:17ch;}
+.lead{font-family:var(--read);font-size:clamp(16px,2.2vw,19px);line-height:1.6;color:var(--text-dim);max-width:60ch;margin:0 0 28px;}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+.cta{display:inline-block;text-decoration:none;border:1px solid var(--line);border-radius:5px;
+  padding:13px 22px;font-size:14.5px;font-weight:600;}
+.cta:hover{border-color:var(--gold);color:var(--gold);}
+.cta.primary{background:var(--gold);color:#141414;border-color:var(--gold);}
+.cta.primary:hover{filter:brightness(1.07);color:#141414;}
+.micro{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--text-dim);margin:0;}
+.micro a{color:var(--gold);}
+
+/* bands */
+.band{padding:clamp(34px,6vw,58px) 0;border-top:1px solid var(--line);}
+.sec{font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.02em;margin:0 0 8px;}
+.secsub{font-family:var(--read);font-size:16px;color:var(--text-dim);margin:0 0 26px;max-width:58ch;line-height:1.55;}
+
+.pillars{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));}
+.pillar h3{font-size:16px;font-weight:700;margin:0 0 8px;}
+.pillar h3::before{content:"";display:block;width:26px;height:2px;background:var(--gold);margin-bottom:12px;}
+.pillar p{font-family:var(--read);font-size:15px;line-height:1.58;color:var(--text-dim);margin:0;}
+
+/* app directory */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));padding-bottom:8px;}
+.app{display:flex;flex-direction:column;text-decoration:none;background:var(--surface);
+  border:1px solid var(--line);border-top:3px solid var(--accent,var(--gold));border-radius:7px;
+  padding:20px;transition:border-color .13s,transform .13s;}
+a.app:hover{border-color:var(--accent,var(--gold));transform:translateY(-2px);}
+.app .exam{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--gold));}
+.app h3{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:9px 0 3px;}
+.app .aud{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);margin:0 0 11px;}
+.app .blurb{font-family:var(--read);font-size:14.5px;line-height:1.55;color:var(--text-dim);margin:0 0 18px;}
+.app .open{margin-top:auto;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--gold);text-decoration:none;}
+.app.soon{border-top-color:var(--line);opacity:.9;}
+.app.soon .exam{color:var(--text-dim);}
+
+/* tiers */
+.tiers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:18px;}
+.tier{border:1px solid var(--line);border-radius:7px;padding:20px;background:var(--surface);}
+.tier.best{border-color:var(--gold);}
+.tier h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin:0 0 8px;}
+.tier .amt{font-family:var(--mono);font-size:26px;color:var(--gold);margin:0 0 10px;letter-spacing:-.02em;}
+.tier .amt small{font-size:11px;color:var(--text-dim);}
+.tier p:last-child{font-family:var(--read);font-size:14.5px;line-height:1.5;color:var(--text-dim);margin:0;}
+
+/* long-form pages */
+.page{padding:clamp(34px,6vw,56px) 0 20px;}
+.page h1{font-size:clamp(26px,5vw,38px);max-width:22ch;}
+.page h2{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-dim);margin:34px 0 12px;}
+.page p{font-family:var(--read);font-size:16px;line-height:1.62;margin:0 0 16px;max-width:64ch;}
+.page p.dim{color:var(--text-dim);}
+.page ul{margin:0 0 16px;padding-left:20px;max-width:64ch;}
+.page li{font-family:var(--read);font-size:15.5px;line-height:1.6;margin-bottom:8px;color:var(--text-dim);}
+.page .note{border-left:2px solid var(--line);padding:2px 0 2px 16px;color:var(--text-dim);
+  font-family:var(--read);font-size:15px;line-height:1.55;}
+.page a{color:var(--gold);}
+
+/* footer */
+.foot{border-top:1px solid var(--line);background:var(--ground-2);margin-top:40px;padding:30px var(--pad);}
+.footgrid{display:flex;gap:30px;justify-content:space-between;flex-wrap:wrap;}
+.fbrand{font-weight:800;letter-spacing:-.02em;margin:0 0 8px;}
+.fine{font-family:var(--mono);font-size:10px;letter-spacing:.04em;line-height:1.7;color:var(--text-dim);margin:0;max-width:56ch;}
+.flinks{display:flex;flex-direction:column;gap:9px;}
+.flinks a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);text-decoration:none;}
+.flinks a:hover{color:var(--gold);}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;}}

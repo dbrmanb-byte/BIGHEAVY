@@ -1,0 +1,89 @@
+/* Build one vertical: copy its own source to dist, then lay the shared packages
+   it declares on top. The apps are static PWAs with no bundler, so a "build" is
+   a deterministic copy — but it has to be a copy, because the shared files live
+   in packages/ and must not be duplicated per app in source control.
+
+   An app declares what it needs in its package.json:
+
+     "bigheavy": { "shared": ["entitlements", "registry"] }
+
+   Usage: node scripts/build-site.mjs <slug>            (run from anywhere)
+*/
+
+import { cp, mkdir, rm, readFile, readdir, stat } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+/* What each shared package contributes to a site's dist, and under what name. */
+const SHARED = {
+  entitlements: [["packages/entitlements/entitlements.js", "entitlements.js"]],
+  registry:     [["packages/registry/apps.json", "apps.json"]]
+};
+
+const slug = process.argv[2];
+if (!slug) {
+  console.error("build-site: needs a site slug, e.g. `node scripts/build-site.mjs casebook`");
+  process.exit(1);
+}
+
+const appDir = join(ROOT, "apps", slug);
+const srcDir = join(appDir, "src");
+const outDir = join(appDir, "dist");
+
+if (!existsSync(srcDir)) {
+  console.error(`build-site: no such site — ${srcDir} does not exist`);
+  process.exit(1);
+}
+
+/* Which shared packages this app asked for. */
+let shared = [];
+try {
+  const pkg = JSON.parse(await readFile(join(appDir, "package.json"), "utf8"));
+  shared = (pkg.bigheavy && pkg.bigheavy.shared) || [];
+} catch {
+  console.error(`build-site: ${slug} has no readable package.json`);
+  process.exit(1);
+}
+
+const unknown = shared.filter(name => !SHARED[name]);
+if (unknown.length) {
+  console.error(`build-site: ${slug} asks for unknown shared package(s): ${unknown.join(", ")}`);
+  process.exit(1);
+}
+
+/* Start clean so a removed source file cannot survive in dist. */
+await rm(outDir, { recursive: true, force: true });
+await mkdir(outDir, { recursive: true });
+await cp(srcDir, outDir, { recursive: true });
+
+for (const name of shared) {
+  for (const [from, to] of SHARED[name]) {
+    const source = join(ROOT, from);
+    if (!existsSync(source)) {
+      console.error(`build-site: shared file missing — ${from}. Build packages first.`);
+      process.exit(1);
+    }
+    await cp(source, join(outDir, to));
+  }
+}
+
+/* Report what shipped, so a silently empty build is obvious. */
+async function walk(dir, base = "") {
+  const out = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const rel = base ? `${base}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) out.push(...await walk(join(dir, entry.name), rel));
+    else out.push(rel);
+  }
+  return out;
+}
+
+const files = await walk(outDir);
+let bytes = 0;
+for (const f of files) bytes += (await stat(join(outDir, f))).size;
+
+console.log(`  built ${slug} → apps/${slug}/dist  (${files.length} files, ${(bytes / 1024).toFixed(0)} KB)`);
+if (shared.length) console.log(`  shared: ${shared.join(", ")}`);

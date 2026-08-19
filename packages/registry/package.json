@@ -1,0 +1,13 @@
+{
+  "name": "@bigheavy/registry",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The catalogue of verticals. Drives the hub directory and any cross-app linking.",
+  "main": "apps.json",
+  "files": [
+    "apps.json"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/check-package.mjs apps.json"
+  }
+}

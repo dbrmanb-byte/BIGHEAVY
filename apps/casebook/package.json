@@ -1,0 +1,16 @@
+{
+  "name": "casebook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Casebook — offline study app for the ASWB social work licensing exam.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs casebook",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs casebook"
+  },
+  "bigheavy": {
+    "slug": "casebook",
+    "shared": [
+      "entitlements"
+    ]
+  }
+}
