@@ -155,9 +155,13 @@ async function watermark(
     });
   }
 
-  // Metadata carries the same fact for a copy that gets re-rendered.
+  // Metadata carries the same fact for a copy that gets re-rendered. Subject
+  // survives a save; Producer does not — pdf-lib always stamps its own — so
+  // there is no point setting it.
   pdf.setSubject(line);
-  pdf.setProducer("BIGHEAVYINK");
 
-  return await pdf.save({ useObjectStreams: false });
+  // Object streams stay on: turning them off inflated a 159KB book to 368KB,
+  // and every download pays that twice over, in bandwidth and in the reader's
+  // storage.
+  return await pdf.save({ updateMetadata: false });
 }
