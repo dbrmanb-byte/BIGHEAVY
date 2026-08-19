@@ -32,6 +32,4 @@ importers:
 
   packages/app-core: {}
 
-  packages/entitlements: {}
-
   packages/registry: {}

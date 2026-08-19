@@ -19,7 +19,6 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 /* What each shared package contributes to a site's dist, and under what name. */
 const SHARED = {
-  entitlements: [["packages/entitlements/entitlements.js", "entitlements.js"]],
   registry:     [["packages/registry/apps.json", "apps.json"]],
   "app-core":   [["packages/app-core/js", "js"]]        // a whole directory
 };

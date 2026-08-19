@@ -8,9 +8,13 @@ no database, no bundler.
 apps/
   hub/          the front door — directory, plans, about, contact, legal
   casebook/     ASWB social work licensing exam
+  casebook-lcsw/ casebook-lbsw/ casebook-nursing/
+  forge-cloud/ forge-security/ forge-systems/ forge-management/ forge-trades/
+  keystone/     real estate licensing exam
 packages/
-  entitlements/ what a visitor may use; consumed by every app
+  app-core/     the shared runtime: auth, tiers, tracking, recommender, dashboard
   registry/     the catalogue of verticals; drives the hub directory
+supabase/       schema, tier migration, and the Stripe webhook function
 scripts/
   build-site.mjs   copy a site's src to dist and lay shared packages on top
   check-package.mjs verify a shared package is present and parseable
@@ -44,30 +48,43 @@ before a deploy.
 4. Add an entry to `packages/registry/apps.json`. The hub picks it up with no
    code change.
 
-The `slug`, the directory name, and the `__BH_APP_ID` the app declares must all
-match: a Pro subscription is matched against that id.
+The slug, the directory name, and the `window.BH_APP_ID` the app declares must
+all match, and `BH_APP_FAMILY` must match the scope the billing backend writes
+to `tier_app` — entitlement is decided by comparing them.
 
 ## Entitlements
 
-`packages/entitlements` is the single source of truth for what a visitor may
-use. Each app declares itself before loading it:
+`packages/app-core/js/tiers.js` decides what a visitor may use. The tier comes
+from the server (`my_tier` RPC), not from the browser. Each app declares itself
+before the modules load:
 
 ```html
-<script>window.__BH_APP_ID = "casebook";</script>
-<script src="./entitlements.js"></script>
+<script>
+  window.BH_APP_ID     = "casebook-lcsw";
+  window.BH_APP_FAMILY = "casebook";
+</script>
 ```
 
-then asks `Entitlements.can("tutor")`. Free grants `quiz.short` on every app;
-Pro grants everything for **one** app; Unlimited grants everything everywhere.
-The tier is cached locally so paid users keep access offline.
+then asks `Tiers.can("tutor")` or `Tiers.requireGate("tutor", "…")`.
 
-This is a **soft gate**. All content ships inside the bundle, so a determined
-user can read it from source — an accepted trade for staying offline-capable.
-Hard gating means serving premium content from an API instead of bundling it.
+`all_access` covers everything. `pro` is scoped by the `tier_app` the backend
+writes, which today is a **family** (`casebook`, `forge`) — see `PRICE_TO_TIER`
+and the metadata convention in the webhook. The client matches the slug too, so
+moving to per-app Pro is a price-metadata change, not a client release.
 
-Billing is not connected yet: nothing verifies payment, and the tier is set
-locally. When a provider lands, only `Entitlements.set()` changes. For testing,
-`?tier=pro`, `?tier=unlimited` and `?tier=free` set it in the current browser.
+Two rules the gating depends on:
+
+- **Unknown gate names are denied.** A typo should fail visibly, not hand out a
+  paid feature.
+- **Pro with no scope grants nothing.** Fail closed; failing open gives the
+  whole catalogue away for the price of one app.
+
+This is still a **soft gate** — content ships inside the bundle, so a determined
+user can read it from source. That is the accepted trade for staying
+offline-capable. Hard gating means serving premium content from an API.
+
+The core app runs in a classic script and cannot import modules, so the module
+layer publishes `window.Tiers` for it to gate against.
 
 ## Deploying
 
@@ -79,6 +96,9 @@ resolve. See `scripts/preflight.sh` and the deploy runbook.
 - Fill the placeholders in `apps/hub/src/privacy.html` and `terms.html`, and
   have both reviewed. They are drafts, not legal advice.
 - Replace `example.com` in `apps/hub/src/robots.txt` and `sitemap.xml`.
-- Personalise the `TODO` sections in `apps/hub/src/about.html` and
-  `apps/casebook/src/index.html`.
-- Connect a billing provider and wire checkout on both pricing pages.
+- Personalise the `TODO` section in `apps/hub/src/about.html`.
+- Create the Supabase project, run `scripts/setup-supabase.sh <project-ref>`,
+  and fill `CASEBOOK_SUPABASE_URL` / `CASEBOOK_SUPABASE_KEY` in each app.
+- Create the Stripe products, tag each price with `tier` and `app` metadata,
+  deploy the webhook, and set `CHECKOUT_URLS` in `packages/app-core/js/tiers.js`.
+  Until then nothing is billable and every gate reports free.

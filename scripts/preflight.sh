@@ -93,6 +93,20 @@ if [ -f "apps/$SLUG/src/sw.js" ]; then
   ' "apps/$SLUG" 2>/dev/null)"
   if [ -n "$MISSING" ]; then bad "service worker caches files that do not exist: $MISSING"
   else ok "service worker shell resolves"; fi
+
+  # The reverse check: a module the page imports but the shell does not cache
+  # loads fine online and 404s offline, taking the whole module graph with it.
+  UNCACHED="$(node -e '
+    const fs=require("fs"),p=process.argv[1];
+    const sw=fs.readFileSync(p+"/dist/sw.js","utf8");
+    const m=sw.match(/const SHELL\s*=\s*\[([\s\S]*?)\]/);
+    const shell=new Set(m?[...m[1].matchAll(/"([^"]+)"/g)].map(x=>x[1]):[]);
+    const html=fs.readFileSync(p+"/dist/index.html","utf8");
+    const imports=[...html.matchAll(/from\s+"(\.\/js\/[^"]+)"/g)].map(x=>x[1]);
+    process.stdout.write([...new Set(imports)].filter(u=>!shell.has(u)).join(" "));
+  ' "apps/$SLUG" 2>/dev/null)"
+  if [ -n "$UNCACHED" ]; then bad "imported but not cached by the service worker (breaks offline): $UNCACHED"
+  else ok "every imported module is in the shell"; fi
 fi
 
 echo

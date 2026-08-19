@@ -10,7 +10,7 @@
   "bigheavy": {
     "slug": "casebook",
     "shared": [
-      "entitlements"
+      "app-core"
     ]
   }
 }

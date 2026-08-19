@@ -19,25 +19,32 @@ const CHECKOUT_URLS = {
 let _tier = { tier: "free", tier_app: null, is_active: true };
 const _listeners = new Set();
 
-/* Which app this build is. Pro covers ONE app, so entitlement has to be checked
-   against this id — the server returns tier_app naming the app that was paid
-   for. Each app declares itself before the modules load:
-     <script>window.BH_APP_ID = "keystone";</script> */
-export const APP_ID = (typeof window !== "undefined" && window.BH_APP_ID) || null;
+/* Which app this build is, and which family it belongs to. Each app declares
+   both before the modules load:
+     <script>window.BH_APP_ID = "casebook-lcsw";
+             window.BH_APP_FAMILY = "casebook";</script> */
+export const APP_ID     = (typeof window !== "undefined" && window.BH_APP_ID) || null;
+export const APP_FAMILY = (typeof window !== "undefined" && window.BH_APP_FAMILY) || null;
 
 export function getTier() { return _tier; }
 
-/* True when the subscription actually covers THIS app. all_access covers every
-   app; pro covers only the one named in tier_app. Without this check a single
-   $7.99 Pro subscription would unlock all ten apps and there would be no reason
-   to buy all-access. A missing tier_app is treated as not covering: fail closed,
-   because failing open gives the whole catalogue away. */
+/* True when the subscription actually covers THIS app.
+
+   all_access covers everything. Pro is scoped by tier_app, and the scope the
+   backend writes there is a family ("casebook", "forge") — see PRICE_TO_TIER in
+   the Stripe webhook. Matching the slug as well means per-app pricing can be
+   introduced by changing only the price mapping, with no client release.
+
+   Without this check any active Pro subscription unlocked every app, so a
+   single Pro plan bought the whole catalogue and all-access had nothing to
+   sell. A missing tier_app does NOT grant access: fail closed, or the same
+   leak comes back through the webhook's unknown-price fallback. */
 function _coversThisApp() {
   if (_tier.tier === "all_access") return true;
   if (_tier.tier !== "pro") return false;
-  if (!_tier.tier_app) return false;
-  if (!APP_ID) return false;
-  return _tier.tier_app === APP_ID;
+  const scope = _tier.tier_app;
+  if (!scope) return false;
+  return scope === APP_ID || (APP_FAMILY !== null && scope === APP_FAMILY);
 }
 
 export function isPro() { return _tier.is_active && _coversThisApp(); }
@@ -47,7 +54,7 @@ export function isFree() { return !isPro(); }
 /* Distinguishes "you pay us, but for a different app" from "you do not pay us",
    so the upgrade prompt can say something true. */
 export function isPaidElsewhere() {
-  return _tier.is_active && _tier.tier === "pro" && !!_tier.tier_app && _tier.tier_app !== APP_ID;
+  return _tier.is_active && _tier.tier === "pro" && !!_tier.tier_app && !_coversThisApp();
 }
 
 export function onTierChange(fn) {
@@ -92,16 +99,24 @@ const GATES = {
   sync:          () => getUser() !== null,
   ebook:         () => isPro(),
   weak_weight:   () => isPro(),
+  tutor:         () => isPro(),
 };
 
 /**
  * Check if a feature is unlocked.
- * @param {string} feature - one of: set_50, set_100, set_150, exam_mode, adaptive, dashboard, sync, ebook, weak_weight
+ * Unknown names are denied, not allowed: a typo in a gate name should fail
+ * visibly during development rather than quietly hand out a paid feature.
+ * @param {string} feature - one of: set_50, set_100, set_150, exam_mode,
+ *   adaptive, dashboard, sync, ebook, weak_weight, tutor
  * @returns {boolean}
  */
 export function can(feature) {
   const gate = GATES[feature];
-  return gate ? gate() : true;
+  if (!gate) {
+    console.warn(`tiers: unknown feature "${feature}" — denying. Add it to GATES.`);
+    return false;
+  }
+  return gate();
 }
 
 // ---- Upgrade flow ----

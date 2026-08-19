@@ -9,6 +9,7 @@ const SHELL = [
   "./index.html",
   "./manifest.webmanifest",
   "./js/supabase-client.js",
+  "./js/tiers.js",
   "./js/tracker.js",
   "./js/dashboard.js",
   "./js/recommend.js",

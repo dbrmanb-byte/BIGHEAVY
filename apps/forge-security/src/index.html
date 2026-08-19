@@ -656,6 +656,7 @@ window.CASEBOOK_SUPABASE_KEY = "";  // anon/public key
 // Pro covers one app, so the tier check needs to know which app this is.
 // The slug must match apps/<slug> and the tier_app value the server returns.
 window.BH_APP_ID = "forge-security";
+window.BH_APP_FAMILY = "forge";
 window.CASEBOOK_APP_NAME = "BIGHEAVYINK Forge Security";
 </script>
 <script>
@@ -1164,6 +1165,12 @@ $("tutorClose").onclick = closeTutor;
 $("scrim").onclick = closeTutor;
 
 $("loadModel").onclick = async () => {
+  // The tutor is a paid feature. Check before the multi-gigabyte download,
+  // not after — a free user must never start fetching model weights.
+  // Tiers lives in a module; this script is classic, so it is read off window
+  // at click time (the module has executed by then). No tier API means the
+  // gate cannot be evaluated, so deny rather than hand out a paid feature.
+  if(!window.Tiers || !window.Tiers.requireGate("tutor", "The on-device tutor is part of Pro.")) return;
   if(!navigator.gpu){
     setEngineState("off");
     $("loadNote").innerHTML = "This browser can't run the model — it needs WebGPU. Chrome or Edge 113+ on desktop works. Everything else in Casebook works fine without it.";
@@ -1291,6 +1298,10 @@ import * as Tracker from "./js/tracker.js";
 import * as Dashboard from "./js/dashboard.js";
 import { recommend } from "./js/recommend.js";
 import * as Tiers from "./js/tiers.js";
+
+// The core app runs in a classic script that cannot import modules.
+// Expose the tier API so it can gate paid features.
+window.Tiers = Tiers;
 
 const $ = id => document.getElementById(id);
 

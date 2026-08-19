@@ -1,17 +1,35 @@
 {
-  "name": "Casebook — ASWB Exam Study",
-  "short_name": "Casebook",
-  "description": "207 terms, 217 vignettes with rationales, and a tutor that runs on your own device. Works offline.",
+  "name": "BIGHEAVYINK Casebook",
+  "short_name": "BHI Casebook",
+  "description": "207 terms, 217 vignettes, spaced repetition, and an on-device AI tutor. Works offline.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#132229",
   "theme_color": "#0E1A20",
-  "categories": ["education", "productivity"],
+  "categories": [
+    "education",
+    "productivity"
+  ],
   "icons": [
-    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
