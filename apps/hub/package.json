@@ -10,7 +10,8 @@
   "bigheavy": {
     "slug": "hub",
     "shared": [
-      "registry"
+      "registry",
+      "app-core"
     ]
   }
 }

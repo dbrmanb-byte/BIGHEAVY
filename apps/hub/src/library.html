@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your library — BIGHEAVYINK</title>
+<meta name="description" content="Download the companion books you have bought.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<link rel="stylesheet" href="./site.css">
+<style>
+.state{font-family:var(--read);font-size:16px;line-height:1.6;color:var(--text-dim);max-width:60ch;}
+.authbox{max-width:420px;margin-top:8px;}
+.authbox .field{margin-bottom:14px;}
+.authbox label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
+.authbox input{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);
+  border-radius:5px;padding:11px 13px;font:inherit;font-size:15px;}
+.authbox input:focus{border-color:var(--gold);outline:none;}
+.authrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.linkish{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text-dim);
+  text-decoration:underline;background:none;border:none;cursor:pointer;padding:0;}
+.linkish:hover{color:var(--gold);}
+.msg{font-family:var(--mono);font-size:11px;line-height:1.6;margin-top:12px;min-height:1.2em;}
+.msg.err{color:var(--bad,#D9455F);}
+.msg.ok{color:var(--good);}
+.shelf{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));margin-top:18px;}
+.owned{border:1px solid var(--line);border-left:7px solid var(--accent,var(--gold));border-radius:5px;
+  background:var(--surface);padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
+.owned .t{font-family:var(--read);font-size:16px;line-height:1.35;}
+.owned .m{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);}
+.owned button{margin-top:auto;border:1px solid var(--gold);color:#141414;background:var(--gold);
+  border-radius:5px;padding:9px 14px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;}
+.owned button:hover{filter:brightness(1.07);}
+.owned button:disabled{opacity:.6;cursor:default;filter:none;}
+.who{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-dim);
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./index.html#ebooks">Ebooks</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./about.html">About</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap page">
+  <p class="kicker">Your library</p>
+  <h1>The books you have bought.</h1>
+
+  <!-- signed out -->
+  <section id="signedOut" class="hide">
+    <p class="state">Sign in with the email you used at checkout and your books will be here.</p>
+    <div class="authbox">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="field" id="pwField">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password">
+      </div>
+      <div class="authrow">
+        <button class="cta primary" id="signInBtn" style="cursor:pointer;">Sign in</button>
+        <button class="linkish" id="magicBtn">Email me a link instead</button>
+      </div>
+      <p class="msg" id="authMsg"></p>
+    </div>
+  </section>
+
+  <!-- signed in -->
+  <section id="signedIn" class="hide">
+    <p class="who"><span id="whoAmI"></span><button class="linkish" id="signOutBtn">Sign out</button></p>
+    <p class="state" id="libState"></p>
+    <div class="shelf" id="shelf"></div>
+    <p class="msg" id="dlMsg"></p>
+  </section>
+
+  <!-- no backend configured -->
+  <section id="noBackend" class="hide">
+    <p class="state">The store is not connected yet, so there is nothing to sign in to. Once the backend is configured this page lists every book you own, with a download link for each.</p>
+    <div class="cta-row" style="margin-top:20px;">
+      <a class="cta" href="./index.html#ebooks">Browse the books</a>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./library.html">Your library</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // Same values the apps use. Empty until the Supabase project exists.
+  window.BH_SUPABASE_URL = "";
+  window.BH_SUPABASE_KEY = "";
+</script>
+<script type="module">
+import * as SB from "./js/supabase-client.js";
+import * as Books from "./js/ebooks.js";
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const show = (id, on) => $(id).classList.toggle("hide", !on);
+
+let catalogue = [];   // registry entries, for titles and colours
+
+async function boot() {
+  try {
+    const reg = await (await fetch("./apps.json")).json();
+    catalogue = (reg.apps || []).filter(a => a.ebook);
+  } catch { /* titles fall back to the slug */ }
+
+  if (!window.BH_SUPABASE_URL || !window.BH_SUPABASE_KEY) {
+    show("noBackend", true);
+    return;
+  }
+  await SB.init(window.BH_SUPABASE_URL, window.BH_SUPABASE_KEY);
+  SB.onAuthChange(render);
+  Books.onLibraryChange(renderShelf);
+  render(SB.getUser());
+}
+
+function render(user) {
+  show("signedOut", !user);
+  show("signedIn", !!user);
+  if (user) {
+    $("whoAmI").textContent = user.email || "Signed in";
+    $("libState").textContent = "Checking your library…";
+    Books.refreshLibrary();
+  }
+}
+
+function renderShelf(owned) {
+  const shelf = $("shelf");
+  if (!owned.length) {
+    $("libState").textContent = "No books yet. Anything you buy shows up here straight away.";
+    shelf.innerHTML = "";
+    return;
+  }
+  $("libState").textContent = owned.length === 1
+    ? "One book, yours to keep."
+    : `${owned.length} books, yours to keep.`;
+
+  shelf.innerHTML = owned.map(slug => {
+    const a = catalogue.find(x => x.slug === slug) || {};
+    const title = (a.ebook && a.ebook.title) || slug;
+    return `<div class="owned" style="--accent:${esc(a.accent || "#EBA83A")}">
+      <span class="t">${esc(title)}</span>
+      <span class="m">PDF${a.name ? " · " + esc(a.name) : ""}</span>
+      <button data-slug="${esc(slug)}">Download</button>
+    </div>`;
+  }).join("");
+
+  shelf.querySelectorAll("button[data-slug]").forEach(btn => {
+    btn.onclick = async () => {
+      const slug = btn.dataset.slug;
+      btn.disabled = true; btn.textContent = "Preparing…";
+      $("dlMsg").className = "msg"; $("dlMsg").textContent = "";
+      try {
+        await Books.download(slug);
+        btn.textContent = "Download";
+      } catch (err) {
+        $("dlMsg").className = "msg err";
+        $("dlMsg").textContent = err.message || "That download could not be started.";
+        btn.textContent = "Download";
+      } finally {
+        btn.disabled = false;
+      }
+    };
+  });
+}
+
+// ---- auth ----
+function say(text, kind) {
+  $("authMsg").className = "msg" + (kind ? " " + kind : "");
+  $("authMsg").textContent = text;
+}
+
+$("signInBtn").onclick = async () => {
+  const email = $("email").value.trim(), pw = $("password").value;
+  if (!email || !pw) return say("Email and password, please.", "err");
+  say("Signing in…");
+  try { await SB.signIn(email, pw); say(""); }
+  catch (err) { say(err.message || "That did not work.", "err"); }
+};
+
+$("magicBtn").onclick = async () => {
+  const email = $("email").value.trim();
+  if (!email) return say("Enter your email first.", "err");
+  say("Sending…");
+  try {
+    await SB.signInMagicLink(email);
+    say("Check your inbox for the sign-in link.", "ok");
+  } catch (err) { say(err.message || "Could not send that link.", "err"); }
+};
+
+$("signOutBtn").onclick = () => SB.signOut();
+
+boot();
+</script>
+</body>
+</html>

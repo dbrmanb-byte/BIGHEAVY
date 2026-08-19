@@ -4,9 +4,9 @@
   "apps": [
     {
       "slug": "casebook",
-      "name": "Casebook",
-      "exam": "ASWB",
-      "audience": "Social work licensure",
+      "name": "Casebook LMSW",
+      "exam": "LMSW",
+      "audience": "Master's social work",
       "blurb": "207 terms, 217 exam vignettes with rationales, spaced-repetition drills, and a tutor that runs on your own device.",
       "accent": "#EBA83A",
       "status": "live",

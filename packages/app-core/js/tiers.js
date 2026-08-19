@@ -97,10 +97,12 @@ const GATES = {
   adaptive:      () => isPro(),
   dashboard:     () => isPro(),
   sync:          () => getUser() !== null,
-  ebook:         () => isPro(),
   weak_weight:   () => isPro(),
   tutor:         () => isPro(),
 };
+// `ebook` is deliberately absent. Books are sold per title ($9.99) and are not
+// part of any plan, so entitlement is ownership — ask ebooks.js ownsBook(slug),
+// which reads the purchase table, rather than asking about a tier here.
 
 /**
  * Check if a feature is unlocked.

@@ -15,6 +15,9 @@ body{margin:0;background:var(--ground);color:var(--text);font-family:var(--displ
 a{color:inherit;}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px;}
 .wrap{max-width:1000px;margin:0 auto;}
+/* Pages that swap between states rely on this; without it every state renders
+   at once. Matches the class the apps use so markup moves between them cleanly. */
+.hide{display:none !important;}
 
 /* rail */
 .rail{display:flex;align-items:center;gap:22px;padding:14px var(--pad);

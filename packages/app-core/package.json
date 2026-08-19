@@ -7,6 +7,6 @@
     "js"
   ],
   "scripts": {
-    "build": "node ../../scripts/check-package.mjs js/supabase-client.js js/tiers.js js/tracker.js js/recommend.js js/dashboard.js"
+    "build": "node ../../scripts/check-package.mjs js/supabase-client.js js/tiers.js js/tracker.js js/recommend.js js/dashboard.js js/ebooks.js"
   }
 }

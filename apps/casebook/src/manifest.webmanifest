@@ -1,6 +1,6 @@
 {
-  "name": "BIGHEAVYINK Casebook",
-  "short_name": "BHI Casebook",
+  "name": "BIGHEAVYINK Casebook LMSW",
+  "short_name": "BHI LMSW",
   "description": "207 terms, 217 vignettes, spaced repetition, and an on-device AI tutor. Works offline.",
   "start_url": "./",
   "scope": "./",

@@ -89,7 +89,9 @@ serve(async (req: Request) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        await handleCheckoutComplete(supabase, session);
+        // Books are one-time payments; subscriptions are mode "subscription".
+        if (session.mode === "payment") await handleEbookPurchase(supabase, session);
+        else await handleCheckoutComplete(supabase, session);
         break;
       }
 
@@ -148,6 +150,127 @@ async function handleCheckoutComplete(
     expand: ["items.data.price.product"],
   });
   await applySubscription(supabase, customerId, subscription);
+}
+
+// ============================================================
+// EBOOKS
+// ============================================================
+//
+// A book is a one-off payment. Which book is read from line-item metadata:
+//   ebook = <slug>            on the Price or its Product
+// Buying books earns a subscription discount, issued as a Stripe coupon:
+//   one book   → 10% off Pro
+//   three plus → 20% off Unlimited
+// Coupon ids are set as secrets so the values can change without a redeploy.
+
+const COUPON_ONE_BOOK   = Deno.env.get("COUPON_PRO_10")        ?? "";
+const COUPON_THREE_PLUS = Deno.env.get("COUPON_ALL_ACCESS_20") ?? "";
+
+/** Read the ebook slug a line item refers to, from price then product metadata. */
+async function ebookSlugForPrice(price: Stripe.Price | undefined): Promise<string | null> {
+  if (!price) return null;
+  if (price.metadata?.ebook) return price.metadata.ebook;
+
+  if (typeof price.product === "object" && price.product) {
+    const p = price.product as Stripe.Product;
+    if (p.metadata?.ebook) return p.metadata.ebook;
+  } else if (typeof price.product === "string") {
+    try {
+      const p = await stripe.products.retrieve(price.product);
+      if (p.metadata?.ebook) return p.metadata.ebook;
+    } catch (err) {
+      console.error("Could not load product for price", price.id, err);
+    }
+  }
+  return null;
+}
+
+async function handleEbookPurchase(supabase: any, session: Stripe.Checkout.Session) {
+  const customerId = session.customer as string | null;
+  const email = session.customer_details?.email;
+
+  if (!customerId) {
+    console.error("Ebook checkout with no customer — cannot attribute:", session.id);
+    return;
+  }
+
+  // Link the Stripe customer to a profile first; grant_ebook resolves the user
+  // through that link and throws if it is missing.
+  if (email) {
+    await supabase.rpc("link_stripe_customer", {
+      p_email: email,
+      p_stripe_customer_id: customerId,
+    });
+  }
+
+  const items = await stripe.checkout.sessions.listLineItems(session.id, {
+    limit: 100,
+    expand: ["data.price.product"],
+  });
+
+  let granted = 0;
+  for (const item of items.data) {
+    const slug = await ebookSlugForPrice(item.price ?? undefined);
+    if (!slug) {
+      console.error(
+        "Paid line item with no ebook metadata — nothing granted.",
+        "price:", item.price?.id, "session:", session.id,
+        "| Set metadata ebook=<slug> on the price or product, then resend the event."
+      );
+      continue;
+    }
+    try {
+      await supabase.rpc("grant_ebook", {
+        p_stripe_customer_id: customerId,
+        p_ebook_slug: slug,
+        p_stripe_session_id: session.id,
+        p_amount_cents: item.amount_total ?? null,
+      });
+      granted++;
+      console.log("Granted ebook:", slug, "to", customerId);
+    } catch (err) {
+      console.error("Could not grant", slug, "to", customerId, err);
+    }
+  }
+
+  if (granted > 0) await issueDiscount(supabase, customerId, email);
+}
+
+/** Give the buyer the coupon their library size has earned. */
+async function issueDiscount(supabase: any, customerId: string, email?: string | null) {
+  const { data: count, error } = await supabase.rpc("ebook_count_for_customer", {
+    p_stripe_customer_id: customerId,
+  });
+  if (error) { console.error("Could not count books for", customerId, error); return; }
+
+  const owned = Number(count ?? 0);
+  const coupon = owned >= 3 ? COUPON_THREE_PLUS : owned >= 1 ? COUPON_ONE_BOOK : "";
+  if (!coupon) {
+    if (owned >= 1) {
+      console.error(
+        "Discount earned but no coupon configured.",
+        "books:", owned, "customer:", customerId,
+        "| Create the coupons in Stripe and set COUPON_PRO_10 / COUPON_ALL_ACCESS_20."
+      );
+    }
+    return;
+  }
+
+  try {
+    // A customer-scoped promotion code: it rides on the account, so the buyer
+    // does not have to keep a code from an email to use it later.
+    const promo = await stripe.promotionCodes.create({
+      coupon,
+      customer: customerId,
+      max_redemptions: 1,
+    });
+    console.log("Discount issued:", promo.code, "to", customerId, `(${owned} books)`);
+    // The code still needs to reach the buyer — Stripe does not email it.
+    // Wire this to the receipt or a transactional email before launch.
+    if (email) console.log("Deliver code", promo.code, "to", email);
+  } catch (err) {
+    console.error("Could not create promotion code for", customerId, err);
+  }
 }
 
 async function handleSubscriptionChange(
