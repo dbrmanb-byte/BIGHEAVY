@@ -68,11 +68,16 @@ fi
 DECLARED="$(node -e "try{const p=require('./apps/$SLUG/package.json');process.stdout.write(((p.bigheavy||{}).shared||[]).join(' '))}catch(e){}" 2>/dev/null)"
 for name in $DECLARED; do
   case "$name" in
-    entitlements) f="entitlements.js" ;;
-    registry)     f="apps.json" ;;
-    *)            f="" ;;
+    registry)   f="apps.json";  kind="file" ;;
+    app-core)   f="js";         kind="dir"  ;;
+    *)          f="";           kind=""     ;;
   esac
-  if [ -z "$f" ]; then bad "unknown shared package declared: $name"
+  if [ -z "$f" ]; then
+    bad "unknown shared package declared: $name (add it to SHARED in build-site.mjs and here)"
+  elif [ "$kind" = "dir" ]; then
+    n="$(ls "apps/$SLUG/dist/$f"/*.js 2>/dev/null | wc -l | tr -d ' ')"
+    if [ "$n" -gt 0 ]; then ok "shared $name present in dist ($n files in $f/)"
+    else bad "shared $name declared but dist/$f is empty or missing"; fi
   elif [ -f "apps/$SLUG/dist/$f" ]; then ok "shared $name present in dist ($f)"
   else bad "shared $name declared but $f missing from dist"; fi
 done
