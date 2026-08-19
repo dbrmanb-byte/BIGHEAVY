@@ -79,6 +79,15 @@ a.app:hover{border-color:var(--accent,var(--gold));transform:translateY(-2px);}
 .book .spine::after{content:"";position:absolute;left:7px;top:0;bottom:0;width:2px;background:rgba(0,0,0,.35);}
 .book .btitle{font-family:var(--read);font-size:15.5px;line-height:1.35;color:var(--text);}
 .book .bmeta{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);}
+.book .bprice{font-family:var(--mono);font-size:13px;color:var(--gold);margin-top:auto;padding-top:8px;}
+.hi{color:var(--gold);}
+
+/* the cross-sell */
+.offer{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:0 0 22px;}
+.offer > div{border:1px dashed var(--line);border-radius:6px;padding:14px 16px;background:rgba(235,168,58,.04);}
+.offer b{display:block;font-size:14.5px;margin-bottom:4px;}
+.offer span{font-family:var(--read);font-size:14.5px;color:var(--text-dim);}
+.offer span b{display:inline;font-family:var(--mono);font-size:13px;}
 
 /* tiers */
 .tiers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:18px;}

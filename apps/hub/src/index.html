@@ -66,10 +66,16 @@
   </section>
 
   <section class="wrap band" id="ebooks">
-    <h2 class="sec">Every app comes with its book</h2>
-    <p class="secsub">A companion PDF for each exam — the whole glossary and every rationale, laid out to read start to finish and to print. Yours with Pro, at no extra cost.</p>
+    <h2 class="sec">Every exam has its book</h2>
+    <p class="secsub">A companion PDF for each exam — the whole glossary and every rationale, laid out to read start to finish and to print. <b class="hi">$9.99</b> each, yours to keep, no subscription needed.</p>
+
+    <div class="offer">
+      <div><b>Buy one book</b><span>Take <b class="hi">10% off</b> Pro</span></div>
+      <div><b>Buy three or more</b><span>Take <b class="hi">20% off</b> Unlimited</span></div>
+    </div>
+
     <div class="books" id="bookList"></div>
-    <p class="micro">Included with Pro and Unlimited · Yours to keep · <a href="./pricing.html">See plans</a></p>
+    <p class="micro">PDF · Yours to keep · Discount applied at checkout · <a href="./pricing.html">See plans</a></p>
   </section>
 
   <section class="wrap band">
@@ -155,11 +161,13 @@ fetch("./apps.json")
     const books = apps.filter(a => a.ebook);
     const list = document.getElementById("bookList");
     if (list && books.length) {
+      const price = p => "$" + Number(p).toFixed(2);
       list.innerHTML = books.map(a => `
         <div class="book" style="--accent:${esc(a.accent || "#EBA83A")}">
           <span class="spine"></span>
           <span class="btitle">${esc(a.ebook.title)}</span>
           <span class="bmeta">${esc(a.ebook.format || "PDF")} · ${esc(a.name)}</span>
+          <span class="bprice">${esc(price(a.ebook.price ?? (reg.ebooks && reg.ebooks.price) ?? 9.99))}</span>
         </div>`).join("");
     }
 

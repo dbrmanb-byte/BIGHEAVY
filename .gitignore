@@ -2,3 +2,7 @@ node_modules/
 dist/
 .netlify/
 .DS_Store
+
+# Paid ebooks are never committed — this repository is public.
+# They live in private storage and are served through an entitlement check.
+ebooks/*.pdf

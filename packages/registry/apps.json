@@ -14,9 +14,11 @@
       "terms": 207,
       "questions": 217,
       "ebook": {
-        "title": "The ASWB Vocabulary Companion",
+        "title": "The LMSW Companion",
         "format": "PDF",
-        "included": "pro"
+        "exam": "LMSW",
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -34,7 +36,8 @@
       "ebook": {
         "title": "The LCSW Clinical Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -52,7 +55,8 @@
       "ebook": {
         "title": "The LBSW Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -70,7 +74,8 @@
       "ebook": {
         "title": "The NCLEX Clinical Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -88,7 +93,8 @@
       "ebook": {
         "title": "The Cloud Architecture Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -106,7 +112,8 @@
       "ebook": {
         "title": "The Cybersecurity Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -124,7 +131,8 @@
       "ebook": {
         "title": "The Systems & Infrastructure Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -142,7 +150,8 @@
       "ebook": {
         "title": "The Technical Management Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -160,7 +169,8 @@
       "ebook": {
         "title": "The Electrician's Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     },
     {
@@ -178,13 +188,30 @@
       "ebook": {
         "title": "The Real Estate Companion",
         "format": "PDF",
-        "included": "pro"
+        "price": 9.99,
+        "currency": "USD"
       }
     }
   ],
   "ebooks": {
-    "comment": "Each app ships a companion PDF. The tiers.js `ebook` gate makes it a Pro perk rather than a separate purchase.",
-    "included": "pro",
-    "count": 10
+    "comment": "Ebooks are sold standalone, and buying them discounts a subscription. The discount is issued as a Stripe coupon after purchase — see PROMOS.",
+    "price": 9.99,
+    "currency": "USD",
+    "format": "PDF",
+    "count": 10,
+    "promos": [
+      {
+        "id": "ebook1_pro10",
+        "trigger": "1 ebook purchased",
+        "applies_to": "pro",
+        "percent_off": 10
+      },
+      {
+        "id": "ebook3_unlimited20",
+        "trigger": "3 or more ebooks purchased",
+        "applies_to": "all_access",
+        "percent_off": 20
+      }
+    ]
   }
 }
