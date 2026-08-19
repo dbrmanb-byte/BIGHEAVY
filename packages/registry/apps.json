@@ -1,5 +1,5 @@
 {
-  "comment": "The catalogue of verticals. The hub renders its directory from this file at runtime, so adding an app is a matter of adding an entry here — no hub code changes. slug must match the app's directory under apps/ and the __BH_APP_ID it declares, because a Pro subscription is matched against that id.",
+  "comment": "The catalogue of verticals. The hub renders its directory from this file at runtime, so adding an app is a data change, not a code change. slug must match the app's directory under apps/ and the __BH_APP_ID it declares, because a Pro subscription is matched against that id. status 'live' renders a full card; anything else counts toward the roadmap only — details are deliberately left blank until the app lands rather than guessed at.",
   "planned": 10,
   "apps": [
     {
@@ -13,6 +13,18 @@
       "url": "/casebook/",
       "terms": 207,
       "questions": 217
-    }
+    },
+
+    { "slug": "casebook-lcsw",      "name": "Casebook LCSW",      "family": "casebook", "status": "planned" },
+    { "slug": "casebook-lbsw",      "name": "Casebook LBSW",      "family": "casebook", "status": "planned" },
+    { "slug": "casebook-nursing",   "name": "Casebook Nursing",   "family": "casebook", "status": "planned" },
+
+    { "slug": "forge-cloud",        "name": "Forge Cloud",        "family": "forge",    "status": "planned" },
+    { "slug": "forge-security",     "name": "Forge Security",     "family": "forge",    "status": "planned" },
+    { "slug": "forge-systems",      "name": "Forge Systems",      "family": "forge",    "status": "planned" },
+    { "slug": "forge-management",   "name": "Forge Management",   "family": "forge",    "status": "planned" },
+    { "slug": "forge-trades",       "name": "Forge Trades",       "family": "forge",    "status": "planned" },
+
+    { "slug": "keystone",           "name": "Keystone",           "family": "keystone", "status": "planned" }
   ]
 }

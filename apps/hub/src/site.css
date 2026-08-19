@@ -68,6 +68,8 @@ a.app:hover{border-color:var(--accent,var(--gold));transform:translateY(-2px);}
   text-transform:uppercase;color:var(--gold);text-decoration:none;}
 .app.soon{border-top-color:var(--line);opacity:.9;}
 .app.soon .exam{color:var(--text-dim);}
+.app .soonlist{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;line-height:1.9;
+  color:var(--text-dim);margin:0 0 16px;}
 
 /* tiers */
 .tiers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:18px;}

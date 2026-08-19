@@ -113,10 +113,14 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 fetch("./apps.json")
   .then(r => { if(!r.ok) throw new Error("registry " + r.status); return r.json(); })
   .then(reg => {
-    const apps = reg.apps || [];
+    const all = reg.apps || [];
+    // Only shipped apps get a card. Everything else is roadmap: the registry
+    // carries the slugs so the count is real, but no invented detail is shown.
+    const apps = all.filter(a => a.status === "live");
+    const upcoming = all.filter(a => a.status !== "live");
     const grid = document.getElementById("appGrid");
-    const planned = reg.planned || apps.length;
-    const soon = Math.max(0, planned - apps.length);
+    const planned = Math.max(reg.planned || 0, all.length);
+    const soon = Math.max(upcoming.length, planned - apps.length);
 
     grid.innerHTML = apps.map(a => `
       <a class="app" href="${esc(a.url || "#")}" style="--accent:${esc(a.accent || "#EBA83A")}">
@@ -128,11 +132,13 @@ fetch("./apps.json")
       </a>`).join("");
 
     if (soon > 0) {
+      const names = upcoming.map(a => a.name).filter(Boolean);
       grid.insertAdjacentHTML("beforeend", `
         <div class="app soon">
           <span class="exam">In progress</span>
           <h3>${soon} more app${soon === 1 ? "" : "s"} on the way</h3>
           <p class="blurb">Same engine, same offline-first design, built for other licensing exams. Unlimited covers them as they land.</p>
+          ${names.length ? `<p class="soonlist">${names.map(esc).join(" · ")}</p>` : ""}
           <a class="open" href="./contact.html">Tell us which exam →</a>
         </div>`);
     }
