@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIGHEAVYINK Forge Cloud — Cloud Architecture Certification Study</title>
+<meta name="description" content="Study companion for AWS Solutions Architect Professional, Google Cloud Professional Cloud Architect, and Azure Solutions Architect Expert. 75 terms, 29 scenarios, spaced repetition, and an on-device AI tutor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="theme-color" content="#0E1A20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Casebook">
+<meta property="og:title" content="Forge Cloud — Cloud Architecture Study">
+<meta property="og:description" content="75 terms, 29 scenarios for AWS, GCP & Azure. Works offline.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<style>
+:root{
+  --ground:#132229;
+  --ground-2:#0E1A20;
+  --surface:#1B2F38;
+  --surface-2:#223B46;
+  --line:#2E4A56;
+  --text:#DCE8ED;
+  --text-dim:#8FA8B3;
+  --paper:#F2EDE3;
+  --paper-line:#DAD1C1;
+  --paper-ink:#241D14;
+  --paper-dim:#6C6255;
+  --gold:#3FA9B8;
+  --good:#5FB86B;
+  --bad:#D9455F;
+
+  --cat-hbse:#E4703A;
+  --cat-assessment:#3FA9B8;
+  --cat-intervention:#7B8FE0;
+  --cat-ethics:#D9455F;
+  --cat-policy:#5FB86B;
+  --cat-research:#C77CD6;
+  --cat-diversity:#E0B23A;
+  --cat-supervision:#93A4AF;
+
+  --display:"Bricolage Grotesque",'Segoe UI',system-ui,sans-serif;
+  --read:"Newsreader",Georgia,'Times New Roman',serif;
+  --mono:"IBM Plex Mono",ui-monospace,'SF Mono',Menlo,monospace;
+
+  --pad:clamp(16px,4vw,32px);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;background:var(--ground);color:var(--text);
+  font-family:var(--display);
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px;}
+
+/* ---------- rail ---------- */
+.rail{
+  display:flex;align-items:center;gap:20px;
+  padding:12px var(--pad);border-bottom:1px solid var(--line);
+  background:var(--ground-2);flex-wrap:wrap;
+}
+.brand{display:flex;flex-direction:column;line-height:1;margin-right:auto;gap:4px;}
+.brand .bh{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;}
+.brand .bh::after{content:"";display:block;width:28px;height:1.5px;background:var(--gold);margin-top:4px;}
+.brand b{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:19px;letter-spacing:0;color:var(--text);}
+.brand span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--text-dim);text-transform:uppercase;display:none;}
+.modes{display:flex;gap:2px;}
+.modes button{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 13px;color:var(--text-dim);border-bottom:2px solid transparent;
+}
+.modes button:hover{color:var(--text);}
+.modes button[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold);}
+.tutor-open{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:999px;padding:7px 14px;display:flex;align-items:center;gap:8px;
+}
+.tutor-open:hover{border-color:var(--gold);color:var(--gold);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--text-dim);}
+.dot.on{background:var(--good);}
+.dot.load{background:var(--gold);animation:pulse 1.1s ease-in-out infinite;}
+@keyframes pulse{50%{opacity:.25;}}
+
+/* ---------- shell ---------- */
+main{flex:1;overflow-y:auto;padding:var(--pad);}
+.wrap{max-width:760px;margin:0 auto;}
+.hide{display:none !important;}
+
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+}
+.eyebrow em{font-style:normal;color:var(--gold);}
+
+/* ---------- the case card (signature) ---------- */
+.card{
+  position:relative;background:var(--paper);color:var(--paper-ink);
+  border-radius:3px 3px 4px 4px;padding:clamp(22px,4vw,36px);
+  padding-top:clamp(30px,5vw,40px);
+  box-shadow:0 1px 0 var(--paper-line),0 18px 40px -18px rgba(0,0,0,.75);
+}
+.card::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:6px;
+  background:var(--tab,var(--gold));border-radius:3px 3px 0 0;
+}
+.card .tab{
+  position:absolute;top:-11px;left:24px;background:var(--tab,var(--gold));color:#141414;
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 11px;border-radius:3px 3px 0 0;
+}
+.card .meta{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--paper-dim);display:flex;justify-content:space-between;gap:12px;
+  padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--paper-line);
+}
+.stem{font-family:var(--read);font-size:clamp(17px,2.2vw,19.5px);line-height:1.62;margin:0 0 22px;}
+.term{font-family:var(--display);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.02em;margin:6px 0 0;}
+.term-def{font-family:var(--read);font-size:18px;line-height:1.6;margin:18px 0 0;padding-top:18px;border-top:1px solid var(--paper-line);}
+
+/* ---------- choices ---------- */
+.choices{display:flex;flex-direction:column;gap:9px;}
+.choice{
+  display:flex;gap:13px;align-items:flex-start;text-align:left;width:100%;
+  border:1px solid var(--paper-line);border-radius:4px;padding:13px 15px;
+  font-family:var(--read);font-size:16.5px;line-height:1.45;transition:border-color .12s,background .12s;
+}
+.choice:hover:not(:disabled){border-color:var(--paper-ink);background:rgba(0,0,0,.03);}
+.choice:disabled{cursor:default;}
+.choice .ltr{
+  font-family:var(--mono);font-size:11px;font-weight:600;flex:0 0 22px;height:22px;
+  border:1px solid var(--paper-line);border-radius:3px;display:grid;place-items:center;margin-top:1px;
+}
+.choice.correct{border-color:var(--good);background:rgba(95,184,107,.13);}
+.choice.correct .ltr{background:var(--good);border-color:var(--good);color:#0C1A0E;}
+.choice.chosen-wrong{border-color:var(--bad);background:rgba(217,69,95,.11);}
+.choice.chosen-wrong .ltr{background:var(--bad);border-color:var(--bad);color:#fff;}
+
+.verdict{
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--paper-line);
+}
+.verdict h4{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  margin:0 0 9px;color:var(--paper-dim);
+}
+.verdict h4 b{color:var(--paper-ink);}
+.verdict p{font-family:var(--read);font-size:16.5px;line-height:1.6;margin:0;}
+
+/* ---------- controls under card ---------- */
+.controls{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:12px 20px;border:1px solid var(--line);border-radius:4px;color:var(--text);
+  transition:border-color .12s,background .12s,color .12s;
+}
+.btn:hover{border-color:var(--text-dim);background:var(--surface);}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#1A1206;font-weight:600;}
+.btn.primary:hover{filter:brightness(1.08);background:var(--gold);}
+.btn.again{border-color:#5A3038;color:#F0A0AE;}
+.btn.again:hover{background:rgba(217,69,95,.14);border-color:var(--bad);}
+.btn.got{border-color:#2F5537;color:#9FDBA8;}
+.btn.got:hover{background:rgba(95,184,107,.14);border-color:var(--good);}
+.btn.wide{flex:1;justify-content:center;text-align:center;}
+
+/* ---------- progress ---------- */
+.bar{height:3px;background:var(--surface);border-radius:2px;overflow:hidden;margin:0 0 20px;}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .35s ease;}
+
+/* ---------- filters / glossary ---------- */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  padding:6px 11px;border:1px solid var(--line);border-radius:999px;color:var(--text-dim);
+  display:flex;align-items:center;gap:7px;
+}
+.chip:hover{color:var(--text);}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--tab,var(--text-dim));}
+.chip[aria-pressed="true"]{border-color:var(--tab,var(--gold));color:var(--text);background:var(--surface);}
+.search{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:13px 15px;color:var(--text);font-family:var(--display);font-size:15px;margin-bottom:14px;
+}
+.search::placeholder{color:var(--text-dim);}
+.entry{
+  border-left:3px solid var(--tab,var(--line));background:var(--surface);
+  border-radius:0 4px 4px 0;padding:15px 17px;margin-bottom:8px;
+}
+.entry h3{font-size:16px;font-weight:700;margin:0 0 5px;letter-spacing:-.01em;}
+.entry p{font-family:var(--read);font-size:15.5px;line-height:1.55;color:var(--text-dim);margin:0;}
+.entry .cat{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--tab,var(--text-dim));margin-bottom:6px;display:block;
+}
+
+/* ---------- summary ---------- */
+.score{text-align:center;padding:36px 0 26px;}
+.score .n{font-size:clamp(56px,13vw,84px);font-weight:800;letter-spacing:-.04em;line-height:1;}
+.score .n small{font-size:.34em;color:var(--text-dim);font-weight:500;}
+.score p{font-family:var(--read);font-size:17px;color:var(--text-dim);max-width:44ch;margin:14px auto 0;line-height:1.55;}
+.breakdown{display:flex;flex-direction:column;gap:7px;margin:26px 0 0;}
+.brow{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;}
+.brow .nm{flex:0 0 108px;text-transform:uppercase;color:var(--text-dim);font-size:10px;}
+.brow .track{flex:1;height:7px;background:var(--surface);border-radius:2px;overflow:hidden;}
+.brow .track i{display:block;height:100%;background:var(--tab,var(--gold));}
+
+/* ---------- tutor ---------- */
+.tutor{
+  position:fixed;top:0;right:0;bottom:0;width:min(430px,100%);
+  background:var(--ground-2);border-left:1px solid var(--line);
+  display:flex;flex-direction:column;z-index:40;
+  transform:translateX(100%);transition:transform .26s cubic-bezier(.4,0,.2,1);
+}
+.tutor.open{transform:none;}
+.tutor header{
+  padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;
+}
+.tutor header h2{font-size:15px;font-weight:700;margin:0;margin-right:auto;letter-spacing:-.01em;}
+.tutor header .x{font-size:22px;line-height:1;color:var(--text-dim);padding:2px 6px;}
+.tutor header .x:hover{color:var(--text);}
+.log{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:15px;}
+.msg{font-family:var(--read);font-size:15.5px;line-height:1.58;}
+.msg.me{
+  align-self:flex-end;max-width:88%;background:var(--surface-2);
+  padding:11px 14px;border-radius:10px 10px 2px 10px;
+}
+.msg.ai{color:var(--text);white-space:pre-wrap;}
+.msg.ai::before{
+  content:"Tutor";display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:6px;
+}
+.msg.sys{
+  font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--text-dim);
+  border:1px dashed var(--line);border-radius:5px;padding:12px 13px;
+}
+.msg.sys b{color:var(--text);font-weight:600;}
+.sources{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;
+}
+.sources span{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--text-dim);
+  border:1px solid var(--line);border-radius:999px;padding:3px 9px;
+}
+.compose{padding:14px 18px 18px;border-top:1px solid var(--line);}
+.compose textarea{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:5px;
+  color:var(--text);font-family:var(--display);font-size:14.5px;padding:11px 13px;
+  resize:none;min-height:52px;max-height:150px;
+}
+.compose textarea::placeholder{color:var(--text-dim);}
+.compose .row{display:flex;gap:8px;margin-top:9px;align-items:center;}
+.compose .hint{font-family:var(--mono);font-size:9.5px;color:var(--text-dim);margin-right:auto;letter-spacing:.05em;}
+.setup{padding:18px;display:flex;flex-direction:column;gap:13px;}
+.setup p{font-family:var(--read);font-size:15px;line-height:1.58;color:var(--text-dim);margin:0;}
+.setup label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);}
+.setup select{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  color:var(--text);font-family:var(--display);font-size:14.5px;padding:11px 13px;
+}
+.prog{height:4px;background:var(--surface);border-radius:2px;overflow:hidden;}
+.prog i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s;}
+.scrim{
+  position:fixed;inset:0;background:rgba(8,15,19,.6);z-index:35;opacity:0;pointer-events:none;
+  transition:opacity .26s;
+}
+.scrim.on{opacity:1;pointer-events:auto;}
+
+
+.install{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:7px 14px;
+}
+.install:hover{background:var(--gold);color:#1A1206;}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);
+  background:var(--surface-2);border:1px solid var(--line);border-radius:6px;
+  padding:12px 14px;display:flex;align-items:center;gap:14px;z-index:60;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+  box-shadow:0 14px 34px -14px rgba(0,0,0,.8);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  max-width:calc(100% - 32px);
+}
+.toast.up{transform:translate(-50%,0);}
+.toast button{color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;}
+.setup-grid{display:grid;gap:10px;margin:4px 0 18px;}
+.len{
+  display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+  border:1px solid var(--line);border-radius:5px;padding:16px 18px;background:var(--surface);
+  transition:border-color .12s,background .12s;
+}
+.len:hover{border-color:var(--gold);background:var(--surface-2);}
+.len b{font-size:26px;font-weight:800;letter-spacing:-.03em;flex:0 0 58px;}
+.len .txt{flex:1;}
+.len .txt span{display:block;font-size:14.5px;font-weight:600;margin-bottom:3px;}
+.len .txt small{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-dim);text-transform:uppercase;}
+.len .dur{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.05em;}
+.opt{
+  display:flex;align-items:center;gap:11px;padding:12px 0;border-top:1px solid var(--line);
+  font-size:14px;cursor:pointer;
+}
+.opt input{accent-color:var(--gold);width:16px;height:16px;flex:0 0 auto;}
+.opt small{display:block;font-family:var(--mono);font-size:10.5px;color:var(--text-dim);letter-spacing:.04em;margin-top:3px;}
+.resume{
+  border:1px solid var(--gold);border-radius:5px;padding:15px 17px;margin-bottom:18px;background:rgba(235,168,58,.07);
+}
+.resume p{margin:0 0 12px;font-size:14.5px;line-height:1.5;}
+.resume .controls{margin-top:0;}
+.examtop{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.clock{
+  font-family:var(--mono);font-size:13px;letter-spacing:.08em;font-weight:500;
+  border:1px solid var(--line);border-radius:4px;padding:6px 12px;
+}
+.clock.warn{border-color:var(--gold);color:var(--gold);}
+.clock.crit{border-color:var(--bad);color:var(--bad);}
+.examtop .spacer{margin-left:auto;}
+.mini{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:4px;padding:7px 12px;color:var(--text-dim);
+}
+.mini:hover{color:var(--text);border-color:var(--text-dim);}
+.mini.flagged{border-color:var(--gold);color:var(--gold);}
+.nav-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:5px;
+  padding:16px;background:var(--surface);border-radius:5px;margin-bottom:16px;
+}
+.nav-grid button{
+  font-family:var(--mono);font-size:11px;padding:8px 0;border:1px solid var(--line);
+  border-radius:3px;color:var(--text-dim);
+}
+.nav-grid button.done{background:var(--surface-2);color:var(--text);border-color:var(--surface-2);}
+.nav-grid button.flag{border-color:var(--gold);color:var(--gold);}
+.nav-grid button.here{outline:2px solid var(--gold);outline-offset:1px;}
+.rev{
+  background:var(--paper);color:var(--paper-ink);border-radius:4px;padding:20px 22px;margin-bottom:12px;
+  border-left:4px solid var(--tab,var(--bad));
+}
+.rev .num{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:9px;display:block;}
+.rev .q{font-family:var(--read);font-size:16px;line-height:1.55;margin:0 0 14px;}
+.rev .line{font-family:var(--read);font-size:15.5px;line-height:1.5;margin:0 0 7px;padding-left:15px;border-left:2px solid var(--paper-line);}
+.rev .line b{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;display:block;color:var(--paper-dim);margin-bottom:2px;}
+.rev .line.ok{border-left-color:var(--good);}
+.rev .line.no{border-left-color:var(--bad);}
+.rev .exp{font-family:var(--read);font-size:15.5px;line-height:1.55;margin:14px 0 0;padding-top:13px;border-top:1px solid var(--paper-line);}
+
+/* ---------- dashboard ---------- */
+.dash-loading{font-family:var(--mono);font-size:12px;color:var(--text-dim);padding:40px 0;text-align:center;}
+.dash-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:26px;}
+.dash-stat{background:var(--surface);border-radius:5px;padding:18px 16px;text-align:center;}
+.ds-val{display:block;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.1;}
+.ds-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-top:6px;display:block;}
+.dash-h{font-size:14px;font-weight:700;margin:26px 0 12px;letter-spacing:-.01em;}
+.cat-bars{display:flex;flex-direction:column;gap:7px;}
+.cat-bar{display:grid;grid-template-columns:110px 1fr 44px 40px;align-items:center;gap:10px;font-size:13px;}
+.cat-nm{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);}
+.cat-track{height:8px;background:var(--surface);border-radius:2px;overflow:hidden;}
+.cat-track i{display:block;height:100%;border-radius:2px;transition:width .4s ease;}
+.cat-track i.high{opacity:1;}.cat-track i.mid{opacity:.85;}.cat-track i.low{opacity:.7;}
+.cat-pct{font-family:var(--mono);font-size:12px;text-align:right;}
+.cat-n{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:right;}
+.trend-svg{width:100%;max-height:160px;margin:6px 0;}
+.plan{display:flex;flex-direction:column;gap:6px;}
+.plan-row{background:var(--surface);border-radius:4px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;}
+.plan-row.urgent{border-left:3px solid var(--bad);}
+.plan-cat{font-size:13px;font-weight:600;}
+.plan-act{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.04em;}
+.sess-list{display:flex;flex-direction:column;gap:5px;}
+.sess-row{display:grid;grid-template-columns:100px 1fr 80px;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.sess-date{font-family:var(--mono);font-size:11px;color:var(--text-dim);}
+.sess-score{font-weight:600;}
+.sess-len{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:right;}
+.dash-note{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;margin-top:30px;letter-spacing:.03em;}
+.empty{text-align:center;padding:60px 0;}
+.empty p{font-family:var(--read);font-size:16px;color:var(--text-dim);max-width:36ch;margin:0 auto;line-height:1.6;}
+
+/* ---------- auth modal ---------- */
+.auth-scrim{position:fixed;inset:0;background:rgba(8,15,19,.7);z-index:50;display:grid;place-items:center;padding:20px;}
+.auth-modal{
+  background:var(--ground);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(24px,5vw,36px);width:min(400px,100%);position:relative;
+}
+.auth-close{position:absolute;top:12px;right:14px;font-size:24px;color:var(--text-dim);padding:4px;}
+.auth-close:hover{color:var(--text);}
+.auth-modal h2{font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em;}
+.auth-sub{font-family:var(--read);font-size:15px;color:var(--text-dim);margin:0 0 20px;line-height:1.5;}
+.auth-input{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  color:var(--text);font-family:var(--display);font-size:15px;padding:12px 14px;margin-bottom:10px;
+}
+.auth-input::placeholder{color:var(--text-dim);}
+.auth-msg{font-family:var(--mono);font-size:11.5px;color:var(--bad);margin-bottom:10px;min-height:16px;}
+.auth-msg.ok{color:var(--good);}
+#authForm .btn{margin-top:4px;}
+#authToggle,#authMagic{font-size:11px;color:var(--text-dim);margin-top:8px;}
+
+/* ---------- upgrade modal ---------- */
+.upgrade-scrim{position:fixed;inset:0;background:rgba(8,15,19,.75);z-index:52;display:grid;place-items:center;padding:20px;}
+.upgrade-modal{
+  background:var(--ground);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(24px,5vw,36px);width:min(480px,100%);position:relative;
+}
+.upgrade-modal .x{position:absolute;top:12px;right:14px;font-size:24px;color:var(--text-dim);padding:4px;}
+.upgrade-modal .x:hover{color:var(--text);}
+.upgrade-modal h2{font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em;}
+.upgrade-reason{font-family:var(--read);font-size:15px;color:var(--text-dim);margin:0 0 22px;line-height:1.5;}
+.plan-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.plan-card{
+  border:1px solid var(--line);border-radius:6px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;transition:border-color .12s;
+  text-align:left;width:100%;
+}
+.plan-card:hover{border-color:var(--gold);}
+.plan-card.featured{border-color:var(--gold);background:rgba(77,172,255,.06);}
+.plan-info{flex:1;}
+.plan-name{font-size:15px;font-weight:700;margin:0 0 3px;}
+.plan-desc{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--text-dim);text-transform:uppercase;}
+.plan-price{font-size:20px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;}
+.plan-price small{font-size:11px;font-weight:500;color:var(--text-dim);}
+.plan-save{
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(95,184,107,.15);color:var(--good);border-radius:3px;padding:3px 7px;
+  margin-left:8px;
+}
+.upgrade-note{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:center;margin-top:14px;letter-spacing:.03em;line-height:1.6;}
+
+.foot{
+  font-family:var(--mono);font-size:10px;line-height:1.7;color:var(--text-dim);
+  letter-spacing:.03em;text-align:center;padding:34px 0 8px;max-width:56ch;margin:0 auto;
+}
+
+@media (max-width:640px){
+  .rail{gap:12px;padding:10px 16px;}
+  .brand span{display:none;}
+  .modes{order:3;width:100%;overflow-x:auto;}
+  .tutor{width:100%;}
+  .brow .nm{flex:0 0 84px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="brand"><div class="bh">BIGHEAVYINK</div><b>Forge Cloud</b><span>Cloud Cert Prep</span></div>
+  <nav class="modes" role="tablist" aria-label="Study modes">
+    <button role="tab" data-mode="drill" aria-selected="true">Drill</button>
+    <button role="tab" data-mode="setup" aria-selected="false">Vignettes</button>
+    <button role="tab" data-mode="dashboard" aria-selected="false">Dashboard</button>
+    <button role="tab" data-mode="glossary" aria-selected="false">Glossary</button>
+  </nav>
+  <button class="install hide" id="installBtn">Install</button>
+  <button class="tutor-open" id="userBtn" aria-label="Account"><span id="userLabel">Sign in</span></button>
+  <button class="tutor-open" id="tutorBtn" aria-label="Open tutor"><i class="dot" id="engDot"></i>Tutor</button>
+</div>
+
+<div class="toast" id="toast" role="status">
+  <span id="toastMsg"></span>
+  <button id="toastAct"></button>
+</div>
+
+<main>
+  <!-- DRILL -->
+  <section class="wrap" id="v-drill">
+    <div class="bar"><i id="drillBar"></i></div>
+    <div class="eyebrow" id="drillMeta"></div>
+    <div class="card" id="drillCard">
+      <span class="tab" id="drillTab"></span>
+      <div class="meta"><span id="drillBox"></span><span id="drillCount"></span></div>
+      <h2 class="term" id="drillTerm"></h2>
+      <div class="term-def hide" id="drillDef"></div>
+    </div>
+    <div class="controls" id="drillControls"></div>
+  </section>
+
+  <!-- QUIZ SETUP -->
+  <section class="wrap hide" id="v-setup">
+    <div class="eyebrow">Practice sets <em>&middot;</em> <span id="bankSize"></span> items in the bank</div>
+    <div id="resumeBox"></div>
+    <div class="setup-grid" id="lenGrid"></div>
+    <label class="opt"><input type="checkbox" id="optFeedback"><span>Hold answers until the end<small>Exam conditions — no feedback between items</small></span></label>
+    <label class="opt"><input type="checkbox" id="optTimer"><span>Run the clock<small>Auto-submits when time is up</small></span></label>
+    <label class="opt"><input type="checkbox" id="optWeak"><span>Weight toward my weakest areas<small>Draws more from bands you have missed before</small></span></label>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="wrap hide" id="v-quiz">
+    <div class="examtop">
+      <span class="clock hide" id="clock"></span>
+      <button class="mini" id="flagBtn">Flag</button>
+      <button class="mini" id="navBtn">Overview</button>
+      <span class="spacer"></span>
+      <button class="mini" id="endBtn">End set</button>
+    </div>
+    <div class="nav-grid hide" id="navGrid"></div>
+    <div class="bar"><i id="quizBar"></i></div>
+    <div class="eyebrow" id="quizMeta"></div>
+    <div class="card" id="quizCard">
+      <span class="tab" id="quizTab"></span>
+      <div class="meta"><span id="quizNum"></span><span id="quizScore"></span></div>
+      <p class="stem" id="quizStem"></p>
+      <div class="choices" id="quizChoices"></div>
+      <div class="verdict hide" id="quizVerdict"><h4 id="quizVerdictHead"></h4><p id="quizWhy"></p></div>
+    </div>
+    <div class="controls" id="quizControls"></div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="wrap hide" id="v-summary">
+    <div class="score"><div class="n" id="sumScore"></div><p id="sumNote"></p></div>
+    <div class="eyebrow" id="sumMeta"></div>
+    <div class="breakdown" id="sumBreak"></div>
+    <div class="controls" style="margin-top:30px;">
+      <button class="btn primary wide" id="sumReview">Review the ones I missed</button>
+      <button class="btn wide" id="sumRetry">New set</button>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="wrap hide" id="v-review">
+    <div class="eyebrow" id="revMeta"></div>
+    <div id="revList"></div>
+    <div class="controls" style="margin-top:24px;"><button class="btn primary wide" id="revBack">Back to results</button></div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="wrap hide" id="v-glossary">
+    <input class="search" id="gSearch" type="search" placeholder="Search 207 terms — try &ldquo;boundary&rdquo; or &ldquo;affect&rdquo;" autocomplete="off">
+    <div class="filters" id="gFilters"></div>
+    <div class="eyebrow" id="gCount"></div>
+    <div id="gList"></div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="wrap hide" id="v-dashboard">
+    <div class="dash-loading">Loading your data…</div>
+  </section>
+
+  <p class="foot">
+
+<!-- UPGRADE MODAL -->
+<div class="upgrade-scrim hide" id="upgradeScrim">
+  <div class="upgrade-modal">
+    <button class="x" id="upgradeClose">&times;</button>
+    <h2>Unlock full access</h2>
+    <p class="upgrade-reason" id="upgradeReason">Upgrade to unlock this feature.</p>
+    <div class="plan-cards">
+      <button class="plan-card" id="planProAnnual" data-plan="pro_annual">
+        <div class="plan-info">
+          <p class="plan-name">Pro <span class="plan-save">Best value</span></p>
+          <p class="plan-desc" id="proDesc">Full access to this app</p>
+        </div>
+        <span class="plan-price">$59.99<small>/yr</small></span>
+      </button>
+      <button class="plan-card" id="planProMonthly" data-plan="pro_monthly">
+        <div class="plan-info">
+          <p class="plan-name">Pro Monthly</p>
+          <p class="plan-desc">Cancel anytime</p>
+        </div>
+        <span class="plan-price">$9.99<small>/mo</small></span>
+      </button>
+      <button class="plan-card featured" id="planAllAnnual" data-plan="all_access_annual">
+        <div class="plan-info">
+          <p class="plan-name">All Access <span class="plan-save">Save 50%</span></p>
+          <p class="plan-desc">Every app, current and future</p>
+        </div>
+        <span class="plan-price">$89.99<small>/yr</small></span>
+      </button>
+      <button class="plan-card" id="planAllMonthly" data-plan="all_access_monthly">
+        <div class="plan-info">
+          <p class="plan-name">All Access Monthly</p>
+          <p class="plan-desc">Every app, cancel anytime</p>
+        </div>
+        <span class="plan-price">$14.99<small>/mo</small></span>
+      </button>
+    </div>
+    <p class="upgrade-note">7-day free trial on annual plans. Cancel in your account settings or email support. Your study progress is never deleted.</p>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-scrim hide" id="authScrim">
+  <div class="auth-modal" id="authModal">
+    <button class="auth-close" id="authClose">&times;</button>
+    <h2 id="authTitle">Sign in</h2>
+    <p class="auth-sub" id="authSub">Track your progress across devices.</p>
+    <div id="authMsg" class="auth-msg"></div>
+    <div id="authForm">
+      <input class="auth-input" id="authEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="auth-input" id="authPass" type="password" placeholder="Password" autocomplete="current-password">
+      <input class="auth-input hide" id="authName" type="text" placeholder="Display name (optional)" autocomplete="name">
+      <button class="btn primary wide" id="authSubmit">Sign in</button>
+      <button class="btn wide" id="authToggle">Need an account? Sign up</button>
+      <button class="btn wide" id="authMagic">Send magic link instead</button>
+    </div>
+    <div id="authDone" class="hide">
+      <p class="auth-sub" id="authDoneMsg"></p>
+      <button class="btn primary wide" id="authDoneBtn">OK</button>
+    </div>
+  </div>
+</div>
+    Study aid only. Not affiliated with or endorsed by AWS, Google Cloud, or Microsoft Azure.
+    All trademarks belong to their respective owners.
+    Content is an original condensed summary &mdash; verify against official exam guides.
+    The tutor runs a small model on your device and can be wrong.
+  </p>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="tutor" id="tutor" aria-label="Tutor">
+  <header>
+    <h2>Tutor</h2>
+    <button class="x" id="tutorClose" aria-label="Close tutor">&times;</button>
+  </header>
+
+  <div class="setup" id="tutorSetup">
+    <p>The tutor runs a small language model <b>entirely on this device</b> — nothing you type leaves your computer. It has to download the model once, then works offline forever after.</p>
+    <div>
+      <label for="modelSel">Model</label>
+      <select id="modelSel">
+        <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 2.5 1.5B — about 1.0 GB (recommended)</option>
+        <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 3.2 1B — about 0.7 GB (fastest)</option>
+        <option value="Llama-3.2-3B-Instruct-q4f16_1-MLC">Llama 3.2 3B — about 2.2 GB (best answers)</option>
+        <option value="Phi-3.5-mini-instruct-q4f16_1-MLC">Phi 3.5 Mini — about 2.2 GB</option>
+      </select>
+    </div>
+    <button class="btn primary" id="loadModel">Download and start</button>
+    <div class="prog hide" id="loadProg"><i></i></div>
+    <p id="loadNote" style="font-family:var(--mono);font-size:11px;letter-spacing:.03em;"></p>
+  </div>
+
+  <div class="log hide" id="log"></div>
+  <div class="compose hide" id="compose">
+    <textarea id="ask" rows="2" placeholder="Ask about a term, or why an answer was wrong…"></textarea>
+    <div class="row">
+      <span class="hint">Enter sends · Shift+Enter new line</span>
+      <button class="btn" id="clearChat">Clear</button>
+      <button class="btn primary" id="send">Ask</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+// ---- Supabase config: replace with your project values ----
+// Get these from: Supabase Dashboard → Settings → API
+window.CASEBOOK_SUPABASE_URL = "";  // e.g. "https://xxxx.supabase.co"
+window.CASEBOOK_SUPABASE_KEY = "";  // anon/public key
+
+// ---- App identity ----
+// Pro covers one app, so the tier check needs to know which app this is.
+// The slug must match apps/<slug> and the tier_app value the server returns.
+window.BH_APP_ID = "forge-cloud";
+window.CASEBOOK_APP_NAME = "BIGHEAVYINK Forge Cloud";
+</script>
+<script>
+const DATA = {"cards":[{"id":"c000","term":"VPC (Virtual Private Cloud)","def":"An isolated virtual network within AWS where you define IP ranges, subnets, route tables, and gateways. The foundation of AWS network architecture.","cat":"Cloud","sub":"AWS SAP"},{"id":"c001","term":"Availability Zone (AZ)","def":"A physically separate data center within an AWS Region, with independent power, cooling, and networking. Designing across AZs provides high availability.","cat":"Cloud","sub":"AWS SAP"},{"id":"c002","term":"Region","def":"A geographic area containing two or more Availability Zones. Data residency, latency, and compliance requirements drive Region selection.","cat":"Cloud","sub":"AWS SAP"},{"id":"c003","term":"IAM (Identity and Access Management)","def":"AWS service for controlling who can do what. Uses users, groups, roles, and policies. Follows the principle of least privilege.","cat":"Cloud","sub":"AWS SAP"},{"id":"c004","term":"IAM Role","def":"An identity with permission policies that can be assumed by services, applications, or users. Preferred over long-lived credentials for cross-account and service access.","cat":"Cloud","sub":"AWS SAP"},{"id":"c005","term":"STS (Security Token Service)","def":"Issues temporary, limited-privilege credentials for IAM roles. Powers cross-account access and federation.","cat":"Cloud","sub":"AWS SAP"},{"id":"c006","term":"S3 (Simple Storage Service)","def":"Object storage with 11 nines of durability. Supports versioning, lifecycle policies, cross-region replication, and multiple storage classes.","cat":"Cloud","sub":"AWS SAP"},{"id":"c007","term":"S3 Storage Classes","def":"Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant Retrieval, Glacier Flexible Retrieval, Glacier Deep Archive — cost decreases as retrieval latency increases.","cat":"Cloud","sub":"AWS SAP"},{"id":"c008","term":"CloudFront","def":"AWS CDN that caches content at edge locations worldwide. Reduces latency and offloads origin servers. Supports signed URLs, Lambda@Edge, and Origin Access Control.","cat":"Cloud","sub":"AWS SAP"},{"id":"c009","term":"Route 53","def":"DNS service with health checks, routing policies (simple, weighted, latency, failover, geolocation, multivalue), and domain registration.","cat":"Cloud","sub":"AWS SAP"},{"id":"c010","term":"Auto Scaling Group (ASG)","def":"Automatically adjusts the number of EC2 instances based on demand using scaling policies. Maintains desired, minimum, and maximum capacity.","cat":"Cloud","sub":"AWS SAP"},{"id":"c011","term":"Elastic Load Balancer (ELB)","def":"Distributes traffic across targets. ALB operates at Layer 7 (HTTP), NLB at Layer 4 (TCP/UDP), GLB for third-party appliances.","cat":"Cloud","sub":"AWS SAP"},{"id":"c012","term":"Lambda","def":"Serverless compute that runs code in response to events. Billed per invocation and duration. Maximum 15-minute execution, 10 GB memory.","cat":"Cloud","sub":"AWS SAP"},{"id":"c013","term":"ECS / EKS","def":"Container orchestration services. ECS is AWS-native, EKS is managed Kubernetes. Both run on EC2 or Fargate (serverless containers).","cat":"Cloud","sub":"AWS SAP"},{"id":"c014","term":"RDS (Relational Database Service)","def":"Managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server). Supports Multi-AZ for HA, read replicas for scaling reads.","cat":"Cloud","sub":"AWS SAP"},{"id":"c015","term":"Aurora","def":"AWS-built MySQL/PostgreSQL-compatible engine with up to 5x throughput. Storage auto-scales to 128 TB, replicates 6 copies across 3 AZs.","cat":"Cloud","sub":"AWS SAP"},{"id":"c016","term":"DynamoDB","def":"Fully managed NoSQL key-value and document database. Single-digit millisecond latency. Supports on-demand and provisioned capacity, global tables, and DAX caching.","cat":"Cloud","sub":"AWS SAP"},{"id":"c017","term":"ElastiCache","def":"Managed Redis or Memcached for in-memory caching. Reduces database load and improves read performance.","cat":"Cloud","sub":"AWS SAP"},{"id":"c018","term":"CloudFormation","def":"Infrastructure as Code service using JSON or YAML templates. Manages resource stacks with drift detection, change sets, and rollback.","cat":"Cloud","sub":"AWS SAP"},{"id":"c019","term":"Well-Architected Framework","def":"Six pillars guiding AWS architecture: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability.","cat":"Cloud","sub":"AWS SAP"},{"id":"c020","term":"AWS Organizations","def":"Centralized management of multiple AWS accounts. Uses Service Control Policies (SCPs) to set permission boundaries across the organization.","cat":"Cloud","sub":"AWS SAP"},{"id":"c021","term":"Transit Gateway","def":"Hub that connects VPCs, VPNs, and Direct Connect in a hub-and-spoke model. Replaces complex VPC peering meshes.","cat":"Cloud","sub":"AWS SAP"},{"id":"c022","term":"Direct Connect","def":"Dedicated private network connection from on-premises to AWS. Lower latency and more consistent throughput than internet-based VPN.","cat":"Cloud","sub":"AWS SAP"},{"id":"c023","term":"KMS (Key Management Service)","def":"Creates and manages encryption keys. Integrates with most AWS services for at-rest encryption. Supports key rotation and custom key stores.","cat":"Cloud","sub":"AWS SAP"},{"id":"c024","term":"CloudTrail","def":"Records API calls across your AWS account. Essential for auditing, compliance, and security investigation.","cat":"Cloud","sub":"AWS SAP"},{"id":"c025","term":"CloudWatch","def":"Monitoring and observability service. Collects metrics, logs, and traces. Alarms trigger Auto Scaling, SNS notifications, or Lambda functions.","cat":"Cloud","sub":"AWS SAP"},{"id":"c026","term":"SNS / SQS","def":"SNS is pub/sub messaging (fan-out). SQS is a message queue (decoupling). Together they build resilient event-driven architectures.","cat":"Cloud","sub":"AWS SAP"},{"id":"c027","term":"EventBridge","def":"Serverless event bus that routes events between AWS services, SaaS apps, and custom applications using rules and event patterns.","cat":"Cloud","sub":"AWS SAP"},{"id":"c028","term":"Kinesis","def":"Real-time streaming data platform. Kinesis Data Streams for custom processing, Firehose for delivery to S3/Redshift/OpenSearch, Analytics for SQL on streams.","cat":"Cloud","sub":"AWS SAP"},{"id":"c029","term":"Cost Explorer / Budgets","def":"Cost Explorer visualizes spending patterns. Budgets set alerts on cost or usage thresholds. Together they enable cost governance.","cat":"Cloud","sub":"AWS SAP"},{"id":"c030","term":"GCP Project","def":"The fundamental organizational unit in Google Cloud. Resources, billing, APIs, and IAM are scoped to a project.","cat":"Cloud","sub":"GCP PCA"},{"id":"c031","term":"GCP Organization / Folder","def":"Organization is the root node for all projects. Folders group projects and apply policies hierarchically.","cat":"Cloud","sub":"GCP PCA"},{"id":"c032","term":"Compute Engine","def":"GCP IaaS virtual machines. Supports preemptible and spot VMs for cost savings, custom machine types, and sole-tenant nodes.","cat":"Cloud","sub":"GCP PCA"},{"id":"c033","term":"GKE (Google Kubernetes Engine)","def":"Managed Kubernetes service. Supports Autopilot (fully managed) and Standard (node-level control) modes.","cat":"Cloud","sub":"GCP PCA"},{"id":"c034","term":"Cloud Run","def":"Serverless container platform. Runs any containerized workload that listens on HTTP. Scales to zero, billed per request.","cat":"Cloud","sub":"GCP PCA"},{"id":"c035","term":"Cloud Functions","def":"Event-driven serverless functions. Triggered by HTTP, Pub/Sub, Cloud Storage events, Firestore changes, and more.","cat":"Cloud","sub":"GCP PCA"},{"id":"c036","term":"Cloud Storage","def":"Object storage with four classes: Standard, Nearline (30-day min), Coldline (90-day min), Archive (365-day min). Strongly consistent.","cat":"Cloud","sub":"GCP PCA"},{"id":"c037","term":"Cloud SQL / Cloud Spanner","def":"Cloud SQL: managed MySQL, PostgreSQL, SQL Server. Spanner: globally distributed, strongly consistent relational database with 99.999% SLA.","cat":"Cloud","sub":"GCP PCA"},{"id":"c038","term":"BigQuery","def":"Serverless data warehouse for analytics. Columnar storage, SQL interface, supports streaming inserts and federated queries across sources.","cat":"Cloud","sub":"GCP PCA"},{"id":"c039","term":"Pub/Sub","def":"Global messaging and event streaming service. Decouples publishers and subscribers. At-least-once delivery, supports push and pull.","cat":"Cloud","sub":"GCP PCA"},{"id":"c040","term":"VPC in GCP","def":"Global resource spanning all regions. Subnets are regional. Supports Shared VPC (cross-project networking) and VPC Peering.","cat":"Cloud","sub":"GCP PCA"},{"id":"c041","term":"Cloud IAM in GCP","def":"Binds members to roles on resources. Roles are primitive (owner/editor/viewer), predefined, or custom. Policy inheritance follows the resource hierarchy.","cat":"Cloud","sub":"GCP PCA"},{"id":"c042","term":"Cloud Armor","def":"DDoS protection and WAF for HTTP(S) load balancers. Supports IP allowlists/denylists, geo-based rules, and preconfigured WAF rules.","cat":"Cloud","sub":"GCP PCA"},{"id":"c043","term":"Anthos","def":"Platform for managing workloads across GKE, on-premises, and other clouds. Uses a consistent Kubernetes-based control plane.","cat":"Cloud","sub":"GCP PCA"},{"id":"c044","term":"Cloud CDN (GCP)","def":"Content delivery network integrated with HTTP(S) Load Balancing. Caches content at Google's global edge.","cat":"Cloud","sub":"GCP PCA"},{"id":"c045","term":"Azure Subscription","def":"A billing and access container for Azure resources. Resources are grouped into Resource Groups within a subscription.","cat":"Cloud","sub":"Azure SA"},{"id":"c046","term":"Resource Group","def":"A logical container for Azure resources that share a lifecycle. Policies, RBAC, and tags are commonly applied at this level.","cat":"Cloud","sub":"Azure SA"},{"id":"c047","term":"Azure AD / Entra ID","def":"Cloud identity and access management service. Handles authentication, single sign-on, conditional access, and MFA.","cat":"Cloud","sub":"Azure SA"},{"id":"c048","term":"Azure RBAC","def":"Role-Based Access Control at the management group, subscription, resource group, or resource level. Built-in roles plus custom role support.","cat":"Cloud","sub":"Azure SA"},{"id":"c049","term":"Virtual Network (VNet)","def":"Isolated network in Azure with subnets, NSGs, route tables, and peering. VNet peering connects VNets across regions.","cat":"Cloud","sub":"Azure SA"},{"id":"c050","term":"Azure Load Balancer / App Gateway","def":"Load Balancer operates at Layer 4. Application Gateway is a Layer 7 load balancer with WAF, URL routing, and SSL termination.","cat":"Cloud","sub":"Azure SA"},{"id":"c051","term":"Azure Functions","def":"Serverless compute triggered by events. Supports consumption (scale-to-zero) and premium (pre-warmed) plans.","cat":"Cloud","sub":"Azure SA"},{"id":"c052","term":"Azure Kubernetes Service (AKS)","def":"Managed Kubernetes with integrated CI/CD, monitoring, and Azure AD integration. Control plane is free; you pay for nodes.","cat":"Cloud","sub":"Azure SA"},{"id":"c053","term":"Cosmos DB","def":"Globally distributed, multi-model NoSQL database. Supports five consistency levels from strong to eventual. Single-digit millisecond latency.","cat":"Cloud","sub":"Azure SA"},{"id":"c054","term":"Azure SQL / SQL Managed Instance","def":"Azure SQL Database is a fully managed PaaS. Managed Instance provides near-complete SQL Server engine compatibility for lift-and-shift.","cat":"Cloud","sub":"Azure SA"},{"id":"c055","term":"Blob Storage","def":"Azure object storage with Hot, Cool, Cold, and Archive access tiers. Supports immutable storage, versioning, and lifecycle management.","cat":"Cloud","sub":"Azure SA"},{"id":"c056","term":"Azure Front Door","def":"Global load balancer and CDN with WAF, SSL offloading, URL-based routing, and session affinity. Routes to the fastest healthy backend.","cat":"Cloud","sub":"Azure SA"},{"id":"c057","term":"ExpressRoute","def":"Dedicated private connection from on-premises to Azure via a connectivity provider. Does not traverse the public internet.","cat":"Cloud","sub":"Azure SA"},{"id":"c058","term":"ARM Templates / Bicep","def":"Infrastructure as Code for Azure. ARM templates are JSON; Bicep is a cleaner DSL that compiles to ARM. Both deploy and manage resource stacks.","cat":"Cloud","sub":"Azure SA"},{"id":"c059","term":"Azure Monitor / Log Analytics","def":"Azure Monitor collects metrics and logs. Log Analytics workspace stores and queries logs using KQL (Kusto Query Language).","cat":"Cloud","sub":"Azure SA"},{"id":"c060","term":"Azure Policy","def":"Enforces organizational standards across resources. Policies can audit, deny, or remediate non-compliant configurations.","cat":"Cloud","sub":"Azure SA"},{"id":"c061","term":"Azure Landing Zone","def":"A prescriptive architecture for setting up a multi-subscription Azure environment with governance, networking, identity, and security baselines.","cat":"Cloud","sub":"Azure SA"},{"id":"c062","term":"Shared Responsibility Model","def":"The cloud provider secures the infrastructure; the customer secures what they put on it. The boundary shifts depending on IaaS, PaaS, or SaaS.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c063","term":"IaaS / PaaS / SaaS","def":"Infrastructure, Platform, and Software as a Service. Each moves more responsibility to the provider and less to the customer.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c064","term":"Multi-Region Architecture","def":"Deploying across multiple geographic regions for disaster recovery and low latency. Requires data replication, DNS-based routing, and conflict resolution.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c065","term":"RPO / RTO","def":"Recovery Point Objective: how much data loss is acceptable. Recovery Time Objective: how long until service is restored. Together they define DR requirements.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c066","term":"Infrastructure as Code (IaC)","def":"Managing and provisioning infrastructure through machine-readable configuration files rather than manual processes. Enables version control, testing, and repeatability.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c067","term":"GitOps","def":"Operational model where Git is the single source of truth for declarative infrastructure and applications. Changes are applied via pull requests and automated reconciliation.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c068","term":"Service Mesh","def":"Infrastructure layer handling service-to-service communication. Provides mutual TLS, traffic management, observability, and retries. Examples: Istio, Linkerd.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c069","term":"CAP Theorem","def":"A distributed data system can guarantee at most two of Consistency, Availability, and Partition tolerance. Network partitions are unavoidable, so the real choice is C or A during a partition.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c070","term":"Eventual Consistency","def":"After a write, reads may not immediately return the latest value, but the system converges over time. Used in highly available distributed systems.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c071","term":"Blue/Green Deployment","def":"Maintaining two identical environments. Traffic is switched from the current (blue) to the new (green) once validated. Enables instant rollback.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c072","term":"Canary Deployment","def":"Rolling out a change to a small subset of users or instances before full rollout. Limits blast radius if the change introduces an issue.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c073","term":"12-Factor App","def":"Methodology for building SaaS applications. Key principles: config in environment, stateless processes, port binding, disposability, dev/prod parity, logs as event streams.","cat":"Cloud","sub":"Cross-Cloud"},{"id":"c074","term":"FinOps","def":"Practice of bringing financial accountability to cloud spending. Combines engineering, finance, and business to optimize cloud value.","cat":"Cloud","sub":"Cross-Cloud"}],"questions":[{"cat":"Cloud","sub":"AWS SAP","stem":"A company needs to serve static assets to users globally with the lowest latency. Which combination should the architect recommend?","choices":["RDS read replicas with Route 53","S3 with CloudFront distribution","EBS volumes with cross-region replication","EC2 instances in every region"],"answer":1,"label":"S3 + CloudFront","why":"S3 provides durable object storage and CloudFront caches at edge locations worldwide, minimizing latency without managing servers.","id":"q001","n":1},{"cat":"Cloud","sub":"AWS SAP","stem":"An application running on EC2 needs to access an S3 bucket in another AWS account without long-lived credentials. The correct approach is:","choices":["Use the root account credentials of the other account","Store the other account's credentials in Systems Manager Parameter Store","Create an IAM user in the other account and share the access keys","Create a cross-account IAM role and have the application assume it via STS"],"answer":3,"label":"Cross-account IAM role","why":"IAM roles with STS provide temporary credentials, eliminating the security risk of shared long-lived access keys.","id":"q002","n":2},{"cat":"Cloud","sub":"AWS SAP","stem":"A solutions architect is designing a highly available web application. The architecture should survive the loss of an entire Availability Zone. The minimum design requires:","choices":["A single EC2 instance with an Elastic IP","EC2 instances in two Regions with Route 53 failover","EC2 instances in two AZs behind an Application Load Balancer","A single AZ with Auto Scaling"],"answer":2,"label":"Multi-AZ with ALB","why":"Multi-AZ deployment ensures that if one AZ fails, the load balancer routes traffic to healthy instances in the remaining AZ.","id":"q003","n":3},{"cat":"Cloud","sub":"AWS SAP","stem":"An organization stores sensitive data in S3 and must ensure that objects are encrypted at rest using keys they manage and can rotate on their own schedule. They should use:","choices":["Client-side encryption only","S3 bucket policies without encryption","Server-side encryption with AWS KMS customer-managed keys","S3 default encryption with SSE-S3"],"answer":2,"label":"SSE-KMS with CMK","why":"Customer-managed KMS keys give the organization full control over key rotation, access policies, and audit trails via CloudTrail.","id":"q004","n":4},{"cat":"Cloud","sub":"AWS SAP","stem":"A company is migrating a legacy application that requires a relational database with minimal code changes. The database must support automatic failover. The best option is:","choices":["Aurora Multi-AZ with automatic failover","ElastiCache with Redis cluster mode","DynamoDB with global tables","S3 with versioning"],"answer":0,"label":"Aurora Multi-AZ","why":"Aurora is MySQL/PostgreSQL-compatible, minimizing code changes, and Multi-AZ provides automatic failover with a replica promotion time under 30 seconds.","id":"q005","n":5},{"cat":"Cloud","sub":"AWS SAP","stem":"A workload processes messages that must not be lost and must be handled exactly once. The decoupling service should be:","choices":["SQS FIFO queue with exactly-once processing","Kinesis Data Streams","SNS with standard topics","A shared database table as a queue"],"answer":0,"label":"SQS FIFO","why":"SQS FIFO queues guarantee exactly-once processing and message ordering, which standard queues and SNS do not.","id":"q006","n":6},{"cat":"Cloud","sub":"AWS SAP","stem":"An architect needs to connect 15 VPCs that must communicate with each other and with an on-premises data center. The simplest approach is:","choices":["A single large VPC with 15 subnets","Full-mesh VPC peering","A Transit Gateway with VPN or Direct Connect attachments","Network Load Balancers in each VPC"],"answer":2,"label":"Transit Gateway","why":"Transit Gateway acts as a hub, avoiding the N*(N-1)/2 peering connections a full mesh would require. VPN or Direct Connect attaches the on-premises network.","id":"q007","n":7},{"cat":"Cloud","sub":"AWS SAP","stem":"A startup wants to run containers without managing servers or clusters. They need per-request billing with minimal operational overhead. They should use:","choices":["ECS on Fargate","Self-managed Kubernetes on EC2","EC2 with Docker installed","Lambda with container image support"],"answer":0,"label":"ECS on Fargate","why":"Fargate removes server and cluster management entirely. ECS on Fargate bills per vCPU and memory per second, matching the requirement.","id":"q008","n":8},{"cat":"Cloud","sub":"AWS SAP","stem":"An organization must restrict all member accounts from launching resources outside of us-east-1 and eu-west-1. This is enforced by:","choices":["VPC endpoint policies","Service Control Policies in AWS Organizations","IAM policies on each user","Security groups"],"answer":1,"label":"SCPs in Organizations","why":"Service Control Policies set permission boundaries across an entire organization or organizational unit, regardless of individual IAM policies.","id":"q009","n":9},{"cat":"Cloud","sub":"AWS SAP","stem":"A data lake on S3 stores petabytes of data with varying access patterns. Some data is accessed daily, some monthly, some rarely. The cost-optimization strategy is:","choices":["Create separate buckets for each access pattern","Store everything in S3 Standard","Store everything in Glacier","Use S3 Intelligent-Tiering"],"answer":3,"label":"S3 Intelligent-Tiering","why":"Intelligent-Tiering automatically moves objects between access tiers based on changing access patterns, optimizing cost without operational overhead.","id":"q010","n":10},{"cat":"Cloud","sub":"GCP PCA","stem":"A company needs a globally distributed database with strong consistency and a 99.999% availability SLA for a financial application. The best GCP service is:","choices":["Cloud SQL with read replicas","Firestore in Datastore mode","Bigtable","Cloud Spanner"],"answer":3,"label":"Cloud Spanner","why":"Spanner is the only GCP database offering both global distribution and strong consistency with a 99.999% SLA.","id":"q011","n":11},{"cat":"Cloud","sub":"GCP PCA","stem":"A team needs to run a containerized web application that scales to zero when idle and requires no cluster management. They should use:","choices":["App Engine Flex","Cloud Run","GKE Autopilot","Compute Engine with a container-optimized OS"],"answer":1,"label":"Cloud Run","why":"Cloud Run runs containers serverlessly, scales to zero, and requires no cluster. GKE Autopilot still maintains a cluster.","id":"q012","n":12},{"cat":"Cloud","sub":"GCP PCA","stem":"An organization has 200 projects across five departments. They need to apply different IAM policies per department while maintaining centralized billing. The structure should use:","choices":["An organization with folders per department","Individual billing accounts per project","Separate organizations per department","A single project with labels"],"answer":0,"label":"Organization with folders","why":"Folders group projects and inherit IAM policies from the organization, providing hierarchical policy application with centralized billing.","id":"q013","n":13},{"cat":"Cloud","sub":"GCP PCA","stem":"Multiple teams need to share a VPC network across projects while maintaining project-level resource isolation. The correct approach is:","choices":["Cloud Interconnect between projects","VPC peering between all projects","A single project for all resources","Shared VPC with a host project and service projects"],"answer":3,"label":"Shared VPC","why":"Shared VPC lets a host project own the network and service projects deploy resources into shared subnets, centralizing network control.","id":"q014","n":14},{"cat":"Cloud","sub":"GCP PCA","stem":"A data analytics team needs to run ad-hoc SQL queries against 10 TB of structured data without managing servers. The appropriate service is:","choices":["BigQuery","Cloud SQL","Compute Engine with PostgreSQL","Dataproc"],"answer":0,"label":"BigQuery","why":"BigQuery is serverless, handles petabyte-scale SQL queries, and charges per query rather than requiring provisioned infrastructure.","id":"q015","n":15},{"cat":"Cloud","sub":"Azure SA","stem":"A company migrating SQL Server databases to Azure needs near-complete engine compatibility with minimal application changes. They should choose:","choices":["Cosmos DB","Azure Database for PostgreSQL","Azure SQL Managed Instance","Azure SQL Database"],"answer":2,"label":"SQL Managed Instance","why":"Managed Instance provides near-complete SQL Server engine compatibility including SQL Agent, CLR, and cross-database queries, unlike Azure SQL Database.","id":"q016","n":16},{"cat":"Cloud","sub":"Azure SA","stem":"An architect needs to enforce that all storage accounts in the organization use HTTPS-only and are in specific regions. The mechanism is:","choices":["Resource locks","Azure Policy with deny effect","Network security groups","Azure RBAC custom roles"],"answer":1,"label":"Azure Policy","why":"Azure Policy evaluates resource configurations against rules and can deny non-compliant deployments. RBAC controls who can act, not how resources are configured.","id":"q017","n":17},{"cat":"Cloud","sub":"Azure SA","stem":"A global application needs to route users to the nearest healthy backend with automatic failover. The correct service is:","choices":["Azure Load Balancer","Azure Traffic Manager with weighted routing","Azure Application Gateway","Azure Front Door"],"answer":3,"label":"Azure Front Door","why":"Front Door is a global Layer 7 load balancer with CDN, WAF, and intelligent routing to the nearest healthy backend.","id":"q018","n":18},{"cat":"Cloud","sub":"Azure SA","stem":"A team needs a NoSQL database that can replicate data globally with configurable consistency levels and single-digit millisecond reads. The service is:","choices":["Cosmos DB","Azure SQL Database","Azure Cache for Redis","Azure Table Storage"],"answer":0,"label":"Cosmos DB","why":"Cosmos DB offers five tunable consistency levels, global distribution with multi-region writes, and single-digit millisecond latency.","id":"q019","n":19},{"cat":"Cloud","sub":"Azure SA","stem":"An organization needs a private, dedicated connection from their data center to Azure that bypasses the public internet. They should use:","choices":["Azure VPN Gateway","Azure Bastion","ExpressRoute","VNet peering"],"answer":2,"label":"ExpressRoute","why":"ExpressRoute provides a dedicated private connection through a connectivity provider, not traversing the public internet.","id":"q020","n":20},{"cat":"Cloud","sub":"Cross-Cloud","stem":"Under the shared responsibility model, which of the following is always the customer's responsibility regardless of service model?","choices":["Network switch maintenance","Hypervisor patching","Data classification and access control","Physical data center security"],"answer":2,"label":"Data classification","why":"The customer always owns their data, including classifying it and controlling who can access it, across IaaS, PaaS, and SaaS.","id":"q021","n":21},{"cat":"Cloud","sub":"Cross-Cloud","stem":"An application requires an RPO of zero and an RTO of under one minute. The architecture pattern that meets this is:","choices":["Warm standby with periodic snapshots","Nightly backups to another region","Active-active multi-region with synchronous replication","Pilot light with manual scaling"],"answer":2,"label":"Active-active multi-region","why":"Zero RPO requires synchronous replication, and sub-minute RTO requires an always-running environment processing traffic in both regions.","id":"q022","n":22},{"cat":"Cloud","sub":"Cross-Cloud","stem":"A team wants to minimize blast radius when deploying a new version to production. They should use:","choices":["Canary deployment sending a small percentage of traffic to the new version first","Deploying only to a staging environment permanently","Manual deployment to one server at a time","Big-bang deployment replacing all instances at once"],"answer":0,"label":"Canary deployment","why":"Canary deployment limits exposure by routing a small subset of traffic to the new version, allowing validation before full rollout.","id":"q023","n":23},{"cat":"Cloud","sub":"Cross-Cloud","stem":"According to the CAP theorem, during a network partition a distributed system must choose between:","choices":["Durability and Scalability","Latency and Throughput","Consistency and Availability","Cost and Performance"],"answer":2,"label":"Consistency and Availability","why":"CAP states that during a partition, the system can be either consistent or available, not both. The partition itself is unavoidable.","id":"q024","n":24},{"cat":"Cloud","sub":"Cross-Cloud","stem":"A 12-factor app stores configuration in:","choices":["Hard-coded constants","A shared database table","Configuration files checked into source control","Environment variables"],"answer":3,"label":"Environment variables","why":"The 12-factor methodology mandates storing config in environment variables, separating config from code and enabling environment-specific values.","id":"q025","n":25},{"cat":"Cloud","sub":"Cross-Cloud","stem":"The primary difference between blue/green and canary deployments is:","choices":["Blue/green is cheaper; canary costs more","There is no meaningful difference","Blue/green switches all traffic at once; canary gradually increases traffic to the new version","Blue/green is for databases; canary is for applications"],"answer":2,"label":"Traffic switching pattern","why":"Blue/green is an all-or-nothing switch; canary gradually shifts traffic, providing a finer-grained risk control.","id":"q026","n":26},{"cat":"Cloud","sub":"Cross-Cloud","stem":"An architect is designing a microservices system and needs mutual TLS, traffic management, and distributed tracing between services without modifying application code. They should add:","choices":["A CDN","An API gateway","A service mesh like Istio","A message queue between every service"],"answer":2,"label":"Service mesh","why":"A service mesh provides mTLS, traffic control, and observability at the infrastructure layer through sidecar proxies, without application code changes.","id":"q027","n":27},{"cat":"Cloud","sub":"Cross-Cloud","stem":"FinOps is best described as:","choices":["A cultural practice bringing financial accountability to cloud spending across engineering, finance, and business","A one-time cost optimization exercise","A specific cloud provider tool for billing","A cloud cost-cutting initiative led by finance"],"answer":0,"label":"FinOps definition","why":"FinOps is an ongoing operational practice, not a one-time project or a single team's responsibility.","id":"q028","n":28},{"cat":"Cloud","sub":"Cross-Cloud","stem":"Infrastructure as Code provides value primarily because it:","choices":["Is always faster than manual provisioning","Makes infrastructure reproducible, version-controlled, testable, and auditable","Replaces the need for cloud architects","Eliminates the need for cloud consoles"],"answer":1,"label":"IaC value proposition","why":"IaC's core value is repeatability and auditability through version control, not speed alone.","id":"q029","n":29}]};
+
+
+/* ---------------- categories ---------------- */
+const CATS = {
+  Cloud:{label:"Cloud Architecture", color:"#3FA9B8"}
+};
+const catColor = c => (CATS[c]||{}).color || "var(--gold)";
+const catLabel = c => (CATS[c]||{}).label || c;
+
+/* ---------------- storage (degrades to memory) ---------------- */
+const mem = {};
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):(k in mem?mem[k]:d);}catch(e){ return k in mem?mem[k]:d; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ mem[k]=v; } }
+};
+
+/* ---------------- app state ---------------- */
+const INTERVAL_H = [0, 4, 24, 72, 168, 480];   // Leitner box -> hours until due
+const S = {
+  mode: "drill",
+  sched: store.get("cb.sched", {}),            // cardId -> {box, due}
+  drillQueue: [], drillPos: 0, drillShown: false, drillDone: 0,
+  quizQueue: [], quizPos: 0, quizAnswers: {}, quizLocked: false,
+  gFilter: null, gQuery: "",
+  engine: null, engineState: "off", chat: []
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+/* ---------------- mode switching ---------------- */
+function setMode(m){
+  S.mode = m;
+  const tabMap = {setup:"setup",quiz:"setup",summary:"setup",review:"setup",drill:"drill",glossary:"glossary"};
+  document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.mode===(tabMap[m]||m))));
+  ["drill","setup","quiz","glossary","summary","review"].forEach(v => { const e=$("v-"+v); if(e) e.classList.add("hide"); });
+  const el = $("v-"+m); if(el) el.classList.remove("hide");
+  if(m==="drill") renderDrill();
+  if(m==="setup") renderSetup();
+  if(m==="quiz") renderQuiz();
+  if(m==="glossary") renderGlossary();
+  if(m==="review") renderReview();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".modes button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
+
+/* ---------------- DRILL ---------------- */
+function buildDrillQueue(){
+  const now = Date.now();
+  const due = [], fresh = [], later = [];
+  DATA.cards.forEach(c => {
+    const s = S.sched[c.id];
+    if(!s) fresh.push(c);
+    else if(s.due <= now) due.push(c);
+    else later.push(c);
+  });
+  S.drillQueue = shuffle(due).concat(shuffle(fresh)).slice(0,40);
+  if(!S.drillQueue.length) S.drillQueue = shuffle(later).slice(0,20);
+  S.drillPos = 0; S.drillShown = false; S.drillDone = 0;
+}
+function renderDrill(){
+  if(!S.drillQueue.length) buildDrillQueue();
+  if(S.drillPos >= S.drillQueue.length){ buildDrillQueue(); }
+  const c = S.drillQueue[S.drillPos];
+  const s = S.sched[c.id] || {box:0};
+  $("drillCard").style.setProperty("--tab", catColor(c.cat));
+  $("drillTab").textContent = catLabel(c.cat);
+  $("drillBox").textContent = s.box ? "Box " + s.box + " of 5" : "New card";
+  $("drillCount").textContent = (S.drillPos+1) + " / " + S.drillQueue.length;
+  $("drillTerm").textContent = c.term;
+  $("drillDef").textContent = c.def;
+  $("drillDef").classList.toggle("hide", !S.drillShown);
+  $("drillBar").style.width = (S.drillPos / S.drillQueue.length * 100) + "%";
+
+  const known = Object.values(S.sched).filter(x => x.box >= 4).length;
+  $("drillMeta").innerHTML = "Recall drill <em>&middot;</em> " + known + " of " + DATA.cards.length + " terms in long-term boxes";
+
+  const ctl = $("drillControls");
+  ctl.innerHTML = "";
+  if(!S.drillShown){
+    ctl.append(mkBtn("Show definition","btn primary wide",() => { S.drillShown = true; renderDrill(); }));
+  } else {
+    ctl.append(
+      mkBtn("Missed it","btn again wide",() => grade(c,false)),
+      mkBtn("Knew it","btn got wide",() => grade(c,true)),
+      mkBtn("Ask tutor","btn",() => askAbout("Explain the term \"" + c.term + "\" in plain language, then give one short clinical example."))
+    );
+  }
+}
+function grade(c, ok){
+  const cur = S.sched[c.id] || {box:0};
+  const box = ok ? Math.min(5, cur.box + 1) : 1;
+  S.sched[c.id] = {box, due: Date.now() + INTERVAL_H[box]*3600e3};
+  store.set("cb.sched", S.sched);
+  S.drillPos++; S.drillShown = false; S.drillDone++;
+  renderDrill();
+}
+function mkBtn(text, cls, fn){
+  const b = document.createElement("button");
+  b.className = cls; b.textContent = text; b.onclick = fn;
+  return b;
+}
+document.addEventListener("keydown", e => {
+  if(S.mode!=="drill" || e.target.matches("input,textarea,select")) return;
+  const c = S.drillQueue[S.drillPos]; if(!c) return;
+  if(e.code==="Space"){ e.preventDefault(); if(!S.drillShown){ S.drillShown=true; renderDrill(); } }
+  else if(S.drillShown && e.key==="1"){ grade(c,false); }
+  else if(S.drillShown && e.key==="2"){ grade(c,true); }
+});
+
+/* ---------------- QUIZ ---------------- */
+const SEC_PER_Q = 84;                    // mirrors the real exam's pace: 170 items in 4 hours
+const LENGTHS = [
+  {n:10,  name:"Quick check",     sub:"One sitting, answers as you go"},
+  {n:50,  name:"Half set",        sub:"A solid study block"},
+  {n:100, name:"Long set",        sub:"Builds stamina"},
+  {n:150, name:"Full simulation", sub:"Timed, no answers until the end", exam:true}
+];
+const fmtDur = s => {
+  const h = Math.floor(s/3600), m = Math.round(s%3600/60);
+  return h ? h + " hr " + (m ? m + " min" : "") : m + " min";
+};
+const fmtClock = s => {
+  s = Math.max(0, Math.round(s));
+  const h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60;
+  return (h ? h + ":" + String(m).padStart(2,"0") : m) + ":" + String(x).padStart(2,"0");
+};
+
+S.cfg = store.get("cb.cfg", {hold:false, timed:false, weak:false});
+S.stats = store.get("cb.stats", {});      // cat -> {seen, right}
+S.flags = new Set();
+S.timerId = null;
+S.elapsed = 0;
+
+/* ---- setup screen ---- */
+function renderSetup(){
+  const saved = store.get("cb.session", null);
+  const box = $("resumeBox");
+  if(saved && saved.answered < saved.ids.length){
+    box.innerHTML =
+      '<div class="resume"><p>You have a set in progress — <b>' + saved.answered +
+      ' of ' + saved.ids.length + '</b> answered.</p><div class="controls">' +
+      '<button class="btn primary" id="doResume">Pick up where I left off</button>' +
+      '<button class="btn" id="doDiscard">Discard it</button></div></div>';
+    $("doResume").onclick = resumeSession;
+    $("doDiscard").onclick = () => { store.set("cb.session", null); renderSetup(); };
+  } else box.innerHTML = "";
+
+  $("optFeedback").checked = !!S.cfg.hold;
+  $("optTimer").checked = !!S.cfg.timed;
+  $("optWeak").checked = !!S.cfg.weak;
+
+  const grid = $("lenGrid"); grid.innerHTML = "";
+  LENGTHS.forEach(L => {
+    const b = document.createElement("button");
+    b.className = "len";
+    b.innerHTML = '<b>' + L.n + '</b><span class="txt"><span>' + L.name +
+      '</span><small>' + L.sub + '</small></span><span class="dur">' +
+      fmtDur(L.n * SEC_PER_Q) + '</span>';
+    b.onclick = () => startSet(L);
+    grid.append(b);
+  });
+}
+["optFeedback","optTimer","optWeak"].forEach((id,i) => {
+  $(id).onchange = e => {
+    S.cfg[["hold","timed","weak"][i]] = e.target.checked;
+    store.set("cb.cfg", S.cfg);
+  };
+});
+
+/* ---- drawing a set ---- */
+function drawQuestions(n){
+  const pool = DATA.questions.slice();
+  if(!S.cfg.weak) return shuffle(pool).slice(0, n);
+  const acc = {};
+  Object.entries(S.stats).forEach(([c,v]) => { if(v.seen >= 4) acc[c] = v.right / v.seen; });
+  const weighted = [];
+  pool.forEach(q => {
+    const a = acc[q.cat];
+    const reps = a === undefined ? 2 : Math.max(1, Math.round((1 - a) * 5) + 1);
+    for(let i=0;i<reps;i++) weighted.push(q);
+  });
+  const out = [], used = new Set();
+  const bag = shuffle(weighted);
+  for(const q of bag){ if(out.length >= n) break; if(!used.has(q.id)){ used.add(q.id); out.push(q); } }
+  for(const q of shuffle(pool)){ if(out.length >= n) break; if(!used.has(q.id)){ used.add(q.id); out.push(q); } }
+  return out;
+}
+
+function startSet(L){
+  if(L.exam){
+    S.cfg.hold = true; S.cfg.timed = true;
+    store.set("cb.cfg", S.cfg);
+  }
+  S.quizQueue = drawQuestions(L.n);
+  S.quizPos = 0; S.quizAnswers = {}; S.flags = new Set();
+  S.elapsed = 0; S.limit = S.cfg.timed ? L.n * SEC_PER_Q : null;
+  S.lastTick = Date.now();
+  saveSession();
+  startClock();
+  setMode("quiz");
+}
+function resumeSession(){
+  const s = store.get("cb.session", null); if(!s) return;
+  const byId = {}; DATA.questions.forEach(q => byId[q.id] = q);
+  S.quizQueue = s.ids.map(id => byId[id]).filter(Boolean);
+  S.quizAnswers = s.answers || {};
+  S.flags = new Set(s.flags || []);
+  S.quizPos = Math.min(s.pos || 0, S.quizQueue.length - 1);
+  S.elapsed = s.elapsed || 0;
+  S.limit = s.limit || null;
+  S.lastTick = Date.now();
+  startClock();
+  setMode("quiz");
+}
+function saveSession(){
+  store.set("cb.session", {
+    ids: S.quizQueue.map(q => q.id),
+    answers: S.quizAnswers,
+    flags: [...S.flags],
+    pos: S.quizPos,
+    elapsed: S.elapsed,
+    limit: S.limit,
+    answered: Object.keys(S.quizAnswers).length
+  });
+}
+
+/* ---- clock ---- */
+function startClock(){
+  stopClock();
+  S.lastTick = Date.now();
+  if(!S.limit){ $("clock").classList.add("hide"); return; }
+  $("clock").classList.remove("hide");
+  tick();
+  S.timerId = setInterval(tick, 1000);
+}
+function stopClock(){ if(S.timerId){ clearInterval(S.timerId); S.timerId = null; } }
+function tick(){
+  const now = Date.now();
+  S.elapsed += (now - S.lastTick) / 1000;
+  S.lastTick = now;
+  if(!S.limit) return;
+  const left = S.limit - S.elapsed;
+  const c = $("clock");
+  c.textContent = fmtClock(left) + " left";
+  c.className = "clock" + (left < 300 ? " crit" : left < 900 ? " warn" : "");
+  if(left <= 0){ stopClock(); finishSet(true); }
+}
+window.addEventListener("beforeunload", () => { if(S.quizQueue.length) saveSession(); });
+
+/* ---- the item ---- */
+function renderQuiz(){
+  if(!S.quizQueue.length){ setMode("setup"); return; }
+  const q = S.quizQueue[S.quizPos];
+  const picked = S.quizAnswers[q.id];
+  const hold = S.cfg.hold;
+  const answered = Object.keys(S.quizAnswers).length;
+  const right = S.quizQueue.filter(x => S.quizAnswers[x.id] === x.answer).length;
+
+  $("quizCard").style.setProperty("--tab", catColor(q.cat));
+  $("quizTab").textContent = catLabel(q.cat);
+  $("quizNum").textContent = "Item " + (S.quizPos+1) + " of " + S.quizQueue.length;
+  $("quizScore").textContent = hold ? answered + " answered" : (answered ? right + " correct" : "");
+  $("quizStem").textContent = q.stem;
+  $("quizBar").style.width = (answered / S.quizQueue.length * 100) + "%";
+  $("quizMeta").innerHTML = (hold ? "Exam conditions" : "Practice set") +
+    " <em>&middot;</em> pick the best answer";
+  $("flagBtn").className = "mini" + (S.flags.has(q.id) ? " flagged" : "");
+  $("flagBtn").textContent = S.flags.has(q.id) ? "Flagged" : "Flag";
+
+  const box = $("quizChoices"); box.innerHTML = "";
+  q.choices.forEach((txt,i) => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.innerHTML = '<span class="ltr">' + "ABCD"[i] + '</span><span>' + esc(txt) + '</span>';
+    if(!hold && picked !== undefined){
+      b.disabled = true;
+      if(i === q.answer) b.classList.add("correct");
+      else if(i === picked) b.classList.add("chosen-wrong");
+    } else {
+      if(hold && picked === i) b.classList.add("correct");
+      b.onclick = () => { S.quizAnswers[q.id] = i; saveSession(); hold ? next() : renderQuiz(); };
+    }
+    box.append(b);
+  });
+
+  const v = $("quizVerdict");
+  const showWhy = !hold && picked !== undefined;
+  v.classList.toggle("hide", !showWhy);
+  if(showWhy){
+    const ok = picked === q.answer;
+    $("quizVerdictHead").innerHTML = (ok ? "Correct &mdash; " : "The answer is ") +
+      "<b>" + "ABCD"[q.answer] + ". " + esc(q.label) + "</b>";
+    $("quizWhy").textContent = q.why;
+  }
+
+  const ctl = $("quizControls"); ctl.innerHTML = "";
+  const last = S.quizPos === S.quizQueue.length - 1;
+  if(S.quizPos > 0) ctl.append(mkBtn("Back","btn",() => { S.quizPos--; renderQuiz(); }));
+  if(hold || picked !== undefined){
+    ctl.append(mkBtn(last ? "Finish set" : "Next", "btn primary wide",
+      () => last ? finishSet(false) : next()));
+  } else {
+    ctl.append(mkBtn("Skip","btn wide",() => last ? finishSet(false) : next()));
+  }
+  if(!hold && picked !== undefined){
+    ctl.append(mkBtn("Ask tutor","btn",() => askAbout(
+      "For this exam item, explain why \"" + q.choices[q.answer] + "\" is correct and why \"" +
+      q.choices[picked] + "\" is not. Item: " + q.stem)));
+  }
+  if(!$("navGrid").classList.contains("hide")) renderNav();
+}
+function next(){ if(S.quizPos < S.quizQueue.length - 1){ S.quizPos++; saveSession(); renderQuiz(); window.scrollTo(0,0); } }
+
+$("flagBtn").onclick = () => {
+  const q = S.quizQueue[S.quizPos]; if(!q) return;
+  S.flags.has(q.id) ? S.flags.delete(q.id) : S.flags.add(q.id);
+  saveSession(); renderQuiz();
+};
+$("navBtn").onclick = () => {
+  const g = $("navGrid");
+  g.classList.toggle("hide");
+  if(!g.classList.contains("hide")) renderNav();
+};
+function renderNav(){
+  const g = $("navGrid"); g.innerHTML = "";
+  S.quizQueue.forEach((q,i) => {
+    const b = document.createElement("button");
+    b.textContent = i+1;
+    if(S.quizAnswers[q.id] !== undefined) b.classList.add("done");
+    if(S.flags.has(q.id)) b.classList.add("flag");
+    if(i === S.quizPos) b.classList.add("here");
+    b.onclick = () => { S.quizPos = i; saveSession(); renderQuiz(); window.scrollTo(0,0); };
+    g.append(b);
+  });
+}
+$("endBtn").onclick = () => {
+  const left = S.quizQueue.length - Object.keys(S.quizAnswers).length;
+  if(left && !confirm(left + " item" + (left===1?"":"s") + " still unanswered. End the set and see results?")) return;
+  finishSet(false);
+};
+
+document.addEventListener("keydown", e => {
+  if(S.mode !== "quiz" || e.target.matches("input,textarea,select")) return;
+  const q = S.quizQueue[S.quizPos]; if(!q) return;
+  const k = e.key.toUpperCase();
+  const i = "ABCD".indexOf(k) >= 0 ? "ABCD".indexOf(k) : "1234".indexOf(e.key);
+  if(i >= 0){
+    if(S.cfg.hold || S.quizAnswers[q.id] === undefined){
+      S.quizAnswers[q.id] = i; saveSession();
+      S.cfg.hold ? next() : renderQuiz();
+    }
+  } else if(e.key === "ArrowRight") next();
+  else if(e.key === "ArrowLeft" && S.quizPos > 0){ S.quizPos--; renderQuiz(); }
+  else if(k === "F"){ $("flagBtn").click(); }
+});
+
+/* ---- results ---- */
+function finishSet(timedOut){
+  stopClock();
+  const answered = S.quizQueue.filter(q => S.quizAnswers[q.id] !== undefined);
+  answered.forEach(q => {
+    const s = S.stats[q.cat] || {seen:0, right:0};
+    s.seen++; if(S.quizAnswers[q.id] === q.answer) s.right++;
+    S.stats[q.cat] = s;
+  });
+  store.set("cb.stats", S.stats);
+  store.set("cb.session", null);
+  S.timedOut = timedOut;
+  showSummary();
+}
+function showSummary(){
+  const total = S.quizQueue.length;
+  const right = S.quizQueue.filter(q => S.quizAnswers[q.id] === q.answer).length;
+  const skipped = total - Object.keys(S.quizAnswers).length;
+  const pct = Math.round(right/total*100);
+  $("sumScore").innerHTML = right + '<small> / ' + total + '</small>';
+  $("sumNote").textContent =
+    pct >= 85 ? "Strong. Keep the sets short and frequent from here, and spend your time on the rationales you had to think hardest about."
+    : pct >= 70 ? "Solid footing. Look at the bands below and drill the weakest one before your next set."
+    : pct >= 50 ? "The content is there but the application is inconsistent. Read every rationale and name why the distractor pulled you."
+    : "Go back to the glossary for the weakest bands below, then come back to vignettes. Recognition has to come before application.";
+
+  const bits = [pct + "% correct"];
+  if(S.elapsed > 30) bits.push("time used " + fmtClock(S.elapsed));
+  if(skipped) bits.push(skipped + " left blank");
+  if(S.flags.size) bits.push(S.flags.size + " flagged");
+  if(S.timedOut) bits.push("time expired");
+  $("sumMeta").innerHTML = bits.join(" <em>&middot;</em> ");
+
+  const byCat = {};
+  S.quizQueue.forEach(q => {
+    byCat[q.cat] = byCat[q.cat] || {n:0, r:0};
+    byCat[q.cat].n++;
+    if(S.quizAnswers[q.id] === q.answer) byCat[q.cat].r++;
+  });
+  $("sumBreak").innerHTML = Object.entries(byCat).sort((a,b) => a[1].r/a[1].n - b[1].r/b[1].n)
+    .map(([c,v]) =>
+      '<div class="brow" style="--tab:' + catColor(c) + '">' +
+      '<span class="nm">' + esc(catLabel(c)) + '</span>' +
+      '<span class="track"><i style="width:' + (v.r/v.n*100) + '%"></i></span>' +
+      '<span>' + v.r + '/' + v.n + '</span></div>'
+    ).join("");
+  const miss = S.quizQueue.filter(q => S.quizAnswers[q.id] !== q.answer).length;
+  $("sumReview").textContent = miss ? "Review the " + miss + " I missed" : "Review the whole set";
+  setMode("summary");
+}
+$("sumRetry").onclick = () => setMode("setup");
+$("sumReview").onclick = () => setMode("review");
+$("revBack").onclick = () => setMode("summary");
+
+function renderReview(){
+  let list = S.quizQueue.filter(q => S.quizAnswers[q.id] !== q.answer);
+  if(!list.length) list = S.quizQueue.slice();
+  $("revMeta").innerHTML = list.length + " item" + (list.length===1?"":"s") +
+    " <em>&middot;</em> the principle each one tests is in the explanation";
+  $("revList").innerHTML = list.map(q => {
+    const picked = S.quizAnswers[q.id];
+    const yours = picked === undefined
+      ? '<p class="line no"><b>You left this blank</b></p>'
+      : (picked === q.answer ? "" : '<p class="line no"><b>You chose</b>' + esc(q.choices[picked]) + '</p>');
+    return '<div class="rev" style="--tab:' + catColor(q.cat) + '">' +
+      '<span class="num">' + esc(catLabel(q.cat)) + '</span>' +
+      '<p class="q">' + esc(q.stem) + '</p>' + yours +
+      '<p class="line ok"><b>Correct</b>' + esc(q.choices[q.answer]) + '</p>' +
+      '<p class="exp">' + esc(q.why) + '</p></div>';
+  }).join("");
+}
+
+
+/* ---------------- GLOSSARY ---------------- */
+function renderFilters(){
+  const f = $("gFilters"); f.innerHTML = "";
+  Object.keys(CATS).forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.style.setProperty("--tab", catColor(c));
+    b.setAttribute("aria-pressed", String(S.gFilter === c));
+    b.innerHTML = '<i></i>' + esc(catLabel(c));
+    b.onclick = () => { S.gFilter = S.gFilter === c ? null : c; renderGlossary(); };
+    f.append(b);
+  });
+}
+function renderGlossary(){
+  renderFilters();
+  const q = S.gQuery.trim().toLowerCase();
+  const hits = DATA.cards.filter(c =>
+    (!S.gFilter || c.cat === S.gFilter) &&
+    (!q || c.term.toLowerCase().includes(q) || c.def.toLowerCase().includes(q))
+  );
+  $("gCount").innerHTML = hits.length + " term" + (hits.length===1?"":"s") +
+    (S.gFilter ? " <em>&middot;</em> " + esc(catLabel(S.gFilter)) : "");
+  $("gList").innerHTML = hits.length ? hits.map(c =>
+    '<div class="entry" style="--tab:' + catColor(c.cat) + '">' +
+    '<span class="cat">' + esc(catLabel(c.cat)) + '</span>' +
+    '<h3>' + esc(c.term) + '</h3><p>' + esc(c.def) + '</p></div>'
+  ).join("") : '<div class="entry"><p>No term matches that. Try a shorter word — the search looks inside definitions too.</p></div>';
+}
+$("gSearch").oninput = e => { S.gQuery = e.target.value; renderGlossary(); };
+
+/* ---------------- retrieval for the tutor ---------------- */
+const STOP = new Set("the a an of to in and or is are was for on with that this it as by be from at what why how which when who does do i my me you your".split(" "));
+function retrieve(query, k=5){
+  const terms = query.toLowerCase().match(/[a-z]{3,}/g) || [];
+  const words = terms.filter(w => !STOP.has(w));
+  if(!words.length) return [];
+  return DATA.cards.map(c => {
+    const t = c.term.toLowerCase(), d = c.def.toLowerCase();
+    let score = 0;
+    words.forEach(w => {
+      if(t.includes(w)) score += 6;
+      if(d.includes(w)) score += 1;
+    });
+    if(t && query.toLowerCase().includes(t.split("(")[0].trim().toLowerCase())) score += 8;
+    return {c, score};
+  }).filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)
+    .slice(0,k).map(x => x.c);
+}
+
+/* ---------------- tutor engine ---------------- */
+const SYSTEM = `You are a study tutor for cloud architecture certification exams covering AWS Solutions Architect Professional, Google Cloud Professional Cloud Architect, and Azure Solutions Architect Expert.
+
+Rules you must follow:
+- Answer ONLY from the STUDY NOTES supplied in the user message. They are your single source of truth.
+- If the notes do not cover something, say plainly: "That isn't in my notes — check your official study materials." Never invent DSM criteria, statutes, dates, or numbers.
+- Be concise: three to five sentences, or a short list. This is revision, not a lecture.
+- When contrasting two terms, state the single distinguishing feature first.
+- When explaining an exam item, name the principle being tested (for example: assess before intervening, safety first, self-determination).
+- Plain language. No preamble, no "great question", no restating the question.`;
+
+function setEngineState(s, note){
+  S.engineState = s;
+  const d = $("engDot");
+  d.className = "dot" + (s==="ready" ? " on" : s==="loading" ? " load" : "");
+  if(note !== undefined) $("loadNote").textContent = note;
+}
+function openTutor(){ $("tutor").classList.add("open"); $("scrim").classList.add("on"); }
+function closeTutor(){ $("tutor").classList.remove("open"); $("scrim").classList.remove("on"); }
+$("tutorBtn").onclick = openTutor;
+$("tutorClose").onclick = closeTutor;
+$("scrim").onclick = closeTutor;
+
+$("loadModel").onclick = async () => {
+  if(!navigator.gpu){
+    setEngineState("off");
+    $("loadNote").innerHTML = "This browser can't run the model — it needs WebGPU. Chrome or Edge 113+ on desktop works. Everything else in Casebook works fine without it.";
+    return;
+  }
+  const model = $("modelSel").value;
+  $("loadModel").disabled = true;
+  $("loadProg").classList.remove("hide");
+  setEngineState("loading", "Starting…");
+  try{
+    const webllm = await import("https://esm.run/@mlc-ai/web-llm");
+    S.engine = await webllm.CreateMLCEngine(model, {
+      initProgressCallback: r => {
+        $("loadProg").querySelector("i").style.width = Math.round((r.progress||0)*100) + "%";
+        $("loadNote").textContent = r.text || "";
+      }
+    });
+    setEngineState("ready","");
+    $("tutorSetup").classList.add("hide");
+    $("log").classList.remove("hide");
+    $("compose").classList.remove("hide");
+    pushMsg("sys","<b>Tutor ready.</b> It answers only from the 207 terms and 40 rationales bundled in this file. Ask it to compare two terms, or hit &ldquo;Ask tutor&rdquo; on any card.");
+    if(S.pending){ const p = S.pending; S.pending = null; sendAsk(p); }
+  }catch(err){
+    setEngineState("off");
+    $("loadModel").disabled = false;
+    $("loadNote").textContent = "Couldn't load the model: " + (err && err.message ? err.message : err) + ". Check the connection and try again — the download only has to succeed once.";
+  }
+};
+
+function pushMsg(kind, html){
+  const d = document.createElement("div");
+  d.className = "msg " + kind;
+  if(kind === "ai" || kind === "sys") d.innerHTML = html; else d.textContent = html;
+  $("log").append(d);
+  $("log").scrollTop = $("log").scrollHeight;
+  return d;
+}
+function askAbout(prompt){
+  openTutor();
+  if(S.engineState !== "ready"){
+    S.pending = prompt;
+    $("loadNote").textContent = "Start the model and this question will run automatically.";
+    return;
+  }
+  sendAsk(prompt);
+}
+async function sendAsk(text){
+  if(!text.trim() || S.engineState !== "ready") return;
+  pushMsg("me", text);
+  const notes = retrieve(text, 6);
+  const noteBlock = notes.length
+    ? notes.map(c => "- " + c.term + " [" + catLabel(c.cat) + "]: " + c.def).join("\n")
+    : "(no matching notes)";
+  const bubble = pushMsg("ai", "…");
+  let out = "";
+  try{
+    const stream = await S.engine.chat.completions.create({
+      stream: true, temperature: 0.3, max_tokens: 400,
+      messages: [
+        {role:"system", content: SYSTEM},
+        ...S.chat.slice(-4),
+        {role:"user", content: "STUDY NOTES:\n" + noteBlock + "\n\nQUESTION: " + text}
+      ]
+    });
+    for await (const chunk of stream){
+      out += chunk.choices[0]?.delta?.content || "";
+      bubble.innerHTML = esc(out);
+      $("log").scrollTop = $("log").scrollHeight;
+    }
+  }catch(err){
+    bubble.innerHTML = esc("The model stopped partway: " + (err && err.message ? err.message : err));
+    return;
+  }
+  S.chat.push({role:"user", content:text}, {role:"assistant", content: out});
+  if(notes.length){
+    const s = document.createElement("div");
+    s.className = "sources";
+    s.innerHTML = notes.slice(0,4).map(c => "<span>" + esc(c.term) + "</span>").join("");
+    bubble.append(s);
+  }
+}
+$("send").onclick = () => { const t = $("ask").value; $("ask").value = ""; sendAsk(t); };
+$("ask").addEventListener("keydown", e => {
+  if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); $("send").click(); }
+});
+$("clearChat").onclick = () => { S.chat = []; $("log").innerHTML = ""; pushMsg("sys","Cleared."); };
+
+/* ---------------- pwa ---------------- */
+function toast(msg,actionLabel,fn){
+  $("toastMsg").textContent=msg;const a=$("toastAct");
+  a.textContent=actionLabel||"Dismiss";
+  a.onclick=()=>{$("toast").classList.remove("up");if(fn)fn();};
+  $("toast").classList.add("up");if(!fn)setTimeout(()=>$("toast").classList.remove("up"),4200);
+}
+let deferredInstall=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("installBtn").classList.remove("hide");});
+$("installBtn").onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$("installBtn").classList.add("hide");};
+window.addEventListener("appinstalled",()=>{$("installBtn").classList.add("hide");toast("Installed. Casebook now opens like an app.");});
+if("serviceWorker" in navigator&&location.protocol!=="file:"){
+  window.addEventListener("load",async()=>{try{
+    const reg=await navigator.serviceWorker.register("./sw.js");
+    reg.addEventListener("updatefound",()=>{const nw=reg.installing;if(!nw)return;
+      nw.addEventListener("statechange",()=>{if(nw.state==="installed"&&navigator.serviceWorker.controller){
+        toast("A newer version is ready.","Reload",()=>{nw.postMessage({type:"SKIP_WAITING"});location.reload();});
+      }});
+    });
+  }catch(e){}});
+}
+window.addEventListener("offline",()=>toast("Offline. Drills, vignettes and glossary keep working."));
+
+/* ---------------- boot ---------------- */
+if(!navigator.gpu){
+  $("loadNote").innerHTML = "Heads up: this browser doesn't support WebGPU, so the tutor won't start. Chrome or Edge on a desktop will run it. The drills, vignettes, and glossary all work without it.";
+}
+buildDrillQueue();
+setMode("drill");
+</script>
+
+<script type="module">
+// ---- Integration layer: connects the core app to Supabase ----
+
+import * as SB from "./js/supabase-client.js";
+import * as Tracker from "./js/tracker.js";
+import * as Dashboard from "./js/dashboard.js";
+import { recommend } from "./js/recommend.js";
+import * as Tiers from "./js/tiers.js";
+
+const $ = id => document.getElementById(id);
+
+// ---- Config: set these from your Supabase project ----
+const SUPABASE_URL = window.CASEBOOK_SUPABASE_URL || "";
+const SUPABASE_KEY = window.CASEBOOK_SUPABASE_KEY || "";
+
+let sbReady = false;
+
+async function boot() {
+  if (SUPABASE_URL && SUPABASE_KEY) {
+    try {
+      await SB.init(SUPABASE_URL, SUPABASE_KEY);
+      sbReady = true;
+    } catch (e) {
+      console.warn("Supabase init failed:", e);
+    }
+  }
+  SB.onAuthChange(onAuthChange);
+  onAuthChange(SB.getUser());
+}
+
+// ---- Auth UI ----
+let authMode = "signin"; // signin | signup | magic
+
+function openAuth() { $("authScrim").classList.remove("hide"); }
+function closeAuth() { $("authScrim").classList.add("hide"); $("authMsg").textContent = ""; }
+
+$("userBtn").onclick = () => {
+  if (SB.getUser()) {
+    if (confirm("Sign out?")) SB.signOut();
+  } else if (sbReady) {
+    authMode = "signin";
+    renderAuthForm();
+    openAuth();
+  } else {
+    // no Supabase configured
+    alert("Backend not configured. Set CASEBOOK_SUPABASE_URL and CASEBOOK_SUPABASE_KEY.");
+  }
+};
+$("authClose").onclick = closeAuth;
+$("authScrim").addEventListener("click", e => { if (e.target === $("authScrim")) closeAuth(); });
+
+$("authToggle").onclick = () => {
+  authMode = authMode === "signin" ? "signup" : "signin";
+  renderAuthForm();
+};
+$("authMagic").onclick = () => { authMode = "magic"; renderAuthForm(); };
+
+function renderAuthForm() {
+  $("authMsg").textContent = "";
+  $("authForm").classList.remove("hide");
+  $("authDone").classList.add("hide");
+  if (authMode === "signup") {
+    $("authTitle").textContent = "Create account";
+    $("authSub").textContent = "Your progress syncs across devices.";
+    $("authName").classList.remove("hide");
+    $("authPass").classList.remove("hide");
+    $("authSubmit").textContent = "Sign up";
+    $("authToggle").textContent = "Already have an account? Sign in";
+    $("authMagic").classList.remove("hide");
+  } else if (authMode === "magic") {
+    $("authTitle").textContent = "Magic link";
+    $("authSub").textContent = "We'll email you a one-click sign-in link.";
+    $("authName").classList.add("hide");
+    $("authPass").classList.add("hide");
+    $("authSubmit").textContent = "Send link";
+    $("authToggle").textContent = "Use password instead";
+    $("authMagic").classList.add("hide");
+  } else {
+    $("authTitle").textContent = "Sign in";
+    $("authSub").textContent = "Track your progress across devices.";
+    $("authName").classList.add("hide");
+    $("authPass").classList.remove("hide");
+    $("authSubmit").textContent = "Sign in";
+    $("authToggle").textContent = "Need an account? Sign up";
+    $("authMagic").classList.remove("hide");
+  }
+}
+
+$("authSubmit").onclick = async () => {
+  const email = $("authEmail").value.trim();
+  const pass = $("authPass").value;
+  const name = $("authName").value.trim();
+  $("authMsg").textContent = "";
+  $("authMsg").className = "auth-msg";
+
+  if (!email) { $("authMsg").textContent = "Email is required."; return; }
+  if ((authMode !== "magic") && !pass) { $("authMsg").textContent = "Password is required."; return; }
+
+  $("authSubmit").disabled = true;
+  try {
+    if (authMode === "signup") {
+      await SB.signUp(email, pass, name);
+      $("authForm").classList.add("hide");
+      $("authDone").classList.remove("hide");
+      $("authDoneMsg").textContent = "Check your email for a confirmation link, then sign in.";
+      $("authDoneBtn").onclick = closeAuth;
+    } else if (authMode === "magic") {
+      await SB.signInMagicLink(email);
+      $("authForm").classList.add("hide");
+      $("authDone").classList.remove("hide");
+      $("authDoneMsg").textContent = "Check your email — click the link to sign in.";
+      $("authDoneBtn").onclick = closeAuth;
+    } else {
+      await SB.signIn(email, pass);
+      closeAuth();
+    }
+  } catch (e) {
+    $("authMsg").textContent = e.message || "Something went wrong.";
+  }
+  $("authSubmit").disabled = false;
+};
+
+function onAuthChange(user) {
+  $("userLabel").textContent = user ? (user.email?.split("@")[0] || "Account") : "Sign in";
+  if (user) {
+    Tracker.backfillHistory().catch(() => {});
+    Tracker.flush().catch(() => {});
+  }
+}
+
+// ---- Hook into the quiz engine ----
+// The core app exposes globals; we monkey-patch to add tracking.
+
+const origFinishSet = window.finishSet;
+if (typeof origFinishSet === "function") {
+  // not accessible — it's in a closure. Instead, use MutationObserver.
+}
+
+// Watch for answer selections by observing the quiz choices container.
+// When a choice gets the 'correct' or 'chosen-wrong' class, we record it.
+const quizCard = $("quizCard");
+if (quizCard) {
+  const observer = new MutationObserver(() => {
+    const choices = quizCard.querySelectorAll(".choice");
+    const correct = quizCard.querySelector(".choice.correct");
+    const wrong = quizCard.querySelector(".choice.chosen-wrong");
+    if (!correct && !wrong) return;
+
+    // Extract item data from the visible card
+    const numEl = $("quizNum");
+    const tabEl = $("quizTab");
+    if (!numEl) return;
+
+    const itemMatch = numEl.textContent.match(/Item (\d+)/);
+    if (!itemMatch) return;
+    const pos = parseInt(itemMatch[1]) - 1;
+
+    // Read from the global DATA and quiz state
+    if (!window.DATA) return;
+
+    // Find which item is showing by stem text
+    const stemEl = $("quizStem");
+    if (!stemEl) return;
+    const stem = stemEl.textContent;
+
+    const item = window.DATA.questions.find(q => q.stem === stem);
+    if (!item) return;
+
+    // Deduplicate: check if we already recorded this item in this render
+    const key = "cb.lastRecorded";
+    if (sessionStorage.getItem(key) === item.id) return;
+    sessionStorage.setItem(key, item.id);
+
+    let answerIdx = -1;
+    choices.forEach((c, i) => {
+      if (c.classList.contains("correct") && !wrong) answerIdx = i; // they got it right
+      if (c.classList.contains("chosen-wrong")) answerIdx = i;
+    });
+    if (answerIdx < 0) answerIdx = item.answer; // fallback
+
+    Tracker.record({
+      item_id: item.id,
+      category: item.cat,
+      correct: !wrong,
+      answer_idx: answerIdx,
+    });
+  });
+  observer.observe(quizCard, { subtree: true, attributes: true, attributeFilter: ["class"] });
+}
+
+// Also hook the "Finish set" / end-set flow via the summary screen
+const sumScore = $("sumScore");
+if (sumScore) {
+  const sumObs = new MutationObserver(() => {
+    // When summary renders, record the session
+    const scoreText = sumScore.textContent;
+    const match = scoreText.match(/(\d+)\s*\/\s*(\d+)/);
+    if (!match) return;
+
+    const correct = parseInt(match[1]);
+    const total = parseInt(match[2]);
+
+    Tracker.recordSession({
+      length: total,
+      correct,
+      total,
+      config: {},
+      started_at: new Date(Date.now() - 60000).toISOString(), // approximate
+    });
+  });
+  sumObs.observe(sumScore, { childList: true, characterData: true, subtree: true });
+}
+
+// ---- Dashboard ----
+// Patch setMode to handle dashboard rendering
+const origSetMode = window.setMode;
+const _setMode = window.setMode;
+const patchedSetMode = function(m) {
+  // Extend the modes list
+  const tabMap = {setup:"setup",quiz:"setup",summary:"setup",review:"setup",drill:"drill",glossary:"glossary",dashboard:"dashboard"};
+  document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.mode===(tabMap[m]||m))));
+  ["drill","setup","quiz","glossary","summary","review","dashboard"].forEach(v => { const e=$(v.startsWith("v-")?v:"v-"+v); if(e) e.classList.add("hide"); });
+  const el = $("v-"+m); if(el) el.classList.remove("hide");
+
+  // Call original renderers
+  if(m==="drill" && window.renderDrill) window.renderDrill();
+  if(m==="setup" && window.renderSetup) window.renderSetup();
+  if(m==="quiz" && window.renderQuiz) window.renderQuiz();
+  if(m==="glossary" && window.renderGlossary) window.renderGlossary();
+  if(m==="review" && window.renderReview) window.renderReview();
+
+  if(m==="dashboard") _loadDash();
+
+  window.S.mode = m;
+  window.scrollTo(0,0);
+};
+
+// Override setMode globally
+window.setMode = patchedSetMode;
+
+// Re-attach mode button listeners
+document.querySelectorAll(".modes button").forEach(b => {
+  b.onclick = () => patchedSetMode(b.dataset.mode);
+});
+
+async function loadDashboard() {
+  const el = $("v-dashboard");
+  el.innerHTML = '<div class="dash-loading">Loading…</div>';
+
+  const data = await Dashboard.fetchDashboard();
+  const CATS = {
+    Cloud:{label:"Cloud Architecture", color:"#3FA9B8"},
+  };
+  Dashboard.renderDashboard(el, data, CATS);
+}
+
+// ---- Adaptive recommendations ----
+// Patch the setup screen's "Weight toward weakest" option
+const origStartSet = window.startSet;
+if (typeof origStartSet === "function") {
+  // Can't patch closure functions directly; the recommendation
+  // engine is already wired into drawQuestions via S.cfg.weak
+  // which uses localStats(). That's sufficient for v1.
+}
+
+// Add a "Recommended set" button to the setup screen
+const bankSizeEl = $("bankSize");
+if (bankSizeEl) {
+  const origRenderSetup = window.renderSetup;
+  const newRenderSetup = function() {
+    if (origRenderSetup) origRenderSetup();
+    bankSizeEl.textContent = window.DATA.questions.length;
+
+    // Add recommended set option if not already there
+    if ($("recSet")) return;
+    const grid = $("lenGrid");
+    if (!grid) return;
+
+    const recBtn = document.createElement("button");
+    recBtn.className = "len";
+    recBtn.id = "recSet";
+    recBtn.style.borderColor = "var(--gold)";
+    recBtn.innerHTML =
+      '<b style="color:var(--gold)">✦</b>' +
+      '<span class="txt"><span>Recommended for you</span>' +
+      '<small id="recReason">Adaptive set based on your weaknesses</small></span>' +
+      '<span class="dur">~25 min</span>';
+    recBtn.onclick = async () => {
+      recBtn.disabled = true;
+      recBtn.querySelector("small").textContent = "Building your set…";
+      try {
+        const { questions, reason } = await recommend(
+          window.DATA.questions, 20,
+          { useServer: sbReady && !!SB.getUser() }
+        );
+        window.S.quizQueue = questions;
+        window.S.quizPos = 0;
+        window.S.quizAnswers = {};
+        window.S.flags = new Set();
+        window.S.elapsed = 0;
+        window.S.limit = null;
+        window.S.lastTick = Date.now();
+        if (window.saveSession) window.saveSession();
+        if (window.startClock) window.startClock();
+        patchedSetMode("quiz");
+      } catch (e) {
+        recBtn.querySelector("small").textContent = "Couldn't build set: " + e.message;
+      }
+      recBtn.disabled = false;
+    };
+    grid.insertBefore(recBtn, grid.firstChild);
+
+    // Update the reason text asynchronously
+    recommend(window.DATA.questions, 20, { useServer: false }).then(({ reason }) => {
+      const el = $("recReason");
+      if (el) el.textContent = reason;
+    }).catch(() => {});
+  };
+  window.renderSetup = newRenderSetup;
+}
+
+// ---- Boot ----
+boot().catch(console.error);
+
+// ---- Upgrade modal ----
+$("upgradeClose").onclick = () => Tiers.hideUpgrade();
+$("upgradeScrim").addEventListener("click", e => {
+  if (e.target === $("upgradeScrim")) Tiers.hideUpgrade();
+});
+document.querySelectorAll(".plan-card").forEach(btn => {
+  btn.onclick = () => {
+    const plan = btn.dataset.plan;
+    if (!SB.getUser()) {
+      Tiers.hideUpgrade();
+      $("userBtn").click();
+      return;
+    }
+    Tiers.checkout(plan);
+  };
+});
+
+// ---- Gate the set length buttons ----
+const origRenderSetupBase = window.renderSetup;
+const gatedRenderSetup = function() {
+  if (origRenderSetupBase) origRenderSetupBase();
+
+  // After setup renders, apply gates to length buttons
+  const grid = $("lenGrid");
+  if (!grid) return;
+  const buttons = grid.querySelectorAll(".len");
+  buttons.forEach(btn => {
+    const numEl = btn.querySelector("b");
+    if (!numEl) return;
+    const n = parseInt(numEl.textContent);
+    if (n > 10 && !Tiers.can("set_" + n)) {
+      btn.addEventListener("click", function gateHandler(e) {
+        if (!Tiers.can("set_" + n)) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          Tiers.requireGate("set_" + n, n + "-question sets are a Pro feature. Upgrade to build real exam stamina.");
+        }
+      }, true);
+      // Add a lock indicator
+      if (!btn.querySelector(".lock")) {
+        const lock = document.createElement("span");
+        lock.className = "lock";
+        lock.textContent = "PRO";
+        lock.style.cssText = "font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--gold);border:1px solid var(--gold);border-radius:3px;padding:2px 6px;";
+        btn.appendChild(lock);
+      }
+    }
+  });
+
+  // Gate the options
+  const optFeedback = $("optFeedback");
+  const optTimer = $("optTimer");
+  const optWeak = $("optWeak");
+  [optFeedback, optTimer].forEach(el => {
+    if (el && !Tiers.can("exam_mode")) {
+      el.disabled = true;
+      el.closest(".opt").style.opacity = "0.5";
+      el.closest(".opt").title = "Pro feature";
+    }
+  });
+  if (optWeak && !Tiers.can("weak_weight")) {
+    optWeak.disabled = true;
+    optWeak.closest(".opt").style.opacity = "0.5";
+    optWeak.closest(".opt").title = "Pro feature";
+  }
+};
+window.renderSetup = gatedRenderSetup;
+
+// ---- Gate the dashboard ----
+const origLoadDashboard = loadDashboard;
+async function gatedLoadDashboard() {
+  if (!Tiers.can("dashboard")) {
+    const el = $("v-dashboard");
+    if (el) {
+      el.innerHTML =
+        '<div class="empty" style="padding:60px 0;text-align:center;">' +
+        '<p style="font-size:17px;font-weight:700;margin:0 0 10px;">Your performance dashboard</p>' +
+        '<p style="font-family:var(--read);font-size:15px;color:var(--text-dim);max-width:36ch;margin:0 auto 20px;line-height:1.6;">' +
+        'Track your accuracy by category, see trends over time, and get a personalized study plan.</p>' +
+        '<button class="btn primary" id="dashUpgrade">Upgrade to Pro</button></div>';
+      $("dashUpgrade").onclick = () => Tiers.showUpgrade("The dashboard tracks your progress and tells you exactly what to study next.");
+    }
+    return;
+  }
+  await origLoadDashboard();
+}
+// Reassign for the mode switcher
+const _loadDash = gatedLoadDashboard;
+
+// ---- Tier badge in the rail ----
+Tiers.onTierChange(t => {
+  const label = $("userLabel");
+  if (!label) return;
+  const user = SB.getUser();
+  if (user && t.tier !== "free") {
+    label.textContent = t.tier === "all_access" ? "All Access" : "Pro";
+    label.style.color = "var(--gold)";
+  } else if (user) {
+    label.textContent = user.email?.split("@")[0] || "Account";
+    label.style.color = "";
+  }
+});
+
+// Refresh tier on visibility change (catches returning from Stripe Checkout)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && SB.getUser()) {
+    Tiers.refreshTier();
+  }
+});
+</script>
+</body>
+</html>

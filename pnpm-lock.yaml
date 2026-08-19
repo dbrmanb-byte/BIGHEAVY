@@ -10,7 +10,27 @@ importers:
 
   apps/casebook: {}
 
+  apps/casebook-lbsw: {}
+
+  apps/casebook-lcsw: {}
+
+  apps/casebook-nursing: {}
+
+  apps/forge-cloud: {}
+
+  apps/forge-management: {}
+
+  apps/forge-security: {}
+
+  apps/forge-systems: {}
+
+  apps/forge-trades: {}
+
   apps/hub: {}
+
+  apps/keystone: {}
+
+  packages/app-core: {}
 
   packages/entitlements: {}
 

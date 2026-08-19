@@ -1,5 +1,5 @@
 {
-  "comment": "The catalogue of verticals. The hub renders its directory from this file at runtime, so adding an app is a data change, not a code change. slug must match the app's directory under apps/ and the __BH_APP_ID it declares, because a Pro subscription is matched against that id. status 'live' renders a full card; anything else counts toward the roadmap only — details are deliberately left blank until the app lands rather than guessed at.",
+  "comment": "The catalogue of verticals. The hub renders its directory from this file at runtime, so adding an app is a data change, not a code change. slug must match the directory under apps/, the window.BH_APP_ID the app declares, and the tier_app value the billing backend returns — a Pro subscription is matched against that id.",
   "planned": 10,
   "apps": [
     {
@@ -14,17 +14,122 @@
       "terms": 207,
       "questions": 217
     },
-
-    { "slug": "casebook-lcsw",      "name": "Casebook LCSW",      "family": "casebook", "status": "planned" },
-    { "slug": "casebook-lbsw",      "name": "Casebook LBSW",      "family": "casebook", "status": "planned" },
-    { "slug": "casebook-nursing",   "name": "Casebook Nursing",   "family": "casebook", "status": "planned" },
-
-    { "slug": "forge-cloud",        "name": "Forge Cloud",        "family": "forge",    "status": "planned" },
-    { "slug": "forge-security",     "name": "Forge Security",     "family": "forge",    "status": "planned" },
-    { "slug": "forge-systems",      "name": "Forge Systems",      "family": "forge",    "status": "planned" },
-    { "slug": "forge-management",   "name": "Forge Management",   "family": "forge",    "status": "planned" },
-    { "slug": "forge-trades",       "name": "Forge Trades",       "family": "forge",    "status": "planned" },
-
-    { "slug": "keystone",           "name": "Keystone",           "family": "keystone", "status": "planned" }
+    {
+      "slug": "casebook-lcsw",
+      "name": "Casebook LCSW",
+      "family": "casebook",
+      "exam": "LCSW",
+      "audience": "Clinical social work",
+      "blurb": "159 terms and 84 clinical scenarios for the clinical social work licensing exam.",
+      "accent": "#EBA83A",
+      "status": "live",
+      "url": "/casebook-lcsw/",
+      "terms": 159,
+      "questions": 84
+    },
+    {
+      "slug": "casebook-lbsw",
+      "name": "Casebook LBSW",
+      "family": "casebook",
+      "exam": "LBSW",
+      "audience": "Bachelor social work",
+      "blurb": "125 terms and 52 scenarios for the bachelor-level social work exam.",
+      "accent": "#EBA83A",
+      "status": "live",
+      "url": "/casebook-lbsw/",
+      "terms": 125,
+      "questions": 52
+    },
+    {
+      "slug": "casebook-nursing",
+      "name": "Casebook Nursing",
+      "family": "casebook",
+      "exam": "NCLEX-RN / PN",
+      "audience": "Nursing licensure",
+      "blurb": "115 terms and 200 clinical scenarios for NCLEX-RN and NCLEX-PN.",
+      "accent": "#3FA9B8",
+      "status": "live",
+      "url": "/casebook-nursing/",
+      "terms": 115,
+      "questions": 200
+    },
+    {
+      "slug": "forge-cloud",
+      "name": "Forge Cloud",
+      "family": "forge",
+      "exam": "AWS · GCP · Azure",
+      "audience": "Cloud architecture",
+      "blurb": "75 terms and 29 scenarios for AWS Solutions Architect Professional, Google Professional Cloud Architect, and Azure Solutions Architect Expert.",
+      "accent": "#7B8FE0",
+      "status": "live",
+      "url": "/forge-cloud/",
+      "terms": 75,
+      "questions": 29
+    },
+    {
+      "slug": "forge-security",
+      "name": "Forge Security",
+      "family": "forge",
+      "exam": "CISSP · Security+ · CEH",
+      "audience": "Cybersecurity",
+      "blurb": "69 terms and 33 scenarios for CISSP, CompTIA Security+, and Certified Ethical Hacker.",
+      "accent": "#D9455F",
+      "status": "live",
+      "url": "/forge-security/",
+      "terms": 69,
+      "questions": 33
+    },
+    {
+      "slug": "forge-systems",
+      "name": "Forge Systems",
+      "family": "forge",
+      "exam": "CKA · Terraform · Linux",
+      "audience": "Systems and infrastructure",
+      "blurb": "53 terms and 24 scenarios for CKA/CKAD Kubernetes, Terraform Associate, and Linux Foundation Certified Engineer.",
+      "accent": "#5FB86B",
+      "status": "live",
+      "url": "/forge-systems/",
+      "terms": 53,
+      "questions": 24
+    },
+    {
+      "slug": "forge-management",
+      "name": "Forge Management",
+      "family": "forge",
+      "exam": "PMP · TOGAF · SAFe",
+      "audience": "Technical management",
+      "blurb": "40 terms and 18 scenarios for PMP, TOGAF, and Scrum/SAFe certifications.",
+      "accent": "#C77CD6",
+      "status": "live",
+      "url": "/forge-management/",
+      "terms": 40,
+      "questions": 18
+    },
+    {
+      "slug": "forge-trades",
+      "name": "Forge Trades",
+      "family": "forge",
+      "exam": "Electrician",
+      "audience": "Skilled trades",
+      "blurb": "117 terms and 88 NEC-based scenarios for the journeyman and master electrician licensing exams.",
+      "accent": "#E4703A",
+      "status": "live",
+      "url": "/forge-trades/",
+      "terms": 117,
+      "questions": 88
+    },
+    {
+      "slug": "keystone",
+      "name": "Keystone",
+      "family": "keystone",
+      "exam": "Real estate",
+      "audience": "Real estate licensure",
+      "blurb": "156 terms and 94 practice scenarios for the real estate licensing exam.",
+      "accent": "#E0B23A",
+      "status": "live",
+      "url": "/keystone/",
+      "terms": 156,
+      "questions": 94
+    }
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "name": "keystone",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Keystone — real estate licensing exam study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs keystone",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs keystone"
+  },
+  "bigheavy": {
+    "slug": "keystone",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

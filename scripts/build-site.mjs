@@ -20,7 +20,8 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 /* What each shared package contributes to a site's dist, and under what name. */
 const SHARED = {
   entitlements: [["packages/entitlements/entitlements.js", "entitlements.js"]],
-  registry:     [["packages/registry/apps.json", "apps.json"]]
+  registry:     [["packages/registry/apps.json", "apps.json"]],
+  "app-core":   [["packages/app-core/js", "js"]]        // a whole directory
 };
 
 const slug = process.argv[2];
@@ -66,7 +67,7 @@ for (const name of shared) {
       console.error(`build-site: shared file missing — ${from}. Build packages first.`);
       process.exit(1);
     }
-    await cp(source, join(outDir, to));
+    await cp(source, join(outDir, to), { recursive: true });   // file or directory
   }
 }
 

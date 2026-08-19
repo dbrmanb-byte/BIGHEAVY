@@ -1,0 +1,16 @@
+{
+  "name": "casebook-nursing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Casebook Nursing — NCLEX-RN and PN exam study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs casebook-nursing",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs casebook-nursing"
+  },
+  "bigheavy": {
+    "slug": "casebook-nursing",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

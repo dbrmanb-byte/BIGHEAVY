@@ -1,0 +1,16 @@
+{
+  "name": "forge-cloud",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge Cloud — AWS, GCP and Azure architect certification study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs forge-cloud",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs forge-cloud"
+  },
+  "bigheavy": {
+    "slug": "forge-cloud",
+    "shared": [
+      "app-core"
+    ]
+  }
+}
