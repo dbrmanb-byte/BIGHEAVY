@@ -7,8 +7,10 @@ const VERSION = "casebook-v3b";
 const SHELL = [
   "./",
   "./index.html",
+  "./content-free.js",
   "./manifest.webmanifest",
   "./js/supabase-client.js",
+  "./js/content.js",
   "./js/tiers.js",
   "./js/tracker.js",
   "./js/dashboard.js",

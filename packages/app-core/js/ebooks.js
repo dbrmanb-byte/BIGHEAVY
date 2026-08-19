@@ -50,10 +50,12 @@ export async function refreshLibrary() {
 onAuthChange(() => { _loaded = false; refreshLibrary(); });
 
 /**
- * Ask for a time-limited download link for a book.
- * Resolves to a URL, or throws with a message worth showing the reader.
+ * Fetch a book as bytes. The server stamps the buyer's identity onto every page
+ * before sending, so this is a real request each time rather than a link that
+ * can be passed around.
+ * Resolves to a Blob, or throws with a message worth showing the reader.
  */
-export async function downloadUrl(slug) {
+export async function fetchBook(slug) {
   const client = getClient();
   if (!client) throw new Error("Downloads need a connection.");
 
@@ -61,26 +63,37 @@ export async function downloadUrl(slug) {
   const token = sessionData?.session?.access_token;
   if (!token) throw new Error("Sign in to download your books.");
 
-  const { data, error } = await client.functions.invoke(DOWNLOAD_FN, {
-    body: { slug },
-    headers: { Authorization: `Bearer ${token}` },
+  // Not functions.invoke: the reply is a PDF, and invoke wants to parse JSON.
+  const base = client.functionsUrl
+    || (client.supabaseUrl || "").replace(".supabase.co", ".functions.supabase.co");
+  const res = await fetch(`${base.replace(/\/$/, "")}/${DOWNLOAD_FN}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ slug }),
   });
 
-  if (error) {
-    // The function replies with a usable sentence; prefer it over the generic
-    // "Edge Function returned a non-2xx status code".
+  if (!res.ok) {
+    // The function replies with a usable sentence; show that, not a status code.
     let detail = "";
-    try { detail = (await error.context?.json())?.error || ""; } catch { /* ignore */ }
+    try { detail = (await res.json())?.error || ""; } catch { /* not JSON */ }
     throw new Error(detail || "That download could not be started.");
   }
-  if (!data?.url) throw new Error("That download could not be started.");
-  return data.url;
+  return await res.blob();
 }
 
-/** Start the download in the browser. */
+/** Save the book to the reader's device. */
 export async function download(slug) {
-  const url = await downloadUrl(slug);
-  // Not a new tab: the signed URL is served as an attachment, so a same-tab
-  // navigation downloads without leaving the page or tripping a popup blocker.
-  window.location.assign(url);
+  const blob = await fetchBook(slug);
+  const url = URL.createObjectURL(blob);
+  try {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${slug}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } finally {
+    // Give the browser a moment to start the save before dropping the blob.
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
 }
