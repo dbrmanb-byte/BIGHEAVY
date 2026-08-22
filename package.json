@@ -12,7 +12,7 @@
     "build": "pnpm run build:packages && pnpm --filter \"./apps/*\" build",
     "preflight": "bash scripts/preflight.sh",
     "serve": "node scripts/serve.mjs",
-    "test": "node scripts/test-entitlement.mjs",
+    "test": "node scripts/test-entitlement.mjs && node scripts/test-coach.mjs",
     "check:ebooks": "node scripts/check-ebooks.mjs",
     "sync:registry": "node scripts/sync-registry.mjs"
   },

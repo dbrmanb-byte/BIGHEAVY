@@ -2,11 +2,12 @@
   "name": "@bigheavy/app-core",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "The runtime every study app shares: auth, tiers, answer tracking with offline sync, the adaptive recommender, and the dashboard.",
   "files": [
     "js"
   ],
   "scripts": {
-    "build": "node ../../scripts/check-package.mjs js/supabase-client.js js/tiers.js js/tracker.js js/recommend.js js/dashboard.js js/ebooks.js js/content.js js/planner.js js/planner-ui.js"
+    "build": "node ../../scripts/check-package.mjs js/supabase-client.js js/tiers.js js/tracker.js js/recommend.js js/dashboard.js js/ebooks.js js/content.js js/planner.js js/planner-ui.js js/coach.js"
   }
 }

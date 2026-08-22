@@ -70,8 +70,14 @@ for (const app of registry.apps || []) {
     .join(" ").split(/\s+/).filter(Boolean).length;
   const bookSeconds = (words / T.wordsPerMinute) * 60 * T.rereadFactor;
 
-  const appHours  = round(hours(learn + drill + first + redo + sims));
+  const appSeconds = learn + drill + first + redo + sims;
+  const appHours  = round(hours(appSeconds));
   const bookHours = round(hours(bookSeconds));
+  // Blocks come off the raw figure, not the half-rounded one: 11.4 hours of work
+  // is twelve one-hour blocks, and rounding to 11 before ceiling loses the
+  // twelfth. The in-app planner ceils the raw seconds, so anything else here
+  // makes the hub quote a block count the app then contradicts.
+  const appBlocks = Math.max(1, Math.ceil(hours(appSeconds)));
 
   rows.push({
     slug: app.slug, name: app.name, terms: nTerms, questions: nQ, words,
@@ -85,7 +91,7 @@ for (const app of registry.apps || []) {
   });
 
   if (write) {
-    app.hours = { study: appHours, reading: bookHours, blocks: Math.ceil(appHours) };
+    app.hours = { study: appHours, reading: bookHours, blocks: appBlocks };
     if (app.ebook) app.ebook.hours = bookHours;
   }
 }

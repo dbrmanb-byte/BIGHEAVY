@@ -31,6 +31,17 @@ export function estimate() {
   const data = (typeof window !== "undefined" && window.DATA) || { cards: [], questions: [] };
   const terms = (data.cards || []).length;
   const questions = data.meta?.total ?? (data.questions || []).length;
+  return estimateFrom(terms, questions);
+}
+
+/**
+ * The same estimate from raw counts, for callers with no window.DATA — the hub
+ * coach sizes up an app the visitor has not opened yet, and must produce the
+ * number the app itself will show once they do.
+ */
+export function estimateFrom(terms, questions) {
+  terms = Math.max(0, terms | 0);
+  questions = Math.max(0, questions | 0);
 
   const parts = {
     glossary: terms * T.termFirstRead,
@@ -325,4 +336,4 @@ export function summary() {
   return { estimate: estimate(), progress: progress(), next: nextBlock(), tips: tips(3) };
 }
 
-export const CONSTANTS = { WORK_MINUTES, BREAK_MINUTES, ACTIVITIES };
+export const CONSTANTS = { WORK_MINUTES, BREAK_MINUTES, ACTIVITIES, TIMINGS: T };

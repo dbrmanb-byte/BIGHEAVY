@@ -25,6 +25,26 @@
         "study": 28.5,
         "reading": 2,
         "blocks": 29
+      },
+      "coach": {
+        "covers": [
+          "ASWB Masters (LMSW)"
+        ],
+        "keywords": [
+          "lmsw",
+          "msw",
+          "masters social work",
+          "master's social work",
+          "social work",
+          "social worker",
+          "aswb",
+          "aswb masters",
+          "clinical social work masters",
+          "case management",
+          "dsw"
+        ],
+        "forYou": "You hold or are finishing an MSW and are sitting the master's-level social work exam.",
+        "notFor": "If you are sitting the clinical exam after your supervised hours, Casebook LCSW is written for that."
       }
     },
     {
@@ -50,6 +70,28 @@
         "study": 16,
         "reading": 1,
         "blocks": 16
+      },
+      "coach": {
+        "covers": [
+          "ASWB Clinical (LCSW)"
+        ],
+        "keywords": [
+          "lcsw",
+          "licsw",
+          "lisw",
+          "clinical social work",
+          "clinical exam",
+          "aswb clinical",
+          "therapist licence",
+          "therapist license",
+          "psychotherapy licensing",
+          "supervised hours",
+          "diagnosis dsm",
+          "social work",
+          "social worker"
+        ],
+        "forYou": "You have an MSW plus post-degree supervised clinical hours and are sitting the clinical exam.",
+        "notFor": "If you have not started supervised hours yet, the master's-level exam comes first — that is Casebook LMSW."
       }
     },
     {
@@ -74,7 +116,26 @@
       "hours": {
         "study": 11,
         "reading": 0.5,
-        "blocks": 11
+        "blocks": 12
+      },
+      "coach": {
+        "covers": [
+          "ASWB Bachelors (LBSW)"
+        ],
+        "keywords": [
+          "lbsw",
+          "bsw",
+          "bachelor social work",
+          "bachelors social work",
+          "bachelor's social work",
+          "undergraduate social work",
+          "aswb bachelors",
+          "entry level social work",
+          "social work",
+          "social worker"
+        ],
+        "forYou": "You hold or are finishing a BSW and are sitting the bachelor's-level social work exam.",
+        "notFor": "If you went on to an MSW, sit the master's-level exam instead — that is Casebook LMSW."
       }
     },
     {
@@ -100,6 +161,32 @@
         "study": 23.5,
         "reading": 2,
         "blocks": 24
+      },
+      "coach": {
+        "covers": [
+          "NCLEX-RN",
+          "NCLEX-PN"
+        ],
+        "keywords": [
+          "nclex",
+          "nclex-rn",
+          "nclex rn",
+          "nclex-pn",
+          "nclex pn",
+          "nursing",
+          "nurse",
+          "rn",
+          "lpn",
+          "lvn",
+          "registered nurse",
+          "practical nurse",
+          "bsn",
+          "adn",
+          "nursing boards",
+          "nursing licensure"
+        ],
+        "forYou": "You are sitting NCLEX-RN or NCLEX-PN. Both are in this one app — the content overlaps heavily and the app marks what is RN-only.",
+        "notFor": ""
       }
     },
     {
@@ -125,6 +212,31 @@
         "study": 14.5,
         "reading": 1,
         "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "AWS Solutions Architect Professional",
+          "Google Professional Cloud Architect",
+          "Azure Solutions Architect Expert"
+        ],
+        "keywords": [
+          "aws",
+          "amazon web services",
+          "gcp",
+          "google cloud",
+          "azure",
+          "cloud",
+          "solutions architect",
+          "sa pro",
+          "cloud architect",
+          "saa",
+          "multi-cloud",
+          "cloud design",
+          "well-architected",
+          "cloud cost"
+        ],
+        "forYou": "You are certifying as a cloud architect — designing what runs where, and what it costs.",
+        "notFor": "If your day is running the clusters rather than designing them, Forge Systems is the closer fit."
       }
     },
     {
@@ -150,6 +262,34 @@
         "study": 14.5,
         "reading": 1,
         "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "CISSP",
+          "CompTIA Security+",
+          "Certified Ethical Hacker (CEH)"
+        ],
+        "keywords": [
+          "cissp",
+          "security+",
+          "security plus",
+          "sec+",
+          "comptia",
+          "ceh",
+          "ethical hacker",
+          "cyber",
+          "cybersecurity",
+          "infosec",
+          "information security",
+          "soc",
+          "penetration testing",
+          "pentest",
+          "risk management",
+          "grc",
+          "isc2"
+        ],
+        "forYou": "You are sitting CISSP, Security+ or CEH. All three are in this one app.",
+        "notFor": ""
       }
     },
     {
@@ -175,6 +315,34 @@
         "study": 14.5,
         "reading": 1,
         "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "CKA / CKAD (Kubernetes)",
+          "Terraform Associate",
+          "Linux Foundation Certified Engineer"
+        ],
+        "keywords": [
+          "cka",
+          "ckad",
+          "kubernetes",
+          "k8s",
+          "terraform",
+          "hashicorp",
+          "linux",
+          "lfce",
+          "lfcs",
+          "devops",
+          "sre",
+          "site reliability",
+          "platform engineering",
+          "containers",
+          "docker",
+          "infrastructure as code",
+          "ansible"
+        ],
+        "forYou": "You are certifying on the running of infrastructure — Kubernetes, Terraform, Linux.",
+        "notFor": "If the exam is about designing cloud architecture rather than operating it, that is Forge Cloud."
       }
     },
     {
@@ -200,6 +368,32 @@
         "study": 14.5,
         "reading": 1,
         "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "PMP",
+          "TOGAF",
+          "Scrum / SAFe"
+        ],
+        "keywords": [
+          "pmp",
+          "project management",
+          "pmi",
+          "togaf",
+          "enterprise architecture",
+          "safe",
+          "scrum",
+          "agile",
+          "scrum master",
+          "product owner",
+          "capm",
+          "prince2",
+          "program management",
+          "technical management",
+          "delivery lead"
+        ],
+        "forYou": "You are certifying in how technical work is planned, governed and delivered.",
+        "notFor": ""
       }
     },
     {
@@ -225,6 +419,29 @@
         "study": 14.5,
         "reading": 1,
         "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "Journeyman electrician",
+          "Master electrician"
+        ],
+        "keywords": [
+          "electrician",
+          "journeyman",
+          "master electrician",
+          "nec",
+          "national electrical code",
+          "electrical licence",
+          "electrical license",
+          "apprentice electrician",
+          "trade licence",
+          "trade license",
+          "wiring",
+          "conduit",
+          "ampacity"
+        ],
+        "forYou": "You are sitting the journeyman or master electrician exam, built on the National Electrical Code.",
+        "notFor": ""
       }
     },
     {
@@ -250,6 +467,29 @@
         "study": 17,
         "reading": 1,
         "blocks": 17
+      },
+      "coach": {
+        "covers": [
+          "Real estate salesperson",
+          "Real estate broker"
+        ],
+        "keywords": [
+          "real estate",
+          "realtor",
+          "real estate agent",
+          "salesperson exam",
+          "broker exam",
+          "property licence",
+          "property license",
+          "realty",
+          "listing agent",
+          "escrow",
+          "title",
+          "appraisal",
+          "landlord tenant"
+        ],
+        "forYou": "You are sitting a real estate salesperson or broker licensing exam.",
+        "notFor": ""
       }
     }
   ],
@@ -287,5 +527,59 @@
     "examSims": 2,
     "wordsPerMinute": 200,
     "rereadFactor": 1.35
-  }
+  },
+  "decisions": [
+    {
+      "id": "social-work-level",
+      "among": [
+        "casebook",
+        "casebook-lcsw",
+        "casebook-lbsw"
+      ],
+      "question": "Social work licensing runs in levels. Which one are you sitting?",
+      "note": "ASWB sets the exam categories; your state board decides which one you take and what it calls the licence. If you are not sure, your board's website says it outright.",
+      "options": [
+        {
+          "label": "Bachelor's level",
+          "detail": "I have or am finishing a BSW.",
+          "picks": "casebook-lbsw"
+        },
+        {
+          "label": "Master's level",
+          "detail": "I have or am finishing an MSW, and have not done post-degree supervised hours yet.",
+          "picks": "casebook"
+        },
+        {
+          "label": "Clinical level",
+          "detail": "I have an MSW plus post-degree supervised clinical hours.",
+          "picks": "casebook-lcsw"
+        }
+      ],
+      "escape": {
+        "label": "Advanced Generalist",
+        "says": "None of these is written for the Advanced Generalist exam. Casebook LMSW is the nearest fit on content, but read the ASWB outline for that category before you rely on it."
+      }
+    },
+    {
+      "id": "cloud-or-systems",
+      "among": [
+        "forge-cloud",
+        "forge-systems"
+      ],
+      "question": "Those two overlap in the job and split in the exam. Which is yours?",
+      "note": "",
+      "options": [
+        {
+          "label": "Designing it",
+          "detail": "What runs where, how it is sized, what it costs — AWS/GCP/Azure architect exams.",
+          "picks": "forge-cloud"
+        },
+        {
+          "label": "Running it",
+          "detail": "Clusters, provisioning, the Linux underneath — CKA, Terraform, LFCE.",
+          "picks": "forge-systems"
+        }
+      ]
+    }
+  ]
 }
