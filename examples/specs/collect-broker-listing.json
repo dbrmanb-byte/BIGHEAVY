@@ -1,0 +1,52 @@
+{
+  "spec_version": "1",
+  "id": "collect-broker-listings",
+  "name": "Broker listing harvest",
+  "description": "Snapshot what a registered data broker publishes about enrolled subjects, so removal can be verified later.",
+  "mode": "collect",
+  "owner": "privacy-eng",
+  "source": {
+    "connector": "http-listing",
+    "system": "broker.example-people-search",
+    "auth_ref": "vault://sweeps/broker-http#token",
+    "config": { "base_url": "https://example-people-search.test" }
+  },
+  "scope": {
+    "strategy": "incremental",
+    "watermark_field": "last_checked_at",
+    "partition_by": "subject_ref"
+  },
+  "limits": {
+    "batch_size": 50,
+    "concurrency": 4,
+    "rate_per_second": 0.5,
+    "max_dlq_rate_pct": 5
+  },
+  "safety": {
+    "dry_run_required": true,
+    "approvals_required": 0
+  },
+  "schedule": {
+    "cron": "0 3 * * 1",
+    "timezone": "America/New_York",
+    "overlap_policy": "skip"
+  },
+  "action": {
+    "type": "collect",
+    "landing_zone": { "bucket": "sweeps-landing", "retention_days": 400 },
+    "parser": { "name": "people-search-listing", "version": "3.2.0" },
+    "destination": {
+      "connector": "postgres-warehouse",
+      "table": "broker_listing",
+      "schema_ref": "broker_listing@2"
+    },
+    "dedupe": { "key": ["broker", "listing_url"], "conflict_policy": "last_wins" },
+    "politeness": {
+      "respect_robots": true,
+      "crawl_delay_ms": 2000,
+      "user_agent": "BigHeavySweeper/1.0 (+https://bigheavy.dev/bot)",
+      "host_allowlist": ["example-people-search.test"]
+    }
+  },
+  "notifications": { "on": ["failed", "dlq_threshold"], "channels": ["slack://privacy-eng-alerts"] }
+}

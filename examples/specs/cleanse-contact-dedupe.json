@@ -1,0 +1,72 @@
+{
+  "spec_version": "1",
+  "id": "cleanse-contact-dedupe",
+  "name": "Contact normalise + dedupe",
+  "description": "Normalises contact fields, then merges high-confidence duplicates. Everything in the uncertainty band goes to human review.",
+  "mode": "cleanse",
+  "owner": "data-platform",
+  "source": {
+    "connector": "postgres-crm",
+    "system": "crm.contacts",
+    "auth_ref": "vault://sweeps/crm#dsn",
+    "config": { "table": "contacts" }
+  },
+  "scope": {
+    "strategy": "incremental",
+    "watermark_field": "updated_at",
+    "partition_by": "tenant_id",
+    "filter": { "status": "active" },
+    "pushdown_required": true
+  },
+  "limits": {
+    "batch_size": 500,
+    "concurrency": 16,
+    "rate_per_second": 200,
+    "max_records_matched": 2000000,
+    "max_mutations": 50000,
+    "max_dlq_rate_pct": 2
+  },
+  "safety": {
+    "dry_run_required": true,
+    "dry_run_max_age_hours": 24,
+    "approvals_required": 1,
+    "divergence_tolerance_pct": 15,
+    "rollback_window_hours": 168
+  },
+  "schedule": {
+    "cron": "30 2 * * *",
+    "timezone": "UTC",
+    "overlap_policy": "skip",
+    "catchup": false
+  },
+  "action": {
+    "type": "cleanse",
+    "rules": [
+      { "id": "trim-whitespace", "type": "normalise", "version": "1.0.0", "fields": ["first_name", "last_name", "email"] },
+      { "id": "email-lowercase", "type": "normalise", "version": "1.0.0", "fields": ["email"] },
+      { "id": "phone-e164", "type": "normalise", "version": "2.1.0", "fields": ["phone"], "config": { "default_region": "US" } },
+      { "id": "postal-usps", "type": "normalise", "version": "1.4.0", "fields": ["address_line1", "postal_code"] },
+      { "id": "email-deliverable", "type": "validate", "version": "1.2.0", "fields": ["email"] },
+      { "id": "contact-merge", "type": "merge", "version": "3.0.0" }
+    ],
+    "matching": {
+      "blocking_keys": ["postal_code", "email_domain", "last_name_soundex"],
+      "comparators": [
+        { "field": "email", "method": "exact", "weight": 0.45 },
+        { "field": "phone", "method": "exact", "weight": 0.25 },
+        { "field": "last_name", "method": "jaro_winkler", "weight": 0.15 },
+        { "field": "address_line1", "method": "token_set_ratio", "weight": 0.15 }
+      ],
+      "auto_merge_above": 0.97,
+      "review_below": 0.85
+    },
+    "survivorship": [
+      { "field": "email", "policy": "most_recent" },
+      { "field": "phone", "policy": "most_complete" },
+      { "field": "address_line1", "policy": "highest_trust_source" },
+      { "field": "company_name", "policy": "longest_value" }
+    ],
+    "golden_dataset_ref": "s3://sweeps-fixtures/contacts/golden@v7"
+  },
+  "notifications": { "on": ["failed", "dlq_threshold", "approval_required"], "channels": ["slack://data-platform"] }
+}

@@ -1,0 +1,52 @@
+{
+  "spec_version": "1",
+  "id": "erase-dsar-subject",
+  "name": "DSAR subject erasure — destruction phase",
+  "description": "Acts only on the result set of an approved discovery run. Two approvers, full verification, certificate issued.",
+  "mode": "erase",
+  "owner": "privacy-ops",
+  "source": {
+    "connector": "data-map",
+    "auth_ref": "vault://sweeps/data-map#token"
+  },
+  "scope": {
+    "strategy": "full",
+    "partition_by": "system",
+    "pushdown_required": true
+  },
+  "limits": {
+    "batch_size": 100,
+    "concurrency": 8,
+    "max_records_matched": 5000,
+    "max_mutations": 5000,
+    "max_dlq_rate_pct": 0
+  },
+  "safety": {
+    "dry_run_required": true,
+    "dry_run_max_age_hours": 72,
+    "approvals_required": 2,
+    "divergence_tolerance_pct": 5
+  },
+  "action": {
+    "type": "erase",
+    "phase": "destruction",
+    "selector": {
+      "subject_ref": "subject:0f3c9c1a-2b77-4c1e-9a1e-6c4a0d6f2b11",
+      "identifiers": { "email": ["hashed:9f2b..."], "phone": ["hashed:41ad..."] }
+    },
+    "methods": {
+      "*": "hard_delete",
+      "warehouse.events": "anonymise",
+      "archive.cold-storage": "crypto_shred"
+    },
+    "propagate_to": ["replicas", "caches", "search_index", "warehouse", "backups"],
+    "legal_hold_check": true,
+    "verification": "required",
+    "certificate": { "issue": true, "deliver_to": ["privacy-ops@bigheavy.dev"] },
+    "deadline": { "regime": "gdpr", "due_at": "2026-09-15T00:00:00Z" }
+  },
+  "notifications": {
+    "on": ["approval_required", "failed", "paused", "deadline_risk"],
+    "channels": ["slack://privacy-ops", "email://privacy-ops@bigheavy.dev"]
+  }
+}
