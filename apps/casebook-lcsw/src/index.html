@@ -689,9 +689,15 @@ const catLabel = c => (CATS[c]||{}).label || c;
 
 /* ---------------- storage (degrades to memory) ---------------- */
 const mem = {};
+/* Every app on the hub is served from one origin, so a bare "cb.sched" would have
+   two apps overwriting each other's drill schedule and stats — card ids start at
+   c000 in all of them, so the collision is silent and total. Keys are scoped to
+   the app id here rather than at each call site. Apps shipped standalone lived on
+   their own origin, so there is no shared history to migrate. */
+const NS = k => k.startsWith("cb.") ? "cb." + (window.BH_APP_ID || "app") + "." + k.slice(3) : k;
 const store = {
-  get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):(k in mem?mem[k]:d);}catch(e){ return k in mem?mem[k]:d; } },
-  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ mem[k]=v; } }
+  get(k,d){ k=NS(k); try{ const v=localStorage.getItem(k); return v?JSON.parse(v):(k in mem?mem[k]:d);}catch(e){ return k in mem?mem[k]:d; } },
+  set(k,v){ k=NS(k); try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ mem[k]=v; } }
 };
 
 /* ---------------- app state ---------------- */
@@ -1535,7 +1541,7 @@ if (quizCard) {
     if (!item) return;
 
     // Deduplicate: check if we already recorded this item in this render
-    const key = "cb.lastRecorded";
+    const key = "cb." + (window.BH_APP_ID || "app") + ".lastRecorded";
     if (sessionStorage.getItem(key) === item.id) return;
     sessionStorage.setItem(key, item.id);
 

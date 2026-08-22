@@ -4,6 +4,8 @@
    multi-gigabyte cache, and duplicating it here would double the disk cost. */
 
 const VERSION = "forge-management-v1b";
+// Cache-name prefix for this app, so activation never touches a sibling's cache.
+const SCOPE = VERSION.replace(/-v[^-]*$/, "") + "-v";
 const SHELL = [
   "./",
   "./index.html",
@@ -40,7 +42,11 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k))))
+      // Only this app's own old caches. Every app on the hub shares one origin and
+      // one CacheStorage, so deleting everything that is not VERSION would take the
+      // other nine offline each time this one activates.
+      .then(keys => Promise.all(
+        keys.filter(k => k !== VERSION && k.startsWith(SCOPE)).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });

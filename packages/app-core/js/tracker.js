@@ -4,20 +4,25 @@
 
 import { getClient, getUser } from "./supabase-client.js";
 
-const QUEUE_KEY = "cb.syncQueue";
-const HISTORY_KEY = "cb.history";
+/* Keys are namespaced per app. Every app numbers its cards and questions from
+   c000 and q001, so a shared key would have Keystone's "Real Property" and
+   Casebook's "Person-in-environment" both claiming c000 — and on one domain
+   they would overwrite each other's progress. */
+const APP = () => (typeof window !== "undefined" && window.BH_APP_ID) || "app";
+const QUEUE_KEY = () => `cb.${APP()}.syncQueue`;
+const HISTORY_KEY = () => `cb.${APP()}.history`;
 
 // ---- local storage helpers ----
 
 function getQueue() {
-  try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]"); }
+  try { return JSON.parse(localStorage.getItem(QUEUE_KEY()) || "[]"); }
   catch { return []; }
 }
 function setQueue(q) {
-  try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); } catch {}
+  try { localStorage.setItem(QUEUE_KEY(), JSON.stringify(q)); } catch {}
 }
 function getHistory() {
-  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); }
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY()) || "[]"); }
   catch { return []; }
 }
 function pushHistory(r) {
@@ -25,7 +30,7 @@ function pushHistory(r) {
   h.push(r);
   // keep last 2000 locally
   if (h.length > 2000) h.splice(0, h.length - 2000);
-  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); } catch {}
+  try { localStorage.setItem(HISTORY_KEY(), JSON.stringify(h)); } catch {}
 }
 
 // ---- public API ----
