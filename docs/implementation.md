@@ -17,6 +17,7 @@ to run it, and where the code knowingly departs from the requirements.
 | Vault-referenced credentials (R1.8) | `sweeper/secrets.py` |
 | Fake connector, fault injection, golden fixtures (R1.9) | `sweeper/connectors/memory.py`, `tests/` |
 | Mode A: landing zone, parser versioning, change detection, schema contract, dedupe, politeness | `sweeper/collect/` |
+| Mode A: registry ingest, partial-row tolerance | `sweeper/collect/parsers.py`, `examples/specs/collect-ca-broker-registry.json` |
 | Mode C: rule library, blocking + scoring, review queue, survivorship, rollback | `sweeper/cleanse/`, `sweeper/rollback.py` |
 
 Mode B (`erase`) is **not** built. A spec with `mode: erase` validates against
@@ -27,7 +28,7 @@ silently doing nothing. See `docs/broker-removal.md` for what it needs.
 
 ```sh
 pip install -e ".[dev]"
-python -m pytest                     # 93 tests
+python -m pytest                     # 118 tests
 python -m sweeper registry           # connectors, parsers, rules
 ```
 
@@ -55,6 +56,68 @@ The demo cleanse run exercises every interesting path: six records normalised,
 one high-confidence pair auto-merged, one uncertain pair parked in the review
 queue, and a rollback that restores all seven rows to their seeded state
 including re-inserting the record the merge deleted.
+
+## Registry ingest (the broker target list)
+
+`examples/specs/collect-ca-broker-registry.json` fetches the CalPrivacy data
+broker registry CSV and lands it as canonical broker records — the target list
+every removal workflow in `docs/broker-removal.md` depends on. Step 1 of that
+document's build order.
+
+`examples/demo/registry-from-file.json` runs the same parser and the same
+destination contract against a CSV already on disk. Use it when the runner
+cannot reach the registry host, or to re-parse an old export after a parser
+fix (A8).
+
+```sh
+python -m sweeper --db build/state.db dry-run examples/demo/registry-from-file.json --actor alice
+python -m sweeper --db build/state.db apply  examples/demo/registry-from-file.json \
+    --based-on <dry-run-id> --actor alice
+```
+
+**The column names are not verified.** The registry's CSV headers are not a
+published contract, and this sandbox's egress proxy blocks `cppa.ca.gov`, so
+the mapping in `REGISTRY_ALIASES` is built from plausible spellings rather than
+from the real file. That shaped the design more than anything else:
+
+- Every canonical field accepts several spellings, so a rename is usually a
+  no-op (`test_a_renamed_registry_column_does_not_lose_the_ingest`).
+- Unrecognised columns are preserved under `extra`, never dropped. A growing
+  `extra` is the signal to extend the alias map.
+- Exactly one thing is fatal: no column maps to the broker name. That failure
+  names every header it saw, so fixing it is one look, not an investigation.
+- A row with no name is *one bad row*, not a broken file — it is emitted and
+  rejected by the destination contract, which dead-letters it individually.
+
+**Before the first live run**, confirm two things I could not: the registry
+year in the URL (the filename is year-stamped and registration runs each
+January), and that `cppa.ca.gov/robots.txt` permits the path — if it does not,
+the connector refuses the fetch by design, and the file-based spec is the
+supported route.
+
+Note that the SQLite destination types every column `TEXT`, so the three
+boolean disclosure flags land as `'1'`/`'0'`. A typed destination fixes that;
+the parser emits real booleans.
+
+### Partial-row handling (new)
+
+Registry ingest forced a change to mode A. A payload that yields thousands of
+rows used to be all-or-nothing: one row failing the destination contract sent
+the whole file to the DLQ. Now:
+
+- Rows failing the contract are dead-lettered **individually**, keyed
+  `<record>#row<n>`, and the good rows are still written.
+- Above `action.max_row_rejection_pct` (default 10) the whole record fails
+  instead — because a payload that is mostly bad means the source format
+  changed, and writing the remainder would be worse than failing.
+- Either way the run says what happened: the rejection count and the ceiling
+  appear in the run notes. There is no quiet middle.
+- Row rejections deliberately do **not** bump the `failed` counter, which
+  drives the record-level DLQ-rate guard. Counting rows there would make that
+  rate meaningless.
+
+Pipelines reach this through `Committer.dead_letter`, handed to them by
+`Pipeline.attach(committer)` before the first record.
 
 ## Deliberate departures
 

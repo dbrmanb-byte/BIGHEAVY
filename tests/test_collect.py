@@ -127,7 +127,53 @@ def test_schema_violation_goes_to_the_dlq_not_the_table(engine, collect_body, tm
 
     assert result.counters["matched"] == 0
     dlq = engine.store.dlq(result.run_id)
-    assert len(dlq) == 1 and "schema violation" in dlq[0]["error"]
+    # Every row in this payload is bad, so the whole record fails rather than
+    # writing nothing and reporting success.
+    assert len(dlq) == 1 and "rows rejected" in dlq[0]["error"]
+    assert "greater than the maximum" in dlq[0]["error"]
+
+
+def test_a_few_bad_rows_are_dead_lettered_and_the_rest_are_written(engine, collect_body, tmp_path):
+    """A 500-row file must not be lost to three bad rows (nor silently trimmed)."""
+    root = tmp_path / "pages"
+    root.mkdir()
+    good = "".join(
+        f'<div class="listing" data-id="L-{i}"><span class="name">P{i}</span>'
+        f'<span class="age">3{i}</span></div>'
+        for i in range(9)
+    )
+    bad = '<div class="listing" data-id="L-X"><span class="name">Y</span><span class="age">900</span></div>'
+    (root / "mixed.html").write_text(good + bad)
+
+    spec = spec_for(collect_body, root, tmp_path, max_row_rejection_pct=20)
+    result = engine.run(spec, dry_run=True, initiated_by="alice")
+
+    assert result.ok
+    assert result.counters["matched"] == 1, "the good rows still form a match"
+    assert result.pipeline_stats["rows_rejected"] == 1
+    dlq = engine.store.dlq(result.run_id)
+    assert len(dlq) == 1 and dlq[0]["error_class"] == "RowRejected"
+    assert dlq[0]["source_record_id"] == "mixed.html#row9"
+    # A rejection is never silent: the run says how many and against what ceiling.
+    assert any("1/10 rows rejected" in note for note in result.notes)
+    assert result.counters["failed"] == 0, "row rejections must not distort the DLQ rate"
+
+
+def test_too_many_bad_rows_fails_the_whole_record(engine, collect_body, tmp_path):
+    root = tmp_path / "pages"
+    root.mkdir()
+    rows = "".join(
+        f'<div class="listing" data-id="L-{i}"><span class="name">P{i}</span>'
+        f'<span class="age">{"900" if i % 2 else "40"}</span></div>'
+        for i in range(10)
+    )
+    (root / "mostly-bad.html").write_text(rows)
+
+    spec = spec_for(collect_body, root, tmp_path, max_row_rejection_pct=10)
+    result = engine.run(spec, dry_run=True, initiated_by="alice")
+
+    assert result.counters["matched"] == 0
+    assert "source format has probably changed" in engine.store.dlq(result.run_id)[0]["error"]
 
 
 def test_missing_dedupe_key_field_is_dead_lettered(engine, collect_body, tmp_path):

@@ -65,6 +65,12 @@ class CollectPipeline(Pipeline):
             {"table": dest_cfg.get("table", "collected"), "key": "_key", **dest_cfg.get("config", {})},
         )
 
+        # A payload that yields many rows should not be all-or-nothing on a few
+        # bad ones — but a payload that is mostly bad means the source format
+        # changed, and writing the remainder would be worse than failing (A7).
+        self.max_row_rejection_pct = float(action.get("max_row_rejection_pct", 10))
+        self._committer: Committer | None = None
+
         dedupe = action.get("dedupe") or {}
         self.dedupe_key: list[str] = dedupe.get("key") or []
         self.conflict_policy: str = dedupe.get("conflict_policy", "last_wins")
@@ -76,6 +82,9 @@ class CollectPipeline(Pipeline):
         )
 
         self._validator = self._build_validator()
+
+    def attach(self, committer: Committer) -> None:
+        self._committer = committer
 
     def _build_validator(self) -> Any:
         import jsonschema
@@ -107,25 +116,32 @@ class CollectPipeline(Pipeline):
             raise RecordError(f"parse failed ({self.parser_name}@{self.parser_version}): {exc}") from exc
 
         prepared: list[dict[str, Any]] = []
-        problems: list[str] = []
+        rejected: list[tuple[int, dict[str, Any], str]] = []
         for index, row in enumerate(rows):
             row = dict(row)
             row.setdefault("_source_record_id", record.id)
             row["_parser"] = f"{self.parser_name}@{self.parser_version}"
             row["_content_hash"] = digest
-            row["_key"] = self._dedupe_key_for(row, record.id, index)
+            try:
+                row["_key"] = self._dedupe_key_for(row, record.id, index)
+            except RecordError as exc:
+                rejected.append((index, row, str(exc)))
+                continue
             errors = sorted(self._validator.iter_errors(row), key=lambda e: list(e.path))
             if errors:
-                problems.extend(
-                    f"row {index} {'/'.join(str(p) for p in e.path) or '<root>'}: {e.message}"
-                    for e in errors
-                )
+                # Schema violations go to the DLQ, never to the destination (A7).
+                rejected.append((
+                    index,
+                    row,
+                    "; ".join(
+                        f"{'/'.join(str(p) for p in e.path) or '<root>'}: {e.message}"
+                        for e in errors[:3]
+                    ),
+                ))
                 continue
             prepared.append(row)
 
-        if problems:
-            # Schema violations go to the DLQ, never to the destination (A7).
-            raise RecordError("destination schema violation: " + "; ".join(problems[:5]))
+        self._report_rejected(record.id, rejected, total=len(rows))
 
         return Decision(
             record_id=record.id,
@@ -137,6 +153,34 @@ class CollectPipeline(Pipeline):
             carry={"raw": record.raw, "meta": meta, "rows": prepared, "digest": digest},
             system=self.system,
         )
+
+    def _report_rejected(
+        self, record_id: str, rejected: list[tuple[int, dict[str, Any], str]], total: int
+    ) -> None:
+        """Dead-letter bad rows individually, or fail the record if most are bad."""
+        if not rejected:
+            return
+        rate = 100.0 * len(rejected) / total if total else 100.0
+        if rate > self.max_row_rejection_pct:
+            raise RecordError(
+                f"{len(rejected)}/{total} rows rejected ({rate:.0f}%), over the "
+                f"{self.max_row_rejection_pct:.0f}% ceiling — the source format has probably "
+                f"changed. First problem: {rejected[0][2]}"
+            )
+        self.stats.bump("rows_rejected", len(rejected))
+        for index, row, problem in rejected:
+            if self._committer is not None:
+                self._committer.dead_letter(
+                    f"{record_id}#row{index}",
+                    {"row": row, "problem": problem},
+                    problem,
+                    "RowRejected",
+                )
+        if self._committer is not None:
+            self._committer.note(
+                f"{record_id}: {len(rejected)}/{total} rows rejected and dead-lettered "
+                f"({rate:.1f}%, ceiling {self.max_row_rejection_pct:.0f}%)"
+            )
 
     def _dedupe_key_for(self, row: dict[str, Any], record_id: str, index: int) -> str:
         if not self.dedupe_key:

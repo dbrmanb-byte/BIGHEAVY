@@ -167,6 +167,16 @@ class RunContext:
             self.counters.bump("reviewed")
         return self.engine.store.add_review_task(self.run_id, rule_id, score, candidates, proposal)
 
+    def dead_letter(self, record_id: str, payload: Any, error: str, error_class: str) -> int:
+        """Report a sub-record failure without failing the record.
+
+        Deliberately does not bump `failed`: that counter drives the DLQ-rate
+        guard, which is measured per record scanned. Counting rows there would
+        make the rate meaningless. Pipelines apply their own row-level
+        threshold instead.
+        """
+        return self.engine.store.add_dlq(self.run_id, record_id, payload, error, error_class)
+
     # ----------------------------------------------------- safety caps
 
     def _check_match_caps(self, matched: int) -> None:
@@ -364,6 +374,7 @@ class Engine:
             counters = Counters()
 
         ctx = RunContext(self, spec, run_id, dry_run, counters, dry_matched)
+        pipeline.attach(ctx)
         self.store.start_run(run_id)
         log.info("run %s started: %s dry_run=%s", run_id, spec.describe(), dry_run)
 

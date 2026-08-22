@@ -72,6 +72,8 @@ class Store:
 
     def __init__(self, path: str | Path = ":memory:") -> None:
         self.path = str(path)
+        if self.path != ":memory:":
+            Path(self.path).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()
         self._conn = sqlite3.connect(self.path, check_same_thread=False)
         self._conn.row_factory = sqlite3.Row

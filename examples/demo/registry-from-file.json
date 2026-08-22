@@ -1,0 +1,29 @@
+{
+  "spec_version": "1",
+  "id": "demo-registry-from-file",
+  "name": "Demo: registry ingest from a downloaded CSV",
+  "description": "Same parser and destination contract as the live spec, reading a CSV already on disk. Use this when the registry host is unreachable from the runner, or to re-parse an old export after a parser fix.",
+  "mode": "collect",
+  "owner": "privacy-eng",
+  "source": {
+    "connector": "filesystem",
+    "system": "registry.ca-cppa",
+    "config": { "root": "examples/demo/registry", "glob": "*.csv" }
+  },
+  "scope": { "strategy": "full" },
+  "limits": { "batch_size": 5, "concurrency": 1, "max_dlq_rate_pct": 100 },
+  "safety": { "dry_run_required": true, "approvals_required": 0 },
+  "action": {
+    "type": "collect",
+    "landing_zone": { "bucket": "build/registry-landing", "retention_days": 3650 },
+    "parser": { "name": "ca-data-broker-registry", "version": "1.0.0" },
+    "destination": {
+      "connector": "sqlite-table",
+      "table": "data_broker",
+      "schema_ref": "data_broker@1",
+      "config": { "path": "build/registry.db", "key": "_key" }
+    },
+    "dedupe": { "key": ["registry", "broker_key"], "conflict_policy": "last_wins" },
+    "max_row_rejection_pct": 20
+  }
+}

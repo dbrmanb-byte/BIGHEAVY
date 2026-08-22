@@ -18,7 +18,7 @@ rather than silently doing nothing.
 
 ```sh
 pip install -e ".[dev]"
-python -m pytest                  # 93 tests
+python -m pytest                  # 118 tests
 python -m sweeper registry        # connectors, parsers, rules
 ```
 
@@ -49,7 +49,7 @@ approved by someone other than the person running it.
 | `sweeper/cli.py` | Control surface |
 | `schemas/` | Destination contracts for mode A |
 | `examples/demo/` | Runnable specs and fixtures (offline) |
-| `examples/specs/` | Production-shaped specs, one per mode |
+| `examples/specs/` | Production-shaped specs, including the CA broker-registry ingest |
 
 ## Documents
 

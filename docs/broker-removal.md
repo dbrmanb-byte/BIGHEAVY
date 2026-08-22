@@ -125,7 +125,12 @@ Under the CCPA framework the app must:
 
 ## 6. Build order
 
-1. Broker registry ingest (Mode A) — CA and VT registries.
+1. ~~Broker registry ingest (Mode A) — CA and VT registries.~~ **Built** for
+   California: `examples/specs/collect-ca-broker-registry.json`, with an
+   offline variant at `examples/demo/registry-from-file.json`. The parser is
+   alias-driven, so the Vermont export is a mapping change rather than a new
+   parser. Caveats and what to confirm before the first live run are in
+   [`docs/implementation.md`](implementation.md).
 2. Pre-removal listing snapshot per subject (Mode A) — the verification baseline.
 3. DROP submission as an authorized agent, with the consent artifact.
 4. Long-lived state machine + human-in-the-loop tasks (B-R1, B-R2).

@@ -461,6 +461,13 @@
             }
           },
           "description": "Required for web sources; a host not on the allowlist is rejected (A5)."
+        },
+        "max_row_rejection_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 10,
+          "description": "Rows failing the destination contract are dead-lettered individually up to this share of the payload; above it the whole record fails, because that means the source format changed."
         }
       }
     },

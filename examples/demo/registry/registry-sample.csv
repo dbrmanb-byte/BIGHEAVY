@@ -1,0 +1,6 @@
+Data Broker Name,Registration Number,Website,Privacy Policy,Opt-Out URL,Email,Data of Minors,Precise Geolocation,Reproductive Health Care Data,Some Column We Have Not Mapped
+Acme Data LLC,DB-1001,https://acme.test,https://acme.test/privacy,https://acme.test/opt-out,privacy@acme.test,Yes,Yes,No,alpha
+  Beacon Analytics, DB-1002 ,https://beacon.test,https://beacon.test/privacy,https://beacon.test/do-not-sell,privacy@beacon.test,No,Yes,No,beta
+People Finder Co,DB-1003,https://peoplefinder.test,,https://peoplefinder.test/optout,support@peoplefinder.test,No,No,No,
+Unregistered Slug Inc,,https://slug.test,,,,No,No,No,gamma
+,DB-9999,https://nameless.test,,,,No,No,No,delta

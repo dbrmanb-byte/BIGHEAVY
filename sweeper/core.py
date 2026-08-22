@@ -52,6 +52,7 @@ class Committer(Protocol):
     def commit(self, decision: Decision, apply_fn: Callable[[], None] | None = None) -> bool: ...
     def review(self, rule_id: str, score: float | None, candidates: Any, proposal: Any) -> int: ...
     def note(self, message: str) -> None: ...
+    def dead_letter(self, record_id: str, payload: Any, error: str, error_class: str) -> int: ...
 
 
 @dataclass
@@ -67,6 +68,15 @@ class Pipeline(Protocol):
 
     system: str
     stats: PipelineStats
+
+    def attach(self, committer: Committer) -> None:
+        """Handed the committer once, before the first record.
+
+        A pipeline that finds sub-record problems (one bad row inside a file
+        of thousands) needs somewhere to report them without failing the
+        whole record.
+        """
+        return None
 
     def plan(self, record: Record) -> Decision: ...
     def apply(self, decision: Decision) -> None: ...

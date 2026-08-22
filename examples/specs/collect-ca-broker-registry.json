@@ -1,0 +1,47 @@
+{
+  "spec_version": "1",
+  "id": "collect-ca-broker-registry",
+  "name": "California data broker registry ingest",
+  "description": "Fetches the CalPrivacy data broker registry CSV and lands it as canonical broker records. This is the target list every removal workflow depends on. CONFIRM the registry year in the URL before running — the file name is year-stamped and registration runs each January.",
+  "mode": "collect",
+  "owner": "privacy-eng",
+  "source": {
+    "connector": "http-listing",
+    "system": "registry.ca-cppa",
+    "config": {
+      "timeout_s": 60,
+      "targets": [
+        {
+          "id": "ca-registry-2026",
+          "url": "https://cppa.ca.gov/data_broker_registry/registry2026.csv",
+          "registry": "ca",
+          "registry_year": "2026"
+        }
+      ]
+    }
+  },
+  "scope": { "strategy": "full" },
+  "limits": { "batch_size": 1, "concurrency": 1, "rate_per_second": 0.2, "max_dlq_rate_pct": 100 },
+  "safety": { "dry_run_required": true, "approvals_required": 0 },
+  "schedule": { "cron": "0 9 * * 1", "timezone": "America/Los_Angeles", "overlap_policy": "skip" },
+  "action": {
+    "type": "collect",
+    "landing_zone": { "bucket": "build/registry-landing", "retention_days": 3650 },
+    "parser": { "name": "ca-data-broker-registry", "version": "1.0.0" },
+    "destination": {
+      "connector": "sqlite-table",
+      "table": "data_broker",
+      "schema_ref": "data_broker@1",
+      "config": { "path": "build/registry.db", "key": "_key" }
+    },
+    "dedupe": { "key": ["registry", "broker_key"], "conflict_policy": "last_wins" },
+    "max_row_rejection_pct": 5,
+    "politeness": {
+      "respect_robots": true,
+      "crawl_delay_ms": 5000,
+      "user_agent": "BigHeavySweeper/0.1 (+https://bigheavy.dev/bot)",
+      "host_allowlist": ["cppa.ca.gov"]
+    }
+  },
+  "notifications": { "on": ["failed", "dlq_threshold"], "channels": ["slack://privacy-eng-alerts"] }
+}

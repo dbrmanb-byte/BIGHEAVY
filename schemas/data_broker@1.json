@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "data_broker@1",
+  "description": "Destination contract for state data-broker registry ingest. Unrecognised registry columns are preserved under `extra` rather than dropped, so a column rename degrades to 'it moved' instead of silent loss.",
+  "type": "object",
+  "required": ["_key", "_source_record_id", "_parser", "_content_hash", "registry", "broker_name", "broker_key"],
+  "properties": {
+    "_key": { "type": "string", "minLength": 1 },
+    "_source_record_id": { "type": "string" },
+    "_parser": { "type": "string" },
+    "_content_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "_row_number": { "type": "integer", "minimum": 1 },
+
+    "registry": { "type": "string", "minLength": 2, "description": "Source registry, e.g. 'ca' or 'vt'." },
+    "registry_year": { "type": "string" },
+    "broker_key": { "type": "string", "minLength": 1, "description": "Registration id where the registry publishes one, otherwise a slug of the name." },
+    "registration_id": { "type": "string" },
+
+    "broker_name": { "type": "string", "minLength": 1 },
+    "alternate_names": { "type": "string" },
+
+    "website_url": { "type": "string" },
+    "privacy_policy_url": { "type": "string" },
+    "opt_out_url": { "type": "string", "description": "The surface a removal sweep would actually target." },
+    "email": { "type": "string" },
+    "phone": { "type": "string" },
+
+    "street_address": { "type": "string" },
+    "city": { "type": "string" },
+    "state": { "type": "string" },
+    "postal_code": { "type": "string" },
+
+    "collects_minors_data": { "type": "boolean" },
+    "collects_precise_geolocation": { "type": "boolean" },
+    "collects_reproductive_health_data": { "type": "boolean" },
+
+    "notes": { "type": "string" },
+    "extra": {
+      "type": "object",
+      "description": "Registry columns with no canonical mapping yet. A growing `extra` is the signal to extend REGISTRY_ALIASES."
+    }
+  },
+  "additionalProperties": false
+}
