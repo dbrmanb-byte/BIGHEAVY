@@ -9,6 +9,7 @@ const SCOPE = VERSION.replace(/-v[^-]*$/, "") + "-v";
 const SHELL = [
   "./",
   "./index.html",
+  "./config.js",
   "./content-free.js",
   "./manifest.webmanifest",
   "./js/supabase-client.js",

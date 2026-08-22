@@ -114,6 +114,14 @@ if [ -f "apps/$SLUG/src/sw.js" ]; then
   else ok "every imported module is in the shell"; fi
 fi
 
+# Backend wiring. Free-only is a legitimate state and passes; a half-configured
+# build or a secret key in the bundle is not, and neither throws at runtime.
+if node "$ROOT/scripts/check-config.mjs" "$SLUG" >/dev/null 2>&1; then
+  ok "backend config — $(node "$ROOT/scripts/check-config.mjs" "$SLUG" --summary)"
+else
+  bad "backend config is inconsistent — run: node scripts/check-config.mjs $SLUG"
+fi
+
 echo
 if [ "$fail" -eq 0 ]; then echo "preflight PASSED — safe to deploy $SLUG"; exit 0
 else echo "preflight FAILED — read the failures above, do not re-run to get past them"; exit 1; fi

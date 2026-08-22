@@ -657,11 +657,12 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
   </div>
 </aside>
 
+<!-- Backend config, generated at build time from the environment. The repo is
+     public, so the values are never in source; scripts/build-site.mjs writes
+     this file into dist from BH_SUPABASE_URL and BH_SUPABASE_KEY. Missing means
+     free-only, which is a working state, not a broken one. -->
+<script src="./config.js"></script>
 <script>
-// ---- Supabase config: replace with your project values ----
-// Get these from: Supabase Dashboard → Settings → API
-window.CASEBOOK_SUPABASE_URL = "";  // e.g. "https://xxxx.supabase.co"
-window.CASEBOOK_SUPABASE_KEY = "";  // anon/public key
 
 // ---- App identity ----
 // Pro covers one app, so the tier check needs to know which app this is.
@@ -1382,8 +1383,8 @@ window.Content = Content;
 const $ = id => document.getElementById(id);
 
 // ---- Config: set these from your Supabase project ----
-const SUPABASE_URL = window.CASEBOOK_SUPABASE_URL || "";
-const SUPABASE_KEY = window.CASEBOOK_SUPABASE_KEY || "";
+const SUPABASE_URL = window.BH_SUPABASE_URL || "";
+const SUPABASE_KEY = window.BH_SUPABASE_KEY || "";
 
 let sbReady = false;
 
@@ -1415,7 +1416,7 @@ $("userBtn").onclick = () => {
     openAuth();
   } else {
     // no Supabase configured
-    alert("Backend not configured. Set CASEBOOK_SUPABASE_URL and CASEBOOK_SUPABASE_KEY.");
+    alert("Accounts are not switched on for this build — everything on the free tier still works.");
   }
 };
 $("authClose").onclick = closeAuth;
