@@ -544,22 +544,22 @@
         "casebook-lcsw",
         "casebook-lbsw"
       ],
-      "question": "Social work licensing runs in levels. Which one are you sitting?",
-      "note": "ASWB writes the exams; your state board decides which one you sit and what it calls the licence — the same three letters mean different levels in different states, so go by your degree and your supervised hours rather than by the title. Your board's site says it outright.",
+      "question": "Which exam has your board told you to sit?",
+      "note": "ASWB writes the exams; your state board decides which one you sit and what it calls the licence. The same three letters mean different levels in different states, so this asks which exam you are taking — not which one you qualify for. If your board has not told you yet, say so below.",
       "options": [
         {
-          "label": "Bachelor's level",
-          "detail": "I have or am finishing a BSW.",
+          "label": "Bachelors",
+          "detail": "Usually the exam taken after a BSW. Your board confirms it.",
           "picks": "casebook-lbsw"
         },
         {
-          "label": "Master's level",
-          "detail": "I have or am finishing an MSW, and have not completed post-degree supervised hours.",
+          "label": "Masters",
+          "detail": "Usually the exam taken after an MSW, before post-degree supervised hours. Your board confirms it.",
           "picks": "casebook"
         },
         {
-          "label": "Clinical level",
-          "detail": "I have an MSW plus post-degree supervised clinical hours — diagnosis, therapy, direct practice.",
+          "label": "Clinical",
+          "detail": "Usually the exam taken after an MSW plus post-degree supervised clinical hours — diagnosis, therapy, direct practice. Your board confirms it.",
           "picks": "casebook-lcsw"
         }
       ],
@@ -567,16 +567,22 @@
         {
           "id": "advanced-generalist",
           "label": "Advanced Generalist",
-          "detail": "I have an MSW plus post-degree supervised hours in macro work — administration, policy, community organising, supervision.",
-          "says": "Advanced Generalist and Clinical sit at the same level: they are a fork, not a ladder, and yours is the macro one. None of these three apps is written for it. Casebook LMSW shares the human development, diversity and ethics domains, but it carries none of the program development, supervision or administration content that Advanced Generalist weights heavily — so it is a partial fit at best. Read the ASWB content outline for that category before you rely on any of this."
+          "detail": "Usually the exam taken after an MSW plus post-degree supervised hours in macro work — administration, policy, community organising, supervision.",
+          "says": "Advanced Generalist and Clinical sit at the same level: they are a fork, not a ladder, and yours is the macro one. None of these three apps is written for Advanced Generalist. There is real overlap with Casebook LMSW in the human development and ethics material, but it carries none of the program development, supervision or administration content — compare it against the ASWB content outline for that category and judge for yourself before relying on it."
         },
         {
           "id": "associate",
           "label": "Associate",
-          "detail": "I have an associate degree in social work, or credits toward a BSW.",
-          "says": "The Associate exam is used by only a few jurisdictions and none of these apps is written for it. Casebook LBSW is the closest on content, since the bachelor's-level domains overlap. Before you buy anything, check two things with your board: that the Associate exam is the one they actually require of you, and how far its outline differs from the bachelor's one."
+          "detail": "Used by only a few jurisdictions, usually after an associate degree in social work or credits toward a BSW.",
+          "says": "None of these apps is written for the Associate exam. Casebook LBSW is the nearest on content, since the bachelor's-level material overlaps. Before you buy anything, check two things with your board: that the Associate exam is the one it requires of you, and how far its outline differs from the bachelor's one."
         }
-      ]
+      ],
+      "unsure": {
+        "id": "unsure",
+        "label": "My board has not told me yet",
+        "detail": "Or I am not certain which of these applies to me.",
+        "says": "Then find that out before you buy anything. Your board's website states which exam it requires, and it takes about five minutes. It is worth the five minutes: the levels test different material, and studying the wrong one is wasted work. Nothing here expires while you check — the free tier is open on all three apps, with the full glossary, unlimited drills and a ten-question practice set, no account and no card. Come back when you know."
+      }
     },
     {
       "id": "cloud-or-systems",

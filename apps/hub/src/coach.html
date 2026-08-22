@@ -42,13 +42,18 @@ button.go:hover{filter:brightness(1.07);}
 .opt:hover{border-color:var(--gold);}
 .opt b{display:block;font-size:15.5px;font-weight:700;margin-bottom:4px;}
 .opt span{font-family:var(--read);font-size:14.5px;line-height:1.5;color:var(--text-dim);}
-/* The two categories no app covers. Set apart from the three that resolve, so
-   nobody clicks one expecting a recommendation. */
-.opt.uncovered{border-style:dashed;}
-.opt.uncovered b::after{content:"not covered";float:right;font-family:var(--mono);font-size:9px;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:400;padding-top:4px;}
-.opt.uncovered[aria-expanded="true"]{border-color:var(--gold);border-style:solid;}
-.uncovered-says{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);
+/* Routes that answer in place rather than picking an app. Set apart from the
+   three that resolve, so nobody clicks one expecting a recommendation. */
+.opt.uncovered,.opt.dunno{border-style:dashed;}
+/* The tag is a flex item, not a float: a label that wraps to two lines on a
+   narrow screen would otherwise run underneath it. */
+.opt.uncovered b,.opt.dunno b{display:flex;justify-content:space-between;gap:12px;align-items:baseline;}
+.opt.uncovered b::after,.opt.dunno b::after{flex:0 0 auto;white-space:nowrap;font-family:var(--mono);
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:400;}
+.opt.uncovered b::after{content:"not covered";}
+.opt.dunno b::after{content:"check first";}
+.opt.uncovered[aria-expanded="true"],.opt.dunno[aria-expanded="true"]{border-color:var(--gold);border-style:solid;}
+.aside-says{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);
   border-left:2px solid var(--gold);padding:2px 0 2px 14px;margin:2px 0 4px 17px;max-width:62ch;}
 
 .pick{border-left:4px solid var(--accent,var(--gold));background:var(--ground);border-radius:6px;
@@ -113,6 +118,8 @@ button.go:hover{filter:brightness(1.07);}
 .trail em{font-style:normal;color:var(--text);}
 .alsoran{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);margin:14px 0 0;max-width:64ch;}
 .alsoran b{color:var(--text);font-weight:600;}
+.reversible{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);
+  border-left:2px solid var(--line);padding:2px 0 2px 14px;margin:16px 0 0;max-width:64ch;}
 noscript p{font-family:var(--read);font-size:16px;line-height:1.6;color:var(--text-dim);}
 </style>
 </head>
@@ -277,12 +284,20 @@ function stepNarrow() {
     <div class="opts">
       ${d.options.map(o => `<button class="opt" data-act="narrow" data-slug="${esc(o.picks)}">
         <b>${esc(o.label)}</b><span>${esc(o.detail)}</span></button>`).join("")}
-      ${(d.escapes || []).map(e => `<button class="opt uncovered" data-act="escape" data-id="${esc(e.id)}"
-        aria-expanded="${S.escape === e.id}">
-        <b>${esc(e.label)}</b><span>${esc(e.detail)}</span></button>
-        ${S.escape === e.id ? `<p class="uncovered-says">${esc(e.says)}</p>` : ""}`).join("")}
+      ${(d.escapes || []).map(e => aside(e, "uncovered")).join("")}
+      ${d.unsure ? aside(d.unsure, "dunno") : ""}
     </div>
   </div>`;
+}
+
+/* A route that answers in place instead of picking an app: the two ASWB
+   categories nothing here covers, and the one for people whose board has not
+   told them yet. */
+function aside(e, kind) {
+  const open = S.escape === e.id;
+  return `<button class="opt ${kind}" data-act="escape" data-id="${esc(e.id)}" aria-expanded="${open}">
+      <b>${esc(e.label)}</b><span>${esc(e.detail)}</span></button>
+    ${open ? `<p class="aside-says">${esc(e.says)}</p>` : ""}`;
 }
 
 /* ---------------- step 3: the recommendation ---------------- */
@@ -310,6 +325,9 @@ function stepPick(app) {
     </div>
     ${rejected.length ? `<p class="alsoran">Not the others: ${rejected.map(a =>
       `<b>${esc(a.name)}</b> — ${esc(a.coach.notFor)}`).join(" ")}</p>` : ""}
+    <p class="reversible">If this turns out to be the wrong pick, it costs you nothing: the free tier
+      opens with no account and no card, and Pro covers one app at a time and can be switched to
+      another. You are not locked into where you start.</p>
   </div>`;
 }
 

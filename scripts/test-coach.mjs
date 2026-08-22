@@ -159,10 +159,42 @@ for (const [q, label] of [["advanced generalist", "'advanced generalist'"], ["as
   const masters = sw.options.find(o => o.picks === "casebook");
   const clinical = sw.options.find(o => o.picks === "casebook-lcsw");
   const ag = sw.escapes.find(e => e.id === "advanced-generalist");
-  assert("the master's option rules out post-degree hours", /have not completed post-degree/i.test(masters.detail), masters.detail);
-  assert("the clinical option says clinical hours specifically", /supervised clinical hours/i.test(clinical.detail), clinical.detail);
+  assert("the master's route places itself before supervised hours", /before post-degree supervised hours/i.test(masters.detail), masters.detail);
+  assert("the clinical route says clinical hours specifically", /supervised clinical hours/i.test(clinical.detail), clinical.detail);
   assert("the Advanced Generalist route says macro hours", /macro/i.test(ag.detail), ag.detail);
-  assert("...and does not sell LMSW as a substitute", /partial fit/i.test(ag.says), ag.says);
+  assert("...and sends them to the outline rather than standing in for it",
+    /ASWB content outline/i.test(ag.says) && /judge for yourself/i.test(ag.says), ag.says);
+}
+
+console.log("\n  eligibility — the coach routes a stated exam, it does not rule on anyone");
+{
+  // Hour requirements vary by board, not every jurisdiction uses every category,
+  // and some have dropped the exam requirement. So the question asks which exam
+  // the visitor is taking; it must never infer that from their credentials.
+  const sw = reg.decisions.find(d => d.id === "social-work-level");
+  assert("the question asks which exam, not who you are",
+    /which exam/i.test(sw.question) && !/describes you|are you sitting\?$/i.test(sw.question), sw.question);
+  assert("the note says it is not ruling on eligibility",
+    /not which one you qualify for/i.test(sw.note), sw.note);
+
+  const routes = [...sw.options, ...sw.escapes, sw.unsure];
+  for (const r of routes) {
+    assert(`${r.label}`.padEnd(30) + " is not written as a claim about the visitor",
+      !/^(i|my) (have|am|hold)\b/i.test(r.detail), r.detail);
+  }
+  for (const o of sw.options) {
+    assert(`${o.label}`.padEnd(30) + " hedges and defers to the board",
+      /^usually\b/i.test(o.detail) && /your board confirms it/i.test(o.detail), o.detail);
+  }
+}
+{
+  // Someone who cannot answer must get a destination, not a guess.
+  const sw = reg.decisions.find(d => d.id === "social-work-level");
+  const u = sw.unsure;
+  assert("there is a route for 'I do not know yet'", !!(u && u.label && u.detail && u.says));
+  assert("...that sends them to their board", /board's website/i.test(u.says), u && u.says);
+  assert("...and does not lose them while they check", /free tier/i.test(u.says), u && u.says);
+  assert("...and picks no app on their behalf", u.picks === undefined, "unsure resolves to an app");
 }
 
 /* ---------------- hours ---------------- */
