@@ -42,6 +42,14 @@ button.go:hover{filter:brightness(1.07);}
 .opt:hover{border-color:var(--gold);}
 .opt b{display:block;font-size:15.5px;font-weight:700;margin-bottom:4px;}
 .opt span{font-family:var(--read);font-size:14.5px;line-height:1.5;color:var(--text-dim);}
+/* The two categories no app covers. Set apart from the three that resolve, so
+   nobody clicks one expecting a recommendation. */
+.opt.uncovered{border-style:dashed;}
+.opt.uncovered b::after{content:"not covered";float:right;font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:400;padding-top:4px;}
+.opt.uncovered[aria-expanded="true"]{border-color:var(--gold);border-style:solid;}
+.uncovered-says{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);
+  border-left:2px solid var(--gold);padding:2px 0 2px 14px;margin:2px 0 4px 17px;max-width:62ch;}
 
 .pick{border-left:4px solid var(--accent,var(--gold));background:var(--ground);border-radius:6px;
   padding:18px 20px;margin-bottom:14px;}
@@ -99,6 +107,9 @@ button.go:hover{filter:brightness(1.07);}
 
 .trail{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-dim);
   margin:0 0 18px;display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
+/* display:flex outranks the user agent's [hidden] rule, so without this the
+   trail keeps showing the app you just cleared. */
+.trail[hidden]{display:none;}
 .trail em{font-style:normal;color:var(--text);}
 .alsoran{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);margin:14px 0 0;max-width:64ch;}
 .alsoran b{color:var(--text);font-weight:600;}
@@ -222,7 +233,7 @@ function render() {
 
 function trail(app) {
   const el = $("trail");
-  if (!app) { el.hidden = true; return; }
+  if (!app) { el.hidden = true; el.innerHTML = ""; return; }
   el.hidden = false;
   el.innerHTML = `<em>${esc(app.name)}</em> · ${esc(Coach.sizeUp(app).hours)} hours`
     + (S.examDate ? ` · exam ${esc(S.examDate)}` : "")
@@ -266,10 +277,11 @@ function stepNarrow() {
     <div class="opts">
       ${d.options.map(o => `<button class="opt" data-act="narrow" data-slug="${esc(o.picks)}">
         <b>${esc(o.label)}</b><span>${esc(o.detail)}</span></button>`).join("")}
-      ${d.escape ? `<button class="opt" data-act="escape" data-says="${esc(d.escape.says)}">
-        <b>${esc(d.escape.label)}</b><span>Not sure this list covers you? Say so.</span></button>` : ""}
+      ${(d.escapes || []).map(e => `<button class="opt uncovered" data-act="escape" data-id="${esc(e.id)}"
+        aria-expanded="${S.escape === e.id}">
+        <b>${esc(e.label)}</b><span>${esc(e.detail)}</span></button>
+        ${S.escape === e.id ? `<p class="uncovered-says">${esc(e.says)}</p>` : ""}`).join("")}
     </div>
-    ${S.escape ? `<p class="note" style="margin:16px 0 0;border-color:var(--gold);">${esc(S.escape)}</p>` : ""}
   </div>`;
 }
 
@@ -436,7 +448,7 @@ function onAct(e) {
   if (act === "restart") { S = fresh(); sessionStorage.removeItem(STATE_KEY); return render(); }
 
   if (act === "narrow") { S.slug = el.dataset.slug; S.escape = null; S.step = "picked"; return render(); }
-  if (act === "escape") { S.escape = el.dataset.says; return render(); }
+  if (act === "escape") { S.escape = S.escape === el.dataset.id ? null : el.dataset.id; return render(); }
 
   if (act === "time") {
     S.examDate = $("d").value;

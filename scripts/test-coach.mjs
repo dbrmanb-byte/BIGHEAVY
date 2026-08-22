@@ -127,6 +127,44 @@ console.log("\n  decisions — the right question, only when it is needed");
   ok("every decision's 'among' list is live apps", badAmong, []);
 }
 
+console.log("\n  ASWB — the two categories no app covers");
+{
+  // Five ASWB categories, three apps. Advanced Generalist and Associate must
+  // reach the question and be told plainly that they are not covered — landing
+  // in the no-match branch, or worse on a confident wrong recommendation, is
+  // the failure this whole decision exists to prevent.
+  const sw = reg.decisions.find(d => d.id === "social-work-level");
+  ok("the level question carries two escapes", (sw.escapes || []).map(e => e.id).sort(),
+    ["advanced-generalist", "associate"]);
+  assert("no stale single-escape field is left behind", sw.escape === undefined, "d.escape still set");
+  for (const e of sw.escapes) {
+    assert(`${e.id}`.padEnd(20) + " has a label, a detail and an answer",
+      !!(e.label && e.detail && e.says && e.says.length > 80));
+    assert(`${e.id}`.padEnd(20) + " says outright it is not covered",
+      /not written for it|none of these/i.test(e.says), e.says);
+  }
+}
+for (const [q, label] of [["advanced generalist", "'advanced generalist'"], ["aswb associate", "'aswb associate'"]]) {
+  const hits = Coach.search(q, APPS);
+  const d = Coach.decisionFor(hits, reg.decisions);
+  assert(`${label} reaches the level question`, d && d.id === "social-work-level",
+    `hits: ${hits.map(h => h.app.slug).join(",") || "none"}`);
+  assert(`${label} is not answered with a confident pick`, hits.length > 1,
+    `resolved straight to ${hits[0] && hits[0].app.slug}`);
+}
+{
+  // The clinical/macro fork is the point of the rewrite: supervised hours alone
+  // must not read as "clinical", or every macro candidate is sent to LCSW.
+  const sw = reg.decisions.find(d => d.id === "social-work-level");
+  const masters = sw.options.find(o => o.picks === "casebook");
+  const clinical = sw.options.find(o => o.picks === "casebook-lcsw");
+  const ag = sw.escapes.find(e => e.id === "advanced-generalist");
+  assert("the master's option rules out post-degree hours", /have not completed post-degree/i.test(masters.detail), masters.detail);
+  assert("the clinical option says clinical hours specifically", /supervised clinical hours/i.test(clinical.detail), clinical.detail);
+  assert("the Advanced Generalist route says macro hours", /macro/i.test(ag.detail), ag.detail);
+  assert("...and does not sell LMSW as a substitute", /partial fit/i.test(ag.says), ag.says);
+}
+
 /* ---------------- hours ---------------- */
 
 console.log("\n  hours — the hub quotes what the app will show");
