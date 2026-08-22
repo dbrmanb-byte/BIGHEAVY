@@ -283,16 +283,22 @@ Worked examples for each mode: `examples/specs/`.
 
 ---
 
+## 5a. Implementation status
+
+Modes A and C are built on the shared core described above; mode B is specified
+only. What exists, how to run it, and every deliberate departure from these
+requirements is in [`docs/implementation.md`](implementation.md).
+
 ## 6. Phasing
 
-1. **Engine core** — spec storage/versioning, queue, workers, checkpointing,
-   idempotency, DLQ, audit tables, fake connector, fault-injection tests.
-2. **Mode C** first. It is destructive but reversible, so it exercises the
+1. ~~**Engine core** — spec storage/versioning, queue, workers, checkpointing,
+   idempotency, DLQ, audit tables, fake connector, fault-injection tests.~~ Built.
+2. ~~**Mode C** first. It is destructive but reversible, so it exercises the
    safety machinery (dry-run, diff, approval, rollback) where mistakes are
-   recoverable.
-3. **Mode A** — landing zone, parser versioning, politeness controls.
+   recoverable.~~ Built.
+3. ~~**Mode A** — landing zone, parser versioning, politeness controls.~~ Built.
 4. **Mode B** last, on proven safety machinery: data map, discovery/destruction
-   split, propagation, verification, certificates.
+   split, propagation, verification, certificates. Not started.
 
 Building B first on unproven dry-run and audit code is the single highest-risk
 sequencing choice available here.

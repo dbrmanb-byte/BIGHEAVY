@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "broker_listing@2",
+  "description": "Destination contract for mode A broker listing harvest. Rows failing this go to the DLQ, not the table.",
+  "type": "object",
+  "required": ["_key", "_source_record_id", "_parser", "_content_hash", "broker", "name"],
+  "properties": {
+    "_key": { "type": "string", "minLength": 1 },
+    "_source_record_id": { "type": "string" },
+    "_parser": { "type": "string" },
+    "_content_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "broker": { "type": "string", "minLength": 1 },
+    "listing_id": { "type": ["string", "null"] },
+    "listing_url": { "type": ["string", "null"] },
+    "source_url": { "type": ["string", "null"] },
+    "name": { "type": "string", "minLength": 1 },
+    "age": { "type": "integer", "minimum": 0, "maximum": 130 },
+    "city": { "type": "string" },
+    "state": { "type": "string" },
+    "phone": { "type": "string" },
+    "relatives": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

@@ -1,50 +1,43 @@
 {
   "spec_version": "1",
-  "id": "cleanse-contact-dedupe",
-  "name": "Contact normalise + dedupe",
-  "description": "Normalises contact fields, then merges high-confidence duplicates. Everything in the uncertainty band goes to human review.",
+  "id": "demo-cleanse-contacts",
+  "name": "Demo: normalise and dedupe contacts",
+  "description": "Runs against the SQLite table seeded by examples/demo/seed.py.",
   "mode": "cleanse",
   "owner": "data-platform",
   "source": {
     "connector": "sqlite-table",
     "system": "crm.contacts",
-    "auth_ref": "vault://sweeps/crm#dsn",
     "config": {
-      "table": "contacts"
+      "path": "build/demo-crm.db",
+      "table": "contacts",
+      "key": "id"
     }
   },
   "scope": {
-    "strategy": "incremental",
-    "watermark_field": "updated_at",
-    "partition_by": "tenant_id",
+    "strategy": "full",
     "filter": {
       "status": "active"
     },
     "pushdown_required": true
   },
   "limits": {
-    "batch_size": 500,
-    "concurrency": 16,
-    "rate_per_second": 200,
-    "max_records_matched": 2000000,
-    "max_mutations": 50000,
-    "max_dlq_rate_pct": 2
+    "batch_size": 100,
+    "concurrency": 4,
+    "max_records_matched": 10000,
+    "max_mutations": 500,
+    "max_dlq_rate_pct": 5
   },
   "safety": {
     "dry_run_required": true,
     "dry_run_max_age_hours": 24,
     "approvals_required": 1,
-    "divergence_tolerance_pct": 15,
+    "divergence_tolerance_pct": 20,
     "rollback_window_hours": 168
-  },
-  "schedule": {
-    "cron": "30 2 * * *",
-    "timezone": "UTC",
-    "overlap_policy": "skip",
-    "catchup": false
   },
   "action": {
     "type": "cleanse",
+    "on_invalid": "flag",
     "rules": [
       {
         "id": "trim-whitespace",
@@ -53,7 +46,8 @@
         "fields": [
           "first_name",
           "last_name",
-          "email"
+          "email",
+          "address_line1"
         ]
       },
       {
@@ -126,8 +120,8 @@
           "weight": 0.15
         }
       ],
-      "auto_merge_above": 0.97,
-      "review_below": 0.85
+      "auto_merge_above": 0.95,
+      "review_below": 0.25
     },
     "survivorship": [
       {
@@ -141,22 +135,7 @@
       {
         "field": "address_line1",
         "policy": "highest_trust_source"
-      },
-      {
-        "field": "company_name",
-        "policy": "longest_value"
       }
-    ],
-    "golden_dataset_ref": "s3://sweeps-fixtures/contacts/golden@v7"
-  },
-  "notifications": {
-    "on": [
-      "failed",
-      "dlq_threshold",
-      "approval_required"
-    ],
-    "channels": [
-      "slack://data-platform"
     ]
   }
 }

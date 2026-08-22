@@ -4,40 +4,86 @@
   "title": "Sweep specification",
   "description": "Declarative definition of one sweep. Stored immutably-versioned in sweep_spec.body.",
   "type": "object",
-  "required": ["spec_version", "id", "mode", "owner", "source", "scope", "limits", "safety", "action"],
+  "required": [
+    "spec_version",
+    "id",
+    "mode",
+    "owner",
+    "source",
+    "scope",
+    "limits",
+    "safety",
+    "action"
+  ],
   "additionalProperties": false,
   "properties": {
-    "spec_version": { "const": "1" },
-    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "mode": { "enum": ["collect", "erase", "cleanse"] },
-    "owner": { "type": "string", "description": "Team or person accountable for this sweep." },
-
+    "spec_version": {
+      "const": "1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "collect",
+        "erase",
+        "cleanse"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "description": "Team or person accountable for this sweep."
+    },
     "source": {
       "type": "object",
-      "required": ["connector"],
+      "required": [
+        "connector"
+      ],
       "additionalProperties": false,
       "properties": {
-        "connector": { "type": "string" },
-        "system": { "type": "string", "description": "data_map_system key this connector reads." },
+        "connector": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string",
+          "description": "data_map_system key this connector reads."
+        },
         "auth_ref": {
           "type": "string",
           "pattern": "^vault://",
           "description": "Credential reference. Inline secrets are rejected at validation."
         },
-        "config": { "type": "object" }
+        "config": {
+          "type": "object"
+        }
       }
     },
-
     "scope": {
       "type": "object",
-      "required": ["strategy"],
+      "required": [
+        "strategy"
+      ],
       "additionalProperties": false,
       "properties": {
-        "strategy": { "enum": ["full", "incremental"] },
-        "watermark_field": { "type": "string" },
-        "partition_by": { "type": "string" },
+        "strategy": {
+          "enum": [
+            "full",
+            "incremental"
+          ]
+        },
+        "watermark_field": {
+          "type": "string"
+        },
+        "partition_by": {
+          "type": "string"
+        },
         "filter": {
           "type": "object",
           "description": "Pushed to the source where the connector supports it (R1.3.4)."
@@ -50,268 +96,583 @@
       },
       "allOf": [
         {
-          "if": { "properties": { "strategy": { "const": "incremental" } }, "required": ["strategy"] },
-          "then": { "required": ["watermark_field"] }
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "incremental"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "required": [
+              "watermark_field"
+            ]
+          }
         }
       ]
     },
-
     "limits": {
       "type": "object",
-      "required": ["batch_size", "concurrency"],
+      "required": [
+        "batch_size",
+        "concurrency"
+      ],
       "additionalProperties": false,
       "properties": {
-        "batch_size": { "type": "integer", "minimum": 1, "maximum": 10000 },
-        "concurrency": { "type": "integer", "minimum": 1, "maximum": 256 },
-        "rate_per_second": { "type": "number", "exclusiveMinimum": 0 },
-        "max_records_matched": { "type": "integer", "minimum": 1 },
-        "max_mutations": { "type": "integer", "minimum": 1 },
-        "max_dlq_rate_pct": { "type": "number", "minimum": 0, "maximum": 100, "default": 5 }
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "rate_per_second": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max_records_matched": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_mutations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_dlq_rate_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 5
+        }
       }
     },
-
     "safety": {
       "type": "object",
-      "required": ["dry_run_required", "approvals_required"],
+      "required": [
+        "dry_run_required",
+        "approvals_required"
+      ],
       "additionalProperties": false,
       "properties": {
-        "dry_run_required": { "type": "boolean" },
-        "dry_run_max_age_hours": { "type": "integer", "minimum": 1, "default": 72 },
-        "approvals_required": { "type": "integer", "minimum": 0, "maximum": 5 },
-        "divergence_tolerance_pct": { "type": "number", "minimum": 0, "default": 10 },
-        "rollback_window_hours": { "type": "integer", "minimum": 1 }
+        "dry_run_required": {
+          "type": "boolean"
+        },
+        "dry_run_max_age_hours": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 72
+        },
+        "approvals_required": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "divergence_tolerance_pct": {
+          "type": "number",
+          "minimum": 0,
+          "default": 10
+        },
+        "rollback_window_hours": {
+          "type": "integer",
+          "minimum": 1
+        }
       }
     },
-
     "schedule": {
       "type": "object",
-      "required": ["cron", "timezone"],
+      "required": [
+        "cron",
+        "timezone"
+      ],
       "additionalProperties": false,
       "properties": {
-        "cron": { "type": "string" },
-        "timezone": { "type": "string" },
-        "overlap_policy": { "enum": ["skip", "queue", "cancel_previous"], "default": "skip" },
-        "catchup": { "type": "boolean", "default": false }
+        "cron": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "overlap_policy": {
+          "enum": [
+            "skip",
+            "queue",
+            "cancel_previous"
+          ],
+          "default": "skip"
+        },
+        "catchup": {
+          "type": "boolean",
+          "default": false
+        }
       }
     },
-
     "notifications": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "on": {
           "type": "array",
-          "items": { "enum": ["started", "succeeded", "failed", "paused", "approval_required", "dlq_threshold", "deadline_risk"] }
+          "items": {
+            "enum": [
+              "started",
+              "succeeded",
+              "failed",
+              "paused",
+              "approval_required",
+              "dlq_threshold",
+              "deadline_risk"
+            ]
+          }
         },
-        "channels": { "type": "array", "items": { "type": "string" } }
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-
     "action": {
       "type": "object",
-      "required": ["type"],
-      "properties": { "type": { "enum": ["collect", "erase", "cleanse"] } }
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "collect",
+            "erase",
+            "cleanse"
+          ]
+        }
+      }
     }
   },
-
   "allOf": [
     {
       "comment": "The action block must match the sweep mode.",
-      "if": { "properties": { "mode": { "const": "collect" } }, "required": ["mode"] },
-      "then": { "properties": { "action": { "$ref": "#/$defs/collectAction" } } }
-    },
-    {
-      "if": { "properties": { "mode": { "const": "erase" } }, "required": ["mode"] },
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "collect"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
       "then": {
         "properties": {
-          "action": { "$ref": "#/$defs/eraseAction" },
-          "limits": { "required": ["max_records_matched", "max_mutations"] },
+          "action": {
+            "$ref": "#/$defs/collectAction"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "erase"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "action": {
+            "$ref": "#/$defs/eraseAction"
+          },
+          "limits": {
+            "required": [
+              "max_records_matched",
+              "max_mutations"
+            ]
+          },
           "safety": {
             "properties": {
-              "dry_run_required": { "const": true },
-              "approvals_required": { "minimum": 2 }
+              "dry_run_required": {
+                "const": true
+              },
+              "approvals_required": {
+                "minimum": 2
+              }
             }
           }
         }
       }
     },
     {
-      "if": { "properties": { "mode": { "const": "cleanse" } }, "required": ["mode"] },
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "cleanse"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
       "then": {
         "properties": {
-          "action": { "$ref": "#/$defs/cleanseAction" },
-          "limits": { "required": ["max_mutations"] },
+          "action": {
+            "$ref": "#/$defs/cleanseAction"
+          },
+          "limits": {
+            "required": [
+              "max_mutations"
+            ]
+          },
           "safety": {
-            "required": ["rollback_window_hours"],
-            "properties": { "dry_run_required": { "const": true } }
+            "required": [
+              "rollback_window_hours"
+            ],
+            "properties": {
+              "dry_run_required": {
+                "const": true
+              }
+            }
           }
         }
       }
     }
   ],
-
   "$defs": {
     "collectAction": {
       "type": "object",
-      "required": ["type", "destination", "parser"],
+      "required": [
+        "type",
+        "destination",
+        "parser"
+      ],
       "additionalProperties": false,
       "properties": {
-        "type": { "const": "collect" },
+        "type": {
+          "const": "collect"
+        },
         "landing_zone": {
           "type": "object",
-          "required": ["bucket"],
+          "required": [
+            "bucket"
+          ],
           "additionalProperties": false,
           "properties": {
-            "bucket": { "type": "string" },
-            "retention_days": { "type": "integer", "minimum": 1 }
+            "bucket": {
+              "type": "string"
+            },
+            "retention_days": {
+              "type": "integer",
+              "minimum": 1
+            }
           },
           "description": "Raw payloads persisted by content hash before parsing (A1)."
         },
         "parser": {
           "type": "object",
-          "required": ["name", "version"],
+          "required": [
+            "name",
+            "version"
+          ],
           "additionalProperties": false,
           "properties": {
-            "name": { "type": "string" },
-            "version": { "type": "string" }
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
           }
         },
         "destination": {
           "type": "object",
-          "required": ["connector", "schema_ref"],
+          "required": [
+            "connector",
+            "schema_ref"
+          ],
           "additionalProperties": false,
           "properties": {
-            "connector": { "type": "string" },
-            "table": { "type": "string" },
-            "schema_ref": { "type": "string", "description": "Versioned contract; violations go to DLQ (A7)." }
+            "connector": {
+              "type": "string"
+            },
+            "table": {
+              "type": "string"
+            },
+            "schema_ref": {
+              "type": "string",
+              "description": "Versioned contract; violations go to DLQ (A7)."
+            },
+            "config": {
+              "type": "object"
+            }
           }
         },
         "dedupe": {
           "type": "object",
-          "required": ["key"],
+          "required": [
+            "key"
+          ],
           "additionalProperties": false,
           "properties": {
-            "key": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
-            "conflict_policy": { "enum": ["first_wins", "last_wins", "merge"], "default": "last_wins" }
+            "key": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "conflict_policy": {
+              "enum": [
+                "first_wins",
+                "last_wins",
+                "merge"
+              ],
+              "default": "last_wins"
+            }
           }
         },
         "politeness": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "respect_robots": { "type": "boolean", "default": true },
-            "crawl_delay_ms": { "type": "integer", "minimum": 0 },
-            "user_agent": { "type": "string" },
-            "host_allowlist": { "type": "array", "items": { "type": "string" } }
+            "respect_robots": {
+              "type": "boolean",
+              "default": true
+            },
+            "crawl_delay_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "user_agent": {
+              "type": "string"
+            },
+            "host_allowlist": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           },
           "description": "Required for web sources; a host not on the allowlist is rejected (A5)."
         }
       }
     },
-
     "eraseAction": {
       "type": "object",
-      "required": ["type", "phase", "selector", "methods", "verification"],
+      "required": [
+        "type",
+        "phase",
+        "selector",
+        "methods",
+        "verification"
+      ],
       "additionalProperties": false,
       "properties": {
-        "type": { "const": "erase" },
+        "type": {
+          "const": "erase"
+        },
         "phase": {
-          "enum": ["discovery", "destruction"],
+          "enum": [
+            "discovery",
+            "destruction"
+          ],
           "description": "Destruction runs act only on an approved discovery result set (B1)."
         },
         "selector": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "subject_ref": { "type": "string" },
-            "identifiers": { "type": "object" },
-            "criteria": { "type": "object", "description": "For bulk retention purges." }
+            "subject_ref": {
+              "type": "string"
+            },
+            "identifiers": {
+              "type": "object"
+            },
+            "criteria": {
+              "type": "object",
+              "description": "For bulk retention purges."
+            }
           }
         },
         "systems": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "data_map_system keys. Omit to cover the whole registry."
         },
         "methods": {
           "type": "object",
           "minProperties": 1,
-          "additionalProperties": { "enum": ["hard_delete", "crypto_shred", "anonymise"] },
+          "additionalProperties": {
+            "enum": [
+              "hard_delete",
+              "crypto_shred",
+              "anonymise"
+            ]
+          },
           "description": "Per-system method; keys are system names or '*' for the default."
         },
         "propagate_to": {
           "type": "array",
-          "items": { "enum": ["replicas", "caches", "search_index", "warehouse", "backups"] }
+          "items": {
+            "enum": [
+              "replicas",
+              "caches",
+              "search_index",
+              "warehouse",
+              "backups"
+            ]
+          }
         },
-        "legal_hold_check": { "const": true },
+        "legal_hold_check": {
+          "const": true
+        },
         "verification": {
-          "enum": ["required", "sampled"],
+          "enum": [
+            "required",
+            "sampled"
+          ],
           "description": "Independent read-back after destruction (B6). 'sampled' is only permissible for non-PII bulk purges."
         },
         "certificate": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "issue": { "type": "boolean", "default": true },
-            "deliver_to": { "type": "array", "items": { "type": "string" } }
+            "issue": {
+              "type": "boolean",
+              "default": true
+            },
+            "deliver_to": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         },
         "deadline": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "regime": { "type": "string" },
-            "due_at": { "type": "string", "format": "date-time" }
+            "regime": {
+              "type": "string"
+            },
+            "due_at": {
+              "type": "string",
+              "format": "date-time"
+            }
           }
         }
       }
     },
-
     "cleanseAction": {
       "type": "object",
-      "required": ["type", "rules"],
+      "required": [
+        "type",
+        "rules"
+      ],
       "additionalProperties": false,
       "properties": {
-        "type": { "const": "cleanse" },
+        "type": {
+          "const": "cleanse"
+        },
         "rules": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "object",
-            "required": ["id", "type", "version"],
+            "required": [
+              "id",
+              "type",
+              "version"
+            ],
             "additionalProperties": false,
             "properties": {
-              "id": { "type": "string" },
-              "type": { "enum": ["normalise", "validate", "enrich", "merge"] },
-              "version": { "type": "string" },
-              "fields": { "type": "array", "items": { "type": "string" } },
-              "config": { "type": "object" },
-              "enabled": { "type": "boolean", "default": true }
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "normalise",
+                  "validate",
+                  "enrich",
+                  "merge"
+                ]
+              },
+              "version": {
+                "type": "string"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "config": {
+                "type": "object"
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              }
             }
           }
         },
         "matching": {
           "type": "object",
-          "required": ["blocking_keys", "auto_merge_above", "review_below"],
+          "required": [
+            "blocking_keys",
+            "auto_merge_above",
+            "review_below"
+          ],
           "additionalProperties": false,
           "properties": {
-            "blocking_keys": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+            "blocking_keys": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
             "comparators": {
               "type": "array",
               "items": {
                 "type": "object",
-                "required": ["field", "method"],
+                "required": [
+                  "field",
+                  "method"
+                ],
                 "additionalProperties": false,
                 "properties": {
-                  "field": { "type": "string" },
-                  "method": { "type": "string" },
-                  "weight": { "type": "number" }
+                  "field": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "number"
+                  }
                 }
               }
             },
-            "auto_merge_above": { "type": "number", "minimum": 0, "maximum": 1 },
+            "auto_merge_above": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
             "review_below": {
-              "type": "number", "minimum": 0, "maximum": 1,
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
               "description": "Scores between review_below and auto_merge_above go to the review queue (C3)."
             }
           }
@@ -320,17 +681,37 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["field", "policy"],
+            "required": [
+              "field",
+              "policy"
+            ],
             "additionalProperties": false,
             "properties": {
-              "field": { "type": "string" },
-              "policy": { "enum": ["most_recent", "most_complete", "highest_trust_source", "longest_value"] }
+              "field": {
+                "type": "string"
+              },
+              "policy": {
+                "enum": [
+                  "most_recent",
+                  "most_complete",
+                  "highest_trust_source",
+                  "longest_value"
+                ]
+              }
             }
           }
         },
         "golden_dataset_ref": {
           "type": "string",
           "description": "Precision/recall is reported against this before activation (C8)."
+        },
+        "on_invalid": {
+          "enum": [
+            "flag",
+            "exclude"
+          ],
+          "default": "flag",
+          "description": "flag records the problem in the audit trail; exclude also withholds the mutation."
         }
       }
     }

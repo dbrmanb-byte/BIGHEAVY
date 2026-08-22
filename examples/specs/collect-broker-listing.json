@@ -9,7 +9,9 @@
     "connector": "http-listing",
     "system": "broker.example-people-search",
     "auth_ref": "vault://sweeps/broker-http#token",
-    "config": { "base_url": "https://example-people-search.test" }
+    "config": {
+      "base_url": "https://example-people-search.test"
+    }
   },
   "scope": {
     "strategy": "incremental",
@@ -33,20 +35,42 @@
   },
   "action": {
     "type": "collect",
-    "landing_zone": { "bucket": "sweeps-landing", "retention_days": 400 },
-    "parser": { "name": "people-search-listing", "version": "3.2.0" },
+    "landing_zone": {
+      "bucket": "sweeps-landing",
+      "retention_days": 400
+    },
+    "parser": {
+      "name": "people-search-listing",
+      "version": "3.2.0"
+    },
     "destination": {
-      "connector": "postgres-warehouse",
+      "connector": "sqlite-table",
       "table": "broker_listing",
       "schema_ref": "broker_listing@2"
     },
-    "dedupe": { "key": ["broker", "listing_url"], "conflict_policy": "last_wins" },
+    "dedupe": {
+      "key": [
+        "broker",
+        "listing_url"
+      ],
+      "conflict_policy": "last_wins"
+    },
     "politeness": {
       "respect_robots": true,
       "crawl_delay_ms": 2000,
       "user_agent": "BigHeavySweeper/1.0 (+https://bigheavy.dev/bot)",
-      "host_allowlist": ["example-people-search.test"]
+      "host_allowlist": [
+        "example-people-search.test"
+      ]
     }
   },
-  "notifications": { "on": ["failed", "dlq_threshold"], "channels": ["slack://privacy-eng-alerts"] }
+  "notifications": {
+    "on": [
+      "failed",
+      "dlq_threshold"
+    ],
+    "channels": [
+      "slack://privacy-eng-alerts"
+    ]
+  }
 }

@@ -1,0 +1,28 @@
+{
+  "spec_version": "1",
+  "id": "demo-collect-listings",
+  "name": "Demo: harvest listing pages from disk",
+  "description": "Runs offline against examples/demo/pages. One page is deliberately malformed so the DLQ path is visible.",
+  "mode": "collect",
+  "owner": "privacy-eng",
+  "source": {
+    "connector": "filesystem",
+    "system": "broker.example-people-search",
+    "config": { "root": "examples/demo/pages", "glob": "*.html" }
+  },
+  "scope": { "strategy": "full" },
+  "limits": { "batch_size": 10, "concurrency": 2, "max_dlq_rate_pct": 50 },
+  "safety": { "dry_run_required": true, "approvals_required": 0 },
+  "action": {
+    "type": "collect",
+    "landing_zone": { "bucket": "build/demo-landing", "retention_days": 30 },
+    "parser": { "name": "people-search-listing", "version": "3.2.0" },
+    "destination": {
+      "connector": "sqlite-table",
+      "table": "broker_listing",
+      "schema_ref": "broker_listing@2",
+      "config": { "path": "build/demo-warehouse.db", "key": "_key" }
+    },
+    "dedupe": { "key": ["broker", "listing_id"], "conflict_policy": "last_wins" }
+  }
+}

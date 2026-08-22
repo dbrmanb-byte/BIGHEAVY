@@ -32,6 +32,8 @@ CREATE TABLE sweep_run (
     run_id          uuid        PRIMARY KEY,
     spec_id         text        NOT NULL,
     spec_version    integer     NOT NULL,
+    -- the spec body hash at execution time: approvals are void if it changes
+    spec_hash       text        NOT NULL,
     mode            sweep_mode  NOT NULL,
     dry_run         boolean     NOT NULL,
     -- a live destructive run must cite the dry-run it was approved against (R1.5.1)
@@ -39,6 +41,9 @@ CREATE TABLE sweep_run (
     state           run_state   NOT NULL DEFAULT 'pending',
     initiated_by    text        NOT NULL,
     trigger         text        NOT NULL,  -- 'manual' | 'schedule' | 'api'
+    -- which cipher sealed this run's before/after payloads; 'null' means the
+    -- development cipher, which stores them in the clear (R1.6.5)
+    cipher          text        NOT NULL DEFAULT 'null',
     started_at      timestamptz,
     finished_at     timestamptz,
     cancel_requested_at timestamptz,
@@ -97,6 +102,32 @@ CREATE TABLE record_event (
 CREATE UNIQUE INDEX record_event_idem_idx ON record_event (idempotency_key, occurred_at);
 CREATE INDEX record_event_run_idx    ON record_event (run_id, occurred_at);
 CREATE INDEX record_event_record_idx ON record_event (system, source_record_id, occurred_at DESC);
+
+-- Idempotency ledger (R1.4.3). Kept separate from record_event: that table is
+-- append-only evidence, while a mutation intent must be reserved before the
+-- mutation and confirmed after it, so a crash in between is visible as a
+-- dangling reservation rather than a silent double-apply.
+CREATE TABLE applied_mutation (
+    idempotency_key text        PRIMARY KEY,
+    run_id          uuid        NOT NULL REFERENCES sweep_run(run_id),
+    state           text        NOT NULL CHECK (state IN ('reserved', 'applied')),
+    reserved_at     timestamptz NOT NULL DEFAULT now(),
+    applied_at      timestamptz
+);
+
+CREATE INDEX applied_mutation_run_idx ON applied_mutation (run_id);
+
+-- Mode A change detection (A3): last content hash seen per source record, so
+-- an unchanged payload costs one fetch and nothing else.
+CREATE TABLE content_seen (
+    system           text        NOT NULL,
+    source_record_id text        NOT NULL,
+    content_hash     text        NOT NULL,
+    landing_ref      text,
+    parser_version   text,
+    last_seen_at     timestamptz NOT NULL DEFAULT now(),
+    PRIMARY KEY (system, source_record_id)
+);
 
 -- ---------------------------------------------------------------- DLQ
 
