@@ -17,7 +17,6 @@ import { getClient, getUser } from "./supabase-client.js";
 const FN = "content";
 const CACHE_KEY = () => `bh.bank.${APP()}`;
 const APP = () => (typeof window !== "undefined" && window.BH_APP_ID) || "app";
-const FAMILY = () => (typeof window !== "undefined" && window.BH_APP_FAMILY) || null;
 
 let _loaded = false;
 let _loading = null;
@@ -93,7 +92,7 @@ export function loadBank({ force = false } = {}) {
     }
 
     try {
-      const res = await invoke({ action: "bank", app: APP(), family: FAMILY() });
+      const res = await invoke({ action: "bank", app: APP() });
       const questions = res?.questions || [];
       merge(questions);
       // Merge into the cache so revealed answers already stored are not lost.
@@ -130,7 +129,7 @@ export async function grade(answers) {
   }
   if (!Object.keys(missing).length) return [];
 
-  const res = await invoke({ action: "grade", app: APP(), family: FAMILY(), answers: missing });
+  const res = await invoke({ action: "grade", app: APP(), answers: missing });
   const results = res?.results || [];
 
   for (const r of results) {

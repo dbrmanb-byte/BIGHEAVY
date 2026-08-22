@@ -48,9 +48,9 @@ before a deploy.
 4. Add an entry to `packages/registry/apps.json`. The hub picks it up with no
    code change.
 
-The slug, the directory name, and the `window.BH_APP_ID` the app declares must
-all match, and `BH_APP_FAMILY` must match the scope the billing backend writes
-to `tier_app` — entitlement is decided by comparing them.
+The slug, the directory name, the `window.BH_APP_ID` the app declares, and the
+`app` metadata on its Stripe price must all be the same string — entitlement is
+decided by comparing `tier_app` to `BH_APP_ID`.
 
 ## Entitlements
 
@@ -61,16 +61,17 @@ before the modules load:
 ```html
 <script>
   window.BH_APP_ID     = "casebook-lcsw";
-  window.BH_APP_FAMILY = "casebook";
+  window.BH_APP_FAMILY = "casebook";   // descriptive only, not an entitlement
 </script>
 ```
 
 then asks `Tiers.can("tutor")` or `Tiers.requireGate("tutor", "…")`.
 
-`all_access` covers everything. `pro` is scoped by the `tier_app` the backend
-writes, which today is a **family** (`casebook`, `forge`) — see `PRICE_TO_TIER`
-and the metadata convention in the webhook. The client matches the slug too, so
-moving to per-app Pro is a price-metadata change, not a client release.
+**Pro covers exactly one app; Unlimited covers all ten.** `tier_app` holds an
+app slug, and entitlement is `tier_app === BH_APP_ID`. A family name is not
+accepted there: `"forge"` would unlock five apps for the price of one and leave
+Unlimited with nothing to sell. Each app therefore needs its own Stripe price,
+tagged `tier=pro` and `app=<slug>`.
 
 Two rules the gating depends on:
 

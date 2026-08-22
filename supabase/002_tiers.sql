@@ -11,7 +11,10 @@ alter table public.profiles
   add column if not exists stripe_customer_id text,
   add column if not exists stripe_subscription_id text,
   add column if not exists tier_valid_until timestamptz,
-  add column if not exists tier_app text;  -- 'casebook', 'forge', or null (all_access)
+  add column if not exists tier_app text;  -- the ONE app slug a pro plan covers
+                                          -- ('casebook-lcsw', 'forge-cloud', ...),
+                                          -- or null for all_access. Not a family:
+                                          -- 'forge' would mean five apps for one price.
 
 create index if not exists idx_profiles_stripe
   on public.profiles(stripe_customer_id)

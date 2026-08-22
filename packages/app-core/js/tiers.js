@@ -19,10 +19,11 @@ const CHECKOUT_URLS = {
 let _tier = { tier: "free", tier_app: null, is_active: true };
 const _listeners = new Set();
 
-/* Which app this build is, and which family it belongs to. Each app declares
-   both before the modules load:
-     <script>window.BH_APP_ID = "casebook-lcsw";
-             window.BH_APP_FAMILY = "casebook";</script> */
+/* Which app this build is. Entitlement is decided against this and nothing else:
+     <script>window.BH_APP_ID = "casebook-lcsw";</script>
+
+   APP_FAMILY is descriptive only — grouping for copy and analytics. It is
+   deliberately NOT part of the entitlement check; see _coversThisApp. */
 export const APP_ID     = (typeof window !== "undefined" && window.BH_APP_ID) || null;
 export const APP_FAMILY = (typeof window !== "undefined" && window.BH_APP_FAMILY) || null;
 
@@ -30,21 +31,19 @@ export function getTier() { return _tier; }
 
 /* True when the subscription actually covers THIS app.
 
-   all_access covers everything. Pro is scoped by tier_app, and the scope the
-   backend writes there is a family ("casebook", "forge") — see PRICE_TO_TIER in
-   the Stripe webhook. Matching the slug as well means per-app pricing can be
-   introduced by changing only the price mapping, with no client release.
+   all_access covers every app. Pro covers exactly ONE, named by tier_app, which
+   holds an app slug — not a family. A family match is deliberately not accepted:
+   "casebook" would otherwise unlock four apps and "forge" five, for the price of
+   one, and all-access would have nothing left to sell.
 
-   Without this check any active Pro subscription unlocked every app, so a
-   single Pro plan bought the whole catalogue and all-access had nothing to
-   sell. A missing tier_app does NOT grant access: fail closed, or the same
-   leak comes back through the webhook's unknown-price fallback. */
+   A missing tier_app does NOT grant access. Fail closed: an unscoped pro record
+   is a misconfiguration, and reading it generously hands over the catalogue. */
 function _coversThisApp() {
   if (_tier.tier === "all_access") return true;
   if (_tier.tier !== "pro") return false;
   const scope = _tier.tier_app;
   if (!scope) return false;
-  return scope === APP_ID || (APP_FAMILY !== null && scope === APP_FAMILY);
+  return scope === APP_ID;
 }
 
 export function isPro() { return _tier.is_active && _coversThisApp(); }

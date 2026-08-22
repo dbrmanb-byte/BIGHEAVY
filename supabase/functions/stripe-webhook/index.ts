@@ -22,7 +22,13 @@ const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 //
 // Preferred: put metadata on the Price (or its Product) in Stripe —
 //   tier = pro | all_access
-//   app  = casebook | forge | <app slug>   (omit for all_access)
+//   app  = <app slug>                      (omit for all_access)
+//
+// Pro covers exactly ONE app, so `app` must be an app slug: "casebook",
+// "casebook-lcsw", "forge-cloud", "keystone" and so on. A family name such as
+// "forge" is NOT a slug and will match no app, leaving the buyer with nothing —
+// which is the safe direction to fail, but still a support ticket. One price per
+// app is the shape this expects.
 // Metadata travels with the price, so a new product needs no redeploy here.
 //
 // PRICE_TO_TIER below is an optional override for prices that predate the
@@ -30,7 +36,7 @@ const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 // (price_1ABC...); the placeholder names that shipped here never matched
 // anything, so every subscription fell through to the fallback path.
 const PRICE_TO_TIER: Record<string, { tier: string; app: string | null }> = {
-  // "price_1ABCxyz...": { tier: "pro", app: "casebook" },
+  // "price_1ABCxyz...": { tier: "pro", app: "casebook-lcsw" },
 };
 
 type Entitlement = { tier: string; app: string | null };
@@ -316,7 +322,7 @@ async function applySubscription(
       "price:", price?.id,
       "customer:", customerId,
       "subscription:", subscription.id,
-      "| Set metadata tier=pro|all_access (and app=<family|slug> for pro) on this price, then resend the event from the Stripe dashboard."
+      "| Set metadata tier=pro|all_access (and app=<app slug> for pro) on this price, then resend the event from the Stripe dashboard."
     );
     return;
   }

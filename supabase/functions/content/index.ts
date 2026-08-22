@@ -66,14 +66,16 @@ async function loadBank(admin: any, slug: string): Promise<Question[] | null> {
   }
 }
 
-/** Does this reader's subscription cover this app? Mirrors tiers.js, server-side. */
-function covers(tier: any, slug: string, family: string | null): boolean {
+/** Does this reader's subscription cover this app? Mirrors tiers.js, server-side.
+    Pro covers one app, named by tier_app as a slug. A family value such as
+    "forge" matches nothing here on purpose — it would unlock five apps. */
+function covers(tier: any, slug: string): boolean {
   if (!tier || tier.is_active === false) return false;
   if (tier.tier === "all_access") return true;
   if (tier.tier !== "pro") return false;
   const scope = tier.tier_app;
   if (!scope) return false;                    // unscoped pro grants nothing
-  return scope === slug || (family !== null && scope === family);
+  return scope === slug;
 }
 
 /** Everything the reader may see before they have answered. */
@@ -93,11 +95,10 @@ serve(async (req: Request) => {
   let body: any;
   try { body = await req.json(); } catch { return json({ error: "expected JSON" }, 400); }
 
-  const { action, app, family, ids, answers } = body ?? {};
+  // `family` may still arrive from an older client; it is ignored, because
+  // entitlement is per app.
+  const { action, app, ids, answers } = body ?? {};
   if (!validSlug(app)) return json({ error: "unknown app" }, 400);
-  if (family !== undefined && family !== null && !validSlug(family)) {
-    return json({ error: "unknown family" }, 400);
-  }
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const asUser = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, {
@@ -116,7 +117,7 @@ serve(async (req: Request) => {
     console.error("tier lookup failed:", tierErr);
     return json({ error: "could not check your subscription, try again" }, 500);
   }
-  if (!covers(tier, app, family ?? null)) {
+  if (!covers(tier, app)) {
     return json({ error: "the full question bank is part of Pro", entitled: false }, 403);
   }
 
