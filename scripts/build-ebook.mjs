@@ -197,6 +197,26 @@ function buildHtml(app, { cards, questions }) {
 
   const body = head + `
 <div class="body">
+<h2>About this book</h2>
+<p class="lead">${esc(title)} — the reading companion to ${esc(app.name)}.</p>
+<p><b>${cards.length}</b> glossary terms and <b>${questions.length}</b> practice scenarios with rationales,
+written from the published objectives of the ${esc(app.exam)} exam.</p>
+
+<h2>How this book was written</h2>
+<p>The glossary and scenarios in this book are developed with AI assistance and reviewed before
+publication. The material is original — written to explain and to test, not reproduced from any
+examining body's question bank.</p>
+<p class="note">This is a study aid. It is not official exam material and is not affiliated with or
+endorsed by any examining body or trademark holder named in it. Check anything you intend to rely on
+against the current primary sources and the rules of your jurisdiction. If you find an error, report
+it: corrections are made ahead of new content.</p>
+
+<h2>Your copy</h2>
+<p class="dim">Each download is stamped with the account it was sold to. It is yours to keep and to
+print for your own study. Please do not redistribute it — these books are how the free tier of the
+apps stays free.</p>
+
+<div class="page-break"></div>
 <h2>Contents</h2>
 <ol class="toc">${contents}</ol>
 
