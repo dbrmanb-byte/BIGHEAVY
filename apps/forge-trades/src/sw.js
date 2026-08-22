@@ -11,6 +11,8 @@ const SHELL = [
   "./manifest.webmanifest",
   "./js/supabase-client.js",
   "./js/content.js",
+  "./js/planner.js",
+  "./js/planner-ui.js",
   "./js/tiers.js",
   "./js/tracker.js",
   "./js/dashboard.js",

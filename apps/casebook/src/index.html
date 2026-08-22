@@ -458,6 +458,7 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
     <button role="tab" data-mode="setup" aria-selected="false">Vignettes</button>
     <button role="tab" data-mode="dashboard" aria-selected="false">Dashboard</button>
     <button role="tab" data-mode="glossary" aria-selected="false">Glossary</button>
+    <button role="tab" data-mode="plan" aria-selected="false">Plan</button>
   </nav>
   <button class="install hide" id="installBtn">Install</button>
   <button class="tutor-open" id="userBtn" aria-label="Account"><span id="userLabel">Sign in</span></button>
@@ -534,6 +535,14 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
   </section>
 
   <!-- GLOSSARY -->
+  <!-- PLAN -->
+  <section class="wrap hide" id="v-plan">
+    <p class="lede"><b>Plan</b> turns this material into hour-long study blocks — fifty minutes of
+    work and a ten-minute break — and keeps track of what you have actually done. Nothing here
+    leaves your device, and none of it is behind a plan.</p>
+    <div id="planRoot"></div>
+  </section>
+
   <section class="wrap hide" id="v-glossary">
     <input class="search" id="gSearch" type="search" placeholder="Search 207 terms — try &ldquo;boundary&rdquo; or &ldquo;affect&rdquo;" autocomplete="off">
     <div class="filters" id="gFilters"></div>
@@ -708,7 +717,7 @@ function setMode(m){
   S.mode = m;
   const tabMap = {setup:"setup",quiz:"setup",summary:"setup",review:"setup",drill:"drill",glossary:"glossary"};
   document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.mode===(tabMap[m]||m))));
-  ["drill","setup","quiz","glossary","summary","review"].forEach(v => { const e=$("v-"+v); if(e) e.classList.add("hide"); });
+  ["drill","setup","quiz","glossary","summary","review","plan"].forEach(v => { const e=$("v-"+v); if(e) e.classList.add("hide"); });
   const el = $("v-"+m); if(el) el.classList.remove("hide");
   if(m==="drill") renderDrill();
   if(m==="setup") renderSetup();
@@ -1362,6 +1371,7 @@ import * as Dashboard from "./js/dashboard.js";
 import { recommend } from "./js/recommend.js";
 import * as Tiers from "./js/tiers.js";
 import * as Content from "./js/content.js";
+import * as PlannerUI from "./js/planner-ui.js";
 
 // The core app runs in a classic script that cannot import modules.
 // Expose the tier API so it can gate paid features.
@@ -1580,7 +1590,7 @@ const patchedSetMode = function(m) {
   // Extend the modes list
   const tabMap = {setup:"setup",quiz:"setup",summary:"setup",review:"setup",drill:"drill",glossary:"glossary",dashboard:"dashboard"};
   document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.mode===(tabMap[m]||m))));
-  ["drill","setup","quiz","glossary","summary","review","dashboard"].forEach(v => { const e=$(v.startsWith("v-")?v:"v-"+v); if(e) e.classList.add("hide"); });
+  ["drill","setup","quiz","glossary","summary","review","dashboard","plan"].forEach(v => { const e=$(v.startsWith("v-")?v:"v-"+v); if(e) e.classList.add("hide"); });
   const el = $("v-"+m); if(el) el.classList.remove("hide");
 
   // Call original renderers
@@ -1591,6 +1601,9 @@ const patchedSetMode = function(m) {
   if(m==="review" && window.renderReview) window.renderReview();
 
   if(m==="dashboard") _loadDash();
+  // The planner draws itself; it only needs to be told the tab is visible.
+  if(m==="plan") PlannerUI.mount(document.getElementById("planRoot"));
+  else PlannerUI.unmount();
 
   window.S.mode = m;
   window.scrollTo(0,0);

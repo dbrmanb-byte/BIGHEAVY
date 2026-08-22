@@ -18,7 +18,13 @@
         "format": "PDF",
         "exam": "LMSW",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 2
+      },
+      "hours": {
+        "study": 28.5,
+        "reading": 2,
+        "blocks": 29
       }
     },
     {
@@ -37,7 +43,13 @@
         "title": "The LCSW Clinical Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 16,
+        "reading": 1,
+        "blocks": 16
       }
     },
     {
@@ -56,7 +68,13 @@
         "title": "The LBSW Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 0.5
+      },
+      "hours": {
+        "study": 11,
+        "reading": 0.5,
+        "blocks": 11
       }
     },
     {
@@ -75,7 +93,13 @@
         "title": "The NCLEX Clinical Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 2
+      },
+      "hours": {
+        "study": 23.5,
+        "reading": 2,
+        "blocks": 24
       }
     },
     {
@@ -94,7 +118,13 @@
         "title": "The Cloud Architecture Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
       }
     },
     {
@@ -113,7 +143,13 @@
         "title": "The Cybersecurity Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
       }
     },
     {
@@ -132,7 +168,13 @@
         "title": "The Systems & Infrastructure Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
       }
     },
     {
@@ -151,7 +193,13 @@
         "title": "The Technical Management Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
       }
     },
     {
@@ -170,7 +218,13 @@
         "title": "The Electrician's Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
       }
     },
     {
@@ -189,7 +243,13 @@
         "title": "The Real Estate Companion",
         "format": "PDF",
         "price": 9.99,
-        "currency": "USD"
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 17,
+        "reading": 1,
+        "blocks": 17
       }
     }
   ],
@@ -213,5 +273,19 @@
         "percent_off": 20
       }
     ]
+  },
+  "hoursModel": {
+    "comment": "Derived by scripts/estimate-hours.mjs from the content itself. Timings are stated in that file; change them there and re-run rather than editing these numbers.",
+    "termFirstRead": 90,
+    "termRepetition": 15,
+    "termRepetitions": 5,
+    "questionFirst": 165,
+    "questionRedo": 90,
+    "redoShare": 0.4,
+    "examSimItems": 150,
+    "examSimPace": 84,
+    "examSims": 2,
+    "wordsPerMinute": 200,
+    "rereadFactor": 1.35
   }
 }
