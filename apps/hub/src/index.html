@@ -22,6 +22,7 @@
   <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
   <nav class="nav">
     <a href="./#apps">Apps</a>
+    <a href="./#plan">Planner</a>
     <a href="./#ebooks">Ebooks</a>
     <a href="./pricing.html">Plans</a>
     <a href="./about.html">About</a>
@@ -63,6 +64,21 @@
     <h2 class="sec">The apps</h2>
     <p class="secsub" id="appsSub">Each one is built for a single exam, with content written for that exam only.</p>
     <div class="grid" id="appGrid"></div>
+  </section>
+
+  <section class="wrap band" id="plan">
+    <h2 class="sec">Know what you are taking on</h2>
+    <p class="secsub">Every app estimates the work in front of you from the material it actually
+    contains, then breaks it into hour-long blocks — fifty minutes of study, ten of break. Set your
+    exam date and it tells you how many blocks a week that means.</p>
+    <div class="planbits">
+      <div><b id="planHours">—</b><span>hours across the catalogue</span></div>
+      <div><b>50 / 10</b><span>work and break, per block</span></div>
+      <div><b>30</b><span>focus tips, shown when they fit</span></div>
+    </div>
+    <p class="secsub" style="margin-top:18px;">Rate your focus after a block and say what pulled you
+    away — the phone, the television, too much on your plate — and the advice narrows to that. The
+    planner is free on every app, tracks nothing on a server, and never leaves your device.</p>
   </section>
 
   <section class="wrap band" id="ebooks">
@@ -142,6 +158,7 @@ fetch("./apps.json")
         <span class="exam">${esc(a.exam || "")}</span>
         <h3>${esc(a.name)}</h3>
         <p class="aud">${esc(a.audience || "")}</p>
+        ${a.hours ? `<p class="hrs">${esc(a.hours.study)} hours of study · ${esc(a.hours.blocks)} one-hour blocks</p>` : ""}
         <p class="blurb">${esc(a.blurb || "")}</p>
         <span class="open">Start studying →</span>
       </a>`).join("");
@@ -167,10 +184,14 @@ fetch("./apps.json")
         <div class="book" style="--accent:${esc(a.accent || "#EBA83A")}">
           <span class="spine"></span>
           <span class="btitle">${esc(a.ebook.title)}</span>
-          <span class="bmeta">${esc(a.ebook.format || "PDF")} · ${esc(a.name)}</span>
+          <span class="bmeta">${esc(a.ebook.format || "PDF")} · ${esc(a.name)}${a.ebook.hours ? " · " + esc(a.ebook.hours) + "h read" : ""}</span>
           <span class="bprice">${esc(price(a.ebook.price ?? (reg.ebooks && reg.ebooks.price) ?? 9.99))}</span>
         </div>`).join("");
     }
+
+    const totalHours = apps.reduce((n, a) => n + ((a.hours && a.hours.study) || 0), 0);
+    const hoursEl = document.getElementById("planHours");
+    if (hoursEl && totalHours) hoursEl.textContent = Math.round(totalHours);
 
     const sub = document.getElementById("appsSub");
     if (apps.length) {

@@ -74,6 +74,16 @@ a.app:hover{border-color:var(--accent,var(--gold));transform:translateY(-2px);}
 .app .soonlist{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;line-height:1.9;
   color:var(--text-dim);margin:0 0 16px;}
 
+/* study hours on an app card */
+.app .hrs{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--accent,var(--gold));
+  margin:0 0 10px;opacity:.9;}
+
+/* the planner strip */
+.planbits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
+.planbits > div{border:1px solid var(--line);border-radius:7px;padding:16px 18px;background:var(--surface);}
+.planbits b{display:block;font-family:var(--mono);font-size:26px;color:var(--gold);letter-spacing:-.02em;margin-bottom:4px;}
+.planbits span{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);line-height:1.5;display:block;}
+
 /* companion ebooks */
 .books{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-bottom:16px;}
 .book{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:4px;
