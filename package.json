@@ -13,7 +13,8 @@
     "preflight": "bash scripts/preflight.sh",
     "serve": "node scripts/serve.mjs",
     "test": "node scripts/test-entitlement.mjs",
-    "check:ebooks": "node scripts/check-ebooks.mjs"
+    "check:ebooks": "node scripts/check-ebooks.mjs",
+    "sync:registry": "node scripts/sync-registry.mjs"
   },
   "engines": {
     "node": ">=20"
