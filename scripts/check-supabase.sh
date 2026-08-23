@@ -53,7 +53,7 @@ fi
 
 # ---- edge functions ----
 FN=$("${SB[@]}" functions list 2>/dev/null)
-for f in content ebook-download stripe-webhook; do
+for f in content ebook-download stripe-webhook checkout; do
   if echo "$FN" | grep -q "$f"; then ok "function deployed" "$f"
   else bad "function MISSING" "$f — nothing will be entitled without it"; fi
 done

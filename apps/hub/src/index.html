@@ -188,7 +188,8 @@ fetch("./apps.json")
           <span class="spine"></span>
           <span class="btitle">${esc(a.ebook.title)}</span>
           <span class="bmeta">${esc(a.ebook.format || "PDF")} · ${esc(a.name)}${a.ebook.hours ? " · " + esc(a.ebook.hours) + "h read" : ""}</span>
-          <span class="bprice">${esc(price(a.ebook.price ?? (reg.ebooks && reg.ebooks.price) ?? 9.99))}</span>
+          <span class="bprice">${esc(price(a.ebook.price ?? (reg.ebooks && reg.ebooks.price) ?? 9.99))}
+            <button class="bbuy" data-buy="${esc(a.slug)}">Buy</button></span>
         </div>`).join("");
     }
 
@@ -209,6 +210,16 @@ fetch("./apps.json")
       '<p class="blurb">Refresh the page, or go straight to <a href="/casebook/">Casebook</a>.</p></div>';
     console.error(err);
   });
+</script>
+<script src="./config.js"></script>
+<script type="module">
+/* Book purchases. Delegated, because the shelf renders after the registry
+   loads; the buttons exist whenever the click happens. */
+import * as Checkout from "./js/checkout.js";
+document.getElementById("bookList")?.addEventListener("click", e => {
+  const b = e.target.closest("[data-buy]");
+  if (b) Checkout.start(Checkout.keyFor.ebook(b.dataset.buy));
+});
 </script>
 </body>
 </html>

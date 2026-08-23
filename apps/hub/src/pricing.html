@@ -206,15 +206,49 @@ td.no{color:var(--text-dim);}
   </div>
 </footer>
 
-<script>
-/* No billing provider is connected yet. Say so rather than sending anyone to a
-   dead link — replace with the provider's checkout URL when billing lands. */
-document.querySelectorAll("[data-plan]").forEach(a => {
-  a.addEventListener("click", e => {
-    e.preventDefault();
-    alert("Checkout isn't connected yet — this is a preview of the plans. "
-        + "Everything on the free tier works today.");
+<script src="./config.js"></script>
+<script type="module">
+/* Real checkout. Pro covers exactly one app, so "Choose Pro" first asks which —
+   a picker rendered from the registry, inside the card, so the choice is made
+   where the promise ("one app, completely unlocked") was read. Unlimited needs
+   no question. */
+import * as Checkout from "./js/checkout.js";
+
+const proBtn = document.querySelector('[data-plan="pro"]');
+const allBtn = document.querySelector('[data-plan="unlimited"]');
+
+let apps = [];
+fetch("./apps.json").then(r => r.json())
+  .then(reg => { apps = (reg.apps || []).filter(a => a.status === "live"); })
+  .catch(() => {});
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+proBtn?.addEventListener("click", e => {
+  e.preventDefault();
+  let picker = document.getElementById("proPicker");
+  if (picker) { picker.remove(); return; }        // second click folds it away
+  picker = document.createElement("div");
+  picker.id = "proPicker";
+  picker.innerHTML = `
+    <p style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+       color:var(--text-dim);margin:14px 0 8px;">Which app does Pro unlock?</p>
+    <div style="display:grid;gap:6px;">
+      ${apps.map(a => `<button data-slug="${esc(a.slug)}" style="text-align:left;background:var(--ground);
+        border:1px solid var(--line);border-radius:5px;color:var(--text);padding:10px 12px;font:inherit;
+        font-size:13.5px;cursor:pointer;">${esc(a.name)} <span style="color:var(--text-dim);">· ${esc(a.exam)}</span></button>`).join("")}
+    </div>
+    <p style="font-family:var(--read);font-size:12.5px;color:var(--text-dim);margin:10px 0 0;">
+      Not sure? <a href="./coach.html">The coach narrows it to one</a>. You can switch the covered app later.</p>`;
+  proBtn.closest(".plan").appendChild(picker);
+  picker.querySelectorAll("button[data-slug]").forEach(b => {
+    b.addEventListener("click", () => Checkout.start(Checkout.keyFor.pro(b.dataset.slug)));
   });
+});
+
+allBtn?.addEventListener("click", e => {
+  e.preventDefault();
+  Checkout.start(Checkout.keyFor.allAccess());
 });
 </script>
 </body>
