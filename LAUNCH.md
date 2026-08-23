@@ -60,9 +60,12 @@ node scripts/check-ebooks.mjs          # names must match the registry
 ```
 
 ```bash
-for f in ebooks/*.pdf;        do supabase storage cp --experimental "" "ss:///ebooks/0basename "")"; done
-for f in content/*/bank.json; do supabase storage cp --experimental "" "ss:///content/0basename 0dirname ""))/bank.json"; done
+for f in ebooks/*.pdf;        do supabase storage cp --experimental "$f" "ss:///ebooks/$(basename "$f")"; done
+for f in content/*/bank.json; do supabase storage cp --experimental "$f" "ss:///content/$(basename $(dirname "$f"))/bank.json"; done
 ```
+
+Every `supabase storage` command needs `--experimental` — the CLI refuses to run
+them without it.
 
 **Each PDF must be named `<slug>.pdf`** — `casebook.pdf`, not `casebook-lmsw.pdf`.
 The download route builds the path from the slug, so a mismatch 404s for someone
