@@ -123,8 +123,15 @@ cat <<EOF
 
   The buckets are made private by the storage_buckets migration above.
 
-    for f in ebooks/*.pdf;        do $SB storage cp "\$f" "ss:///ebooks/\$(basename "\$f")"; done
-    for f in content/*/bank.json; do $SB storage cp "\$f" "ss:///content/\$(basename \$(dirname "\$f"))/bank.json"; done
+    for f in ebooks/*.pdf;        do $SB storage cp --experimental "\$f" "ss:///ebooks/\$(basename "\$f")"; done
+    for f in content/*/bank.json; do $SB storage cp --experimental "\$f" "ss:///content/\$(basename \$(dirname "\$f"))/bank.json"; done
+
+  Every storage command needs --experimental; the CLI gates them all behind it
+  and refuses to run without it.
+
+  If those loops echo the glob back at you instead of uploading, the folders are
+  empty. Restore the paid content from your backup archive first — it is not in
+  git and cannot be regenerated from what is.
 
   Each PDF must be named <slug>.pdf — casebook.pdf, not casebook-lmsw.pdf —
   or the download 404s for someone who has paid.

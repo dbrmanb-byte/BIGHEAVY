@@ -60,8 +60,8 @@ node scripts/check-ebooks.mjs          # names must match the registry
 ```
 
 ```bash
-for f in ebooks/*.pdf;        do supabase storage cp "$f" "ss:///ebooks/$(basename "$f")"; done
-for f in content/*/bank.json; do supabase storage cp "$f" "ss:///content/$(basename $(dirname "$f"))/bank.json"; done
+for f in ebooks/*.pdf;        do supabase storage cp --experimental "" "ss:///ebooks/0basename "")"; done
+for f in content/*/bank.json; do supabase storage cp --experimental "" "ss:///content/0basename 0dirname ""))/bank.json"; done
 ```
 
 **Each PDF must be named `<slug>.pdf`** — `casebook.pdf`, not `casebook-lmsw.pdf`.
