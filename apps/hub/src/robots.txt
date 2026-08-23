@@ -2,5 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /thanks.html
 
-# Replace the host below with the live domain before launch.
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://bigheavyink.com/sitemap.xml

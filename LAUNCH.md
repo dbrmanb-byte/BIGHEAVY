@@ -190,7 +190,13 @@ Then, by hand:
 These are not backend work and none of them is blocked by it:
 
 - **Legal.** `privacy.html` and `terms.html` carry placeholders.
-- **Domain.** `robots.txt` and `sitemap.xml` still say `example.com`.
+- **Domain.** bigheavyink.com is bought and pointed at Netlify; robots.txt and
+  sitemap.xml carry it. After DNS resolves: enable HTTPS in Netlify (automatic),
+  set Supabase Auth → URL Configuration → Site URL and Redirect URLs to
+  https://bigheavyink.com, and lock the function origins:
+      supabase secrets set CHECKOUT_ALLOWED_ORIGIN=https://bigheavyink.com
+      supabase secrets set CONTENT_ALLOWED_ORIGIN=https://bigheavyink.com
+      supabase secrets set EBOOK_ALLOWED_ORIGIN=https://bigheavyink.com
 - **About.** There is a TODO where your reason for building this goes.
 - **Credential review.** The NCLEX, CISSP and NEC content, and the social work
   eligibility routes in the coach, should be read by someone who holds the
