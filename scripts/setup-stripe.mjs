@@ -120,15 +120,25 @@ for (const a of live.filter(x => x.ebook)) {
   });
 }
 
+// Stripe rejects a coupon name over 40 characters, and does it only at write
+// time — the dry run sails past it. Keep these short and assert the limit here
+// so a future rewording fails in the editor, not mid-run with the prices
+// already created.
 const COUPONS = (reg.ebooks?.promos || []).map(p => ({
   id: p.applies_to === "pro" ? "BH_PRO_10" : "BH_ALL_ACCESS_20",
   name: p.applies_to === "pro"
-    ? "10% off Pro — thank you for buying a book"
-    : "20% off Unlimited — thank you for buying three books",
+    ? "10% off Pro — book owner"
+    : "20% off Unlimited — 3+ books",
   percent_off: p.percent_off,
   duration: "forever",
   env: p.applies_to === "pro" ? "COUPON_PRO_10" : "COUPON_ALL_ACCESS_20",
 }));
+for (const c of COUPONS) {
+  if (c.name.length > 40) {
+    console.error(`setup-stripe: coupon name over Stripe's 40-char limit (${c.name.length}): "${c.name}"`);
+    process.exit(1);
+  }
+}
 
 /* ---------------- reconcile ---------------- */
 
