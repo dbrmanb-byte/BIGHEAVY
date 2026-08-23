@@ -130,11 +130,9 @@ Events: checkout.session.completed
 supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
-Then trigger a test purchase and watch it land:
-
-```bash
-supabase functions logs stripe-webhook --tail
-```
+Then trigger a test purchase and watch it land in the dashboard —
+Supabase → Edge Functions → stripe-webhook → Logs. (The CLI has no
+`functions logs` subcommand; the dashboard is where they live.)
 
 An `UNMAPPED PRICE` line means step 3 did not take for that price.
 
