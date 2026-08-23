@@ -8,9 +8,8 @@
 //   STRIPE_WEBHOOK_SECRET - whsec_... from the Stripe webhook endpoint config
 //   SUPABASE_SERVICE_ROLE_KEY - auto-injected by Supabase
 
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import Stripe from "https://esm.sh/stripe@14?target=deno";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import Stripe from "npm:stripe@14";
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2024-12-18.acacia",
@@ -81,7 +80,7 @@ async function resolveEntitlement(price: Stripe.Price | undefined): Promise<Enti
 // SubtleCrypto provider.
 const cryptoProvider = Stripe.createSubtleCryptoProvider();
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature")!;
 

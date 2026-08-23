@@ -14,8 +14,7 @@
 // Secrets: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY (injected)
 //          CONTENT_BUCKET  optional, defaults to "content"
 
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 const BUCKET = Deno.env.get("CONTENT_BUCKET") ?? "content";
 const ALLOWED_ORIGIN = Deno.env.get("CONTENT_ALLOWED_ORIGIN") ?? "*";
@@ -83,7 +82,7 @@ const withoutKey = (q: Question) => ({
   id: q.id, n: q.n, cat: q.cat, stem: q.stem, choices: q.choices,
 });
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
 

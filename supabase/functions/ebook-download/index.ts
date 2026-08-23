@@ -12,9 +12,8 @@
 //   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY  (auto-injected)
 //   EBOOK_BUCKET   optional, defaults to "ebooks"
 
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { PDFDocument, StandardFonts, rgb } from "npm:pdf-lib@1.17.1";
 
 const BUCKET = Deno.env.get("EBOOK_BUCKET") ?? "ebooks";
 
@@ -40,7 +39,7 @@ function validSlug(s: unknown): s is string {
   return typeof s === "string" && /^[a-z0-9][a-z0-9-]{0,63}$/.test(s);
 }
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
 
