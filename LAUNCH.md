@@ -67,6 +67,9 @@ for f in content/*/bank.json; do supabase storage cp --experimental "$f" "ss:///
 Every `supabase storage` command needs `--experimental` — the CLI refuses to run
 them without it.
 
+`storage cp` does not overwrite. Re-running the loops throws `KeyAlreadyExists`
+on anything already uploaded — that is the file being there, not an error.
+
 **Each PDF must be named `<slug>.pdf`** — `casebook.pdf`, not `casebook-lmsw.pdf`.
 The download route builds the path from the slug, so a mismatch 404s for someone
 who has already paid. `node scripts/check-ebooks.mjs` checks the names against

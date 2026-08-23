@@ -58,24 +58,39 @@ for f in content ebook-download stripe-webhook; do
   else bad "function MISSING" "$f — nothing will be entitled without it"; fi
 done
 
-# ---- the paid books ----
-BOOKS=$("${SB[@]}" storage ls --experimental ss:///ebooks 2>/dev/null)
-if [ -z "$BOOKS" ]; then
-  bad "ebooks bucket" "empty or unreachable — buyers get a 404"
+# ---- everything in storage, in one call ----
+#
+# `storage ls` on a path is unreliable — given ss:///content/casebook it returned
+# a bucket listing rather than that folder's contents, which had this script
+# reporting twenty uploaded files as missing. Recursive from the root is
+# unambiguous: one call, and every object comes back as a full path like
+#   /ebooks/casebook.pdf
+#   /content/casebook/bank.json
+# so the check is an exact string match instead of a guess about layout.
+OBJECTS=$("${SB[@]}" storage ls --experimental -r ss:/// 2>/dev/null)
+
+if [ -z "$OBJECTS" ]; then
+  bad "storage unreachable" "no objects listed — check the buckets exist"
 else
   miss=""
-  for s in $SLUGS; do echo "$BOOKS" | grep -q "$s.pdf" || miss="$miss $s.pdf"; done
+  for s in $SLUGS; do
+    echo "$OBJECTS" | grep -qx "/ebooks/$s.pdf" || miss="$miss $s.pdf"
+  done
   if [ -z "$miss" ]; then ok "all books uploaded" "$COUNT of $COUNT"
-  else bad "books missing" "$miss"; fi
-fi
+  else bad "books missing" "$miss — buyers of these get a 404 after paying"; fi
 
-# ---- the paid question banks ----
-missb=""
-for s in $SLUGS; do
-  "${SB[@]}" storage ls --experimental "ss:///content/$s" 2>/dev/null | grep -q "bank.json" || missb="$missb $s"
-done
-if [ -z "$missb" ]; then ok "all question banks uploaded" "$COUNT of $COUNT"
-else bad "banks missing" "$missb — those apps serve 10 questions to paying users"; fi
+  missb=""
+  for s in $SLUGS; do
+    echo "$OBJECTS" | grep -qx "/content/$s/bank.json" || missb="$missb $s"
+  done
+  if [ -z "$missb" ]; then ok "all question banks uploaded" "$COUNT of $COUNT"
+  else bad "banks missing" "$missb — those apps serve 10 questions to paying users"; fi
+
+  # A file at the wrong path uploads happily and is then invisible to the
+  # functions, which build their paths from the slug.
+  STRAY=$(echo "$OBJECTS" | grep -vE '^/(ebooks/[a-z0-9-]+\.pdf|content/[a-z0-9-]+/bank\.json)$' | tr '\n' ' ')
+  [ -z "$STRAY" ] || printf "  --    %-46s %s\n" "unexpected objects in storage" "$STRAY"
+fi
 
 # ---- secrets ----
 # Names only. The CLI prints digests rather than values, and neither belongs here.
