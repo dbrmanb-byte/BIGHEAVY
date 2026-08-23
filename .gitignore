@@ -9,3 +9,4 @@ ebooks/*.pdf
 
 # Paid question banks. Public repo — these live in a private bucket.
 content/*/bank.json
+site/

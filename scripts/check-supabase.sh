@@ -106,7 +106,7 @@ done
 
 echo ""
 if [ "$fail" -eq 0 ]; then
-  echo "  Backend looks ready. Next: Stripe prices, then the webhook endpoint."
+  echo "  Backend is ready. Next: the front end — LAUNCH.md step 5."
 else
   echo "  $fail problem(s). Nothing above is fixed by retrying — read the lines and act on them."
 fi

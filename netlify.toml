@@ -1,0 +1,19 @@
+# One site: the hub at the root, every app under its slug — /casebook/,
+# /keystone/, and so on, exactly as the registry routes them. The apps share an
+# origin on purpose: per-app storage namespacing, service-worker cache scoping,
+# and one sign-in across the catalogue all assume it. Do not split the apps
+# into separate Netlify sites.
+#
+# Set in Site settings → Environment variables (values, not here — this file is
+# public):
+#   BH_SUPABASE_URL   https://<project-ref>.supabase.co
+#   BH_SUPABASE_KEY   the anon/publishable key — never the service role key
+#
+# Unset, the build still succeeds and ships the free tier everywhere.
+
+[build]
+  command = "pnpm run build && node scripts/assemble-site.mjs"
+  publish = "site"
+
+[build.environment]
+  NODE_VERSION = "22"
