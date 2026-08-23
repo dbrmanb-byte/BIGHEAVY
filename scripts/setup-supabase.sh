@@ -10,8 +10,8 @@
 # It prints the exact commands at the end.
 #
 # Prerequisites:
-#   npm install -g supabase
-#   supabase login
+#   npm install -g supabase        (or let it fall back to npx)
+#   supabase login                 (npx supabase login)
 #
 # Usage:
 #   ./scripts/setup-supabase.sh <project-ref>          # dry run
@@ -28,8 +28,20 @@ if [ -z "$REF" ]; then
   exit 1
 fi
 
-if ! command -v supabase >/dev/null 2>&1; then
-  echo "supabase CLI not found. Install it with: npm install -g supabase"
+# How to invoke the CLI. A global `npm install -g supabase` only works if npm's
+# global bin directory is on PATH, which on Windows it frequently is not — so
+# fall back to npx rather than telling someone their working install is missing.
+# Override with SUPABASE_BIN if yours lives somewhere else.
+if [ -n "${SUPABASE_BIN:-}" ]; then
+  read -r -a SUPABASE <<< "$SUPABASE_BIN"
+elif command -v supabase >/dev/null 2>&1; then
+  SUPABASE=(supabase)
+elif command -v npx >/dev/null 2>&1; then
+  SUPABASE=(npx --yes supabase)
+  echo "  (using \`npx supabase\` — no global install found on PATH)"
+else
+  echo "No supabase CLI and no npx. Install Node, then: npm install -g supabase"
+  echo "Or set SUPABASE_BIN to the full path of your supabase binary."
   exit 1
 fi
 
@@ -67,7 +79,7 @@ fi
 echo ""
 
 echo "→ Link"
-run supabase link --project-ref "$REF"
+run "${SUPABASE[@]}" link --project-ref "$REF"
 
 echo ""
 echo "→ Migrations"
@@ -76,13 +88,13 @@ for m in "${MIGRATIONS[@]}"; do
     echo "  MISSING $m — aborting rather than applying a partial schema."
     exit 1
   fi
-  run supabase db push --file "$m"
+  run "${SUPABASE[@]}" db push --file "$m"
 done
 
 echo ""
 echo "→ Private buckets"
 for b in "${BUCKETS[@]}"; do
-  run supabase storage create "ss:///$b" --experimental
+  run "${SUPABASE[@]}" storage create "ss:///$b" --experimental
 done
 
 echo ""
@@ -92,30 +104,32 @@ for f in "${FUNCTIONS[@]}"; do
   # and the request is authenticated by its signature instead. The other two
   # must verify, because they decide what a signed-in user is entitled to.
   if [ "$f" = "stripe-webhook" ]; then
-    run supabase functions deploy "$f" --no-verify-jwt
+    run "${SUPABASE[@]}" functions deploy "$f" --no-verify-jwt
   else
-    run supabase functions deploy "$f"
+    run "${SUPABASE[@]}" functions deploy "$f"
   fi
 done
+
+SB="${SUPABASE[*]}"
 
 cat <<EOF
 
 → Secrets — type these yourself, they do not belong in a script
 
-    supabase secrets set STRIPE_SECRET_KEY=sk_live_...
-    supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
-    supabase secrets set COUPON_PRO_10=BH_PRO_10
-    supabase secrets set COUPON_ALL_ACCESS_20=BH_ALL_ACCESS_20
-    supabase secrets set CONTENT_ALLOWED_ORIGIN=https://<your-domain>
-    supabase secrets set EBOOK_ALLOWED_ORIGIN=https://<your-domain>
+    $SB secrets set STRIPE_SECRET_KEY=sk_live_...
+    $SB secrets set STRIPE_WEBHOOK_SECRET=whsec_...
+    $SB secrets set COUPON_PRO_10=BH_PRO_10
+    $SB secrets set COUPON_ALL_ACCESS_20=BH_ALL_ACCESS_20
+    $SB secrets set CONTENT_ALLOWED_ORIGIN=https://<your-domain>
+    $SB secrets set EBOOK_ALLOWED_ORIGIN=https://<your-domain>
 
   SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are injected
   automatically. Never set the service role key anywhere a browser can read it.
 
 → Upload the paid content — neither of these is in git, by design
 
-    for f in ebooks/*.pdf;        do supabase storage cp "\$f" "ss:///ebooks/\$(basename "\$f")"; done
-    for f in content/*/bank.json; do supabase storage cp "\$f" "ss:///content/\$(basename \$(dirname "\$f"))/bank.json"; done
+    for f in ebooks/*.pdf;        do $SB storage cp "\$f" "ss:///ebooks/\$(basename "\$f")"; done
+    for f in content/*/bank.json; do $SB storage cp "\$f" "ss:///content/\$(basename \$(dirname "\$f"))/bank.json"; done
 
   Each PDF must be named <slug>.pdf — casebook.pdf, not casebook-lmsw.pdf —
   or the download 404s for someone who has paid.
