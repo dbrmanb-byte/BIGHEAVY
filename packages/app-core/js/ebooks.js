@@ -64,9 +64,15 @@ export async function fetchBook(slug) {
   if (!token) throw new Error("Sign in to download your books.");
 
   // Not functions.invoke: the reply is a PDF, and invoke wants to parse JSON.
-  const base = client.functionsUrl
-    || (client.supabaseUrl || "").replace(".supabase.co", ".functions.supabase.co");
-  const res = await fetch(`${base.replace(/\/$/, "")}/${DOWNLOAD_FN}`, {
+  //
+  // The endpoint is built from the page's own config rather than the client's
+  // internals — newer supabase-js keeps functionsUrl as a URL object, and
+  // calling .replace on it was the whole download button failing with
+  // "base.replace is not a function". Same construction checkout.js uses.
+  const raw = (typeof window !== "undefined" && window.BH_SUPABASE_URL)
+    || String(client.supabaseUrl || "");
+  if (!raw) throw new Error("Downloads are not available on this build.");
+  const res = await fetch(`${raw.replace(/\/+$/, "")}/functions/v1/${DOWNLOAD_FN}`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({ slug }),
