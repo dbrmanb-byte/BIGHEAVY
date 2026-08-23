@@ -81,6 +81,22 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 }
 .modes button:hover{color:var(--text);}
 .modes button[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold);}
+/* What each tab is for, on hover and on keyboard focus. Pure CSS so it costs
+   nothing and cannot break a tab. Touch has no hover — there the tab labels
+   carry the load, which they did alone before this existed. */
+.modes button{position:relative;}
+.modes button[data-tip]::after{
+  content:attr(data-tip);position:absolute;top:calc(100% + 8px);left:0;z-index:30;
+  width:230px;padding:9px 12px;border:1px solid var(--line);border-radius:6px;
+  background:var(--surface,#1B2F38);color:var(--text);text-transform:none;letter-spacing:0;
+  font-family:var(--read,Georgia,serif);font-size:13.5px;line-height:1.5;font-weight:400;
+  text-align:left;white-space:normal;box-shadow:0 12px 28px -12px rgba(0,0,0,.7);
+  opacity:0;visibility:hidden;transition:opacity .12s ease .25s,visibility 0s linear .37s;
+  pointer-events:none;}
+.modes button[data-tip]:hover::after,.modes button[data-tip]:focus-visible::after{
+  opacity:1;visibility:visible;}
+.modes button[data-tip]:last-child::after{left:auto;right:0;}
+@media (max-width:640px){.modes button[data-tip]::after{display:none;}}
 .tutor-open{
   font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   border:1px solid var(--line);border-radius:999px;padding:7px 14px;display:flex;align-items:center;gap:8px;
@@ -451,15 +467,15 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
 <div class="rail">
   <div class="brand"><div class="bh">BIGHEAVYINK</div><b>Keystone</b><span>Real Estate Prep</span></div>
   <nav class="modes" role="tablist" aria-label="Study modes">
-    <button role="tab" data-mode="drill" aria-selected="true">Drill</button>
-    <button role="tab" data-mode="setup" aria-selected="false">Vignettes</button>
-    <button role="tab" data-mode="dashboard" aria-selected="false">Dashboard</button>
-    <button role="tab" data-mode="glossary" aria-selected="false">Glossary</button>
-    <button role="tab" data-mode="plan" aria-selected="false">Plan</button>
+    <button role="tab" data-mode="drill" data-tip="Flashcards on a schedule. Terms you miss come back sooner; terms you know wait longer." aria-selected="true">Drill</button>
+    <button role="tab" data-mode="setup" data-tip="Exam-style practice questions, with the reasoning behind every answer." aria-selected="false">Vignettes</button>
+    <button role="tab" data-mode="dashboard" data-tip="Your progress — accuracy by topic, and where you are weakest." aria-selected="false">Dashboard</button>
+    <button role="tab" data-mode="glossary" data-tip="Every term and its definition, in one searchable list. Free forever." aria-selected="false">Glossary</button>
+    <button role="tab" data-mode="plan" data-tip="Hour-long study blocks, your exam date, and focus tips that react to how it went." aria-selected="false">Plan</button>
   </nav>
   <button class="install hide" id="installBtn">Install</button>
   <button class="tutor-open" id="userBtn" aria-label="Account"><span id="userLabel">Sign in</span></button>
-  <button class="tutor-open" id="tutorBtn" aria-label="Open tutor"><i class="dot" id="engDot"></i>Tutor</button>
+  <button class="tutor-open" id="tutorBtn" title="An AI tutor that runs on your own device. What you type never leaves it." aria-label="Open tutor"><i class="dot" id="engDot"></i>Tutor</button>
 </div>
 
 <div class="toast" id="toast" role="status">
