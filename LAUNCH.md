@@ -130,6 +130,16 @@ Events: checkout.session.completed
 supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
+If deliveries fail with "Invalid signature", trust only the endpoint's own
+page: Developers → Webhooks → the endpoint → Signing secret → Reveal, and set
+that value. It is authoritative over anything printed at creation time — that
+exact mismatch cost an hour on the first test purchase. Test-mode deliveries
+are not retried aggressively, so after fixing the secret, Resend the event by
+hand and confirm tier_valid_until moves to the real billing period end:
+
+    supabase db query --linked "select tier_valid_until from public.profiles"
+
+
 Then trigger a test purchase and watch it land in the dashboard —
 Supabase → Edge Functions → stripe-webhook → Logs. (The CLI has no
 `functions logs` subcommand; the dashboard is where they live.)
