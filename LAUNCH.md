@@ -108,7 +108,15 @@ the script any time; it reports drift instead of creating duplicates.
 
 ## 4. The webhook
 
-Stripe → Developers → Webhooks → Add endpoint
+Easiest from the command line — it creates the endpoint with the right four
+events and prints the signing secret, which the dashboard only shows at
+creation:
+
+```bash
+STRIPE_SECRET_KEY=sk_test_... node scripts/setup-stripe-webhook.mjs <project-ref>
+```
+
+Or by hand: Stripe → Developers → Webhooks → Add endpoint
 
 ```
 URL:    https://<project-ref>.supabase.co/functions/v1/stripe-webhook
