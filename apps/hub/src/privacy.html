@@ -31,36 +31,85 @@
   <p class="kicker">Privacy</p>
   <h1>What is collected, and what is not.</h1>
 
-  <!-- REVIEW BEFORE LAUNCH: this is a plain-language draft describing how the
-       apps actually behave today. It is not legal advice. Have it reviewed
-       against the law where you operate, and fill in the placeholders below. -->
-  <p class="note">This is a plain-language description of how these apps work today. Fill in the contact and jurisdiction details, and have it reviewed before you rely on it.</p>
+  <p class="dim">The honest summary: your studying stays on your device, your money is handled
+  by Stripe, and this site runs no ads, no analytics, and no trackers. The rest of this page is
+  the detail behind that sentence.</p>
 
-  <h2>Your study data stays on your device</h2>
-  <p>Drill history, answers, flags, scores and settings are stored in your own browser using local storage. They are not uploaded, not backed up to a server, and not visible to anyone but you. Clearing your browser data for this site erases them permanently — there is no copy elsewhere to restore from.</p>
+  <h2>Your study data never leaves your device</h2>
+  <p>Drill history, answers, scores, streaks, planner sessions, focus ratings and settings are
+  stored in your own browser, on your own device, using local storage. They are not uploaded,
+  not backed up to a server, and not visible to us or anyone else. Clearing your browser's data
+  for this site erases them permanently — there is no copy anywhere to restore from, which is
+  the price of them being genuinely private.</p>
 
-  <h2>The AI tutor</h2>
-  <p>The tutor downloads a language model once and then runs it entirely on your device. Prompts you type and answers it produces are processed locally and are never transmitted. The only network activity is the one-time model download, served by the model host's CDN.</p>
+  <h2>The AI tutor runs on your device</h2>
+  <p>The tutor downloads a language model once — a large file, fetched from the model host's
+  content delivery network — and then runs it entirely on your hardware. What you type to it and
+  what it answers are processed locally and never transmitted. We could not read your tutor
+  conversations if we wanted to; they do not exist anywhere but your device.</p>
 
-  <h2>If you contact us</h2>
-  <p>The contact form sends the name, email address and message you enter, so a reply can be sent. That is used for correspondence only: it is not added to a marketing list, not sold, and not shared with third parties for their own purposes.</p>
+  <h2>If you create an account</h2>
+  <p>Accounts exist so purchases can follow you between devices. Creating one stores your email
+  address and a securely hashed password with Supabase, our authentication and database provider.
+  Signing in on a device keeps a session token in that browser's local storage. We use your email
+  to sign you in, to send account emails such as confirmation links, and to attach what you have
+  bought to you. It is not used for marketing and is not sold or shared for anyone else's
+  purposes.</p>
 
-  <h2>If you subscribe</h2>
-  <p>Payment is handled by our billing provider. Card details are entered on their systems and are never seen by or stored on this site. We receive only what is needed to know that a subscription is active — an account identifier, plan, and status.</p>
+  <h2>If you buy something</h2>
+  <p>Payment happens on Stripe's checkout pages. Your card number is entered on Stripe's systems
+  and never touches ours — we cannot see it and do not store it. What we receive and keep is what
+  is needed to honour the purchase: your email, a Stripe customer reference, which plan or book
+  you bought, and whether the subscription is active. Stripe processes your payment data under its
+  own privacy policy and its own legal obligations as a payment processor.</p>
 
-  <h2>Analytics</h2>
-  <p>[Placeholder — state your position. If you use privacy-friendly analytics such as Plausible or Fathom, say so and note that it does not use cookies or track individuals across sites. If you use none, say "This site uses no analytics and sets no tracking cookies."]</p>
+  <h2>Purchased books carry your name</h2>
+  <p>Every ebook you download is stamped, at the moment of download, with the email address of
+  the account that bought it. That mark is in the file you receive. It exists so that a copy of a
+  book can be traced to the purchase it came from; it is the only place your details travel
+  inside a product.</p>
 
-  <h2>Cookies</h2>
-  <p>The apps themselves set no advertising or tracking cookies. Local storage is used for your study progress and, if you subscribe, to remember your plan so the app keeps working offline.</p>
+  <h2>If you use the contact form</h2>
+  <p>The form sends the name, email address and message you type. Submissions are collected by
+  Netlify Forms, our hosting provider's form service, and used only to reply to you. They are not
+  added to any mailing list.</p>
 
-  <h2>Your rights</h2>
-  <p>You can erase your study data at any time by clearing site data in your browser. For anything held as a result of contacting us or subscribing — a copy, a correction, or deletion — write to the address below and it will be actioned.</p>
+  <h2>What the infrastructure sees</h2>
+  <p>Like almost every website, the services this site runs on keep short-lived technical logs.
+  Netlify (hosting) and Supabase (accounts, database, and the functions that serve paid content)
+  see standard request data such as IP addresses in their server logs. The pages also load fonts
+  from Google Fonts and a small number of code libraries from public CDNs — your browser makes
+  those requests directly, which discloses your IP address to those services, as it does to any
+  server your browser contacts. None of these are used by us to track you.</p>
 
-  <h2>Contact</h2>
-  <p>[Placeholder — your contact email address, and the legal entity or trading name and country responsible for this site.]</p>
+  <h2>No ads, no analytics, no tracking</h2>
+  <p>This site runs no advertising, no analytics scripts, and no third-party trackers, and sets
+  no tracking cookies. We do not know how long you studied, what you got wrong, or which pages
+  you read — by design, that information stays with you.</p>
 
-  <p class="dim">Last updated: [date]</p>
+  <h2>Your rights and choices</h2>
+  <p>Your study data you control directly: clear the site's data in your browser and it is gone.
+  For anything we hold — your account, your purchase records, contact-form messages — you can ask
+  for a copy, a correction, or deletion through the <a href="./contact.html">contact form</a>,
+  and it will be actioned. Deleting your account removes your email and profile from our systems;
+  records of payments already made are retained by Stripe as financial regulations require.
+  Depending on where you live, these rights may also be backed by law (such as the GDPR in Europe
+  or the CCPA in California); we honour the requests either way.</p>
+
+  <h2>Children</h2>
+  <p>These are professional licensing exam study tools, not services directed at children under 13,
+  and we do not knowingly collect personal information from them.</p>
+
+  <h2>Changes</h2>
+  <p>If how this site handles data changes, this page changes with it, and the date below moves.
+  A change that matters — a new category of data collected, a new party it is shared with — is
+  the kind of thing the page will say plainly rather than bury.</p>
+
+  <h2>Who operates this</h2>
+  <p>BIGHEAVYINK, operated from the United States. The fastest way to reach us about anything on
+  this page is the <a href="./contact.html">contact form</a>.</p>
+
+  <p class="dim">Last updated: August 23, 2026</p>
 </div>
 </main>
 
