@@ -23,7 +23,11 @@ const ALLOWED_ORIGIN = Deno.env.get("EBOOK_ALLOWED_ORIGIN") ?? "*";
 
 const cors = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
-  "Access-Control-Allow-Headers": "authorization, content-type",
+  // supabase-js functions.invoke() sends apikey and x-client-info with every
+  // call. Leaving them off this list fails the browser preflight, and the
+  // client surfaces that as a generic "could not reach" with no server error
+  // — the request never leaves the browser.
+  "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
