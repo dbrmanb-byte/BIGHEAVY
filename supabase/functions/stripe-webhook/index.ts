@@ -74,13 +74,20 @@ async function resolveEntitlement(price: Stripe.Price | undefined): Promise<Enti
   return null;
 }
 
+// Deno's WebCrypto is async-only. The synchronous constructEvent() throws on
+// every call here — "cannot be used in a synchronous context" — which the
+// catch below then reports as a bad signature. Every event Stripe ever sent
+// would 400, valid or not, so this must be the async variant with an explicit
+// SubtleCrypto provider.
+const cryptoProvider = Stripe.createSubtleCryptoProvider();
+
 serve(async (req: Request) => {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature")!;
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    event = await stripe.webhooks.constructEventAsync(body, sig, webhookSecret, undefined, cryptoProvider);
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
     return new Response("Invalid signature", { status: 400 });
