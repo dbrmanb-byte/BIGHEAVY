@@ -37,9 +37,9 @@ supabase login
 ./scripts/setup-supabase.sh <project-ref> --write
 ```
 
-That links the project, applies `schema.sql`, `002_tiers.sql` and `003_ebooks.sql`
-in order, creates the private `ebooks` and `content` buckets, and deploys the
-three edge functions. It prints the secrets to set afterwards; type those
+That links the project, applies the four migrations in `supabase/migrations/`
+(schema, tiers, ebooks, and the one that creates the two private buckets), and
+deploys the three edge functions. It prints the secrets to set afterwards; type those
 yourself.
 
 Both buckets must stay **private**. Splitting the paid banks out of the app
@@ -48,7 +48,16 @@ click.
 
 ## 2. Upload the paid content
 
-Neither of these is in git, by design.
+Neither of these is in git, by design — the repository is public. **A fresh clone
+has an empty `ebooks/` and no `content/*/bank.json`**, and the banks cannot be
+regenerated from the repo: only the free ten questions per app remain in the
+bundles. Restore them from your backup archive before this step, and keep a copy
+somewhere that is not one laptop.
+
+```bash
+unzip -o BIGHEAVY-paid-content.zip     # into the repo root
+node scripts/check-ebooks.mjs          # names must match the registry
+```
 
 ```bash
 for f in ebooks/*.pdf;        do supabase storage cp "$f" "ss:///ebooks/$(basename "$f")"; done

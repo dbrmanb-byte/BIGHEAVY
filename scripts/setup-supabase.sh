@@ -45,21 +45,15 @@ else
   exit 1
 fi
 
-# Migrations run in filename order and each depends on the last: schema.sql
-# creates the tables the tier and ebook migrations alter.
-MIGRATIONS=(
-  "supabase/schema.sql"
-  "supabase/002_tiers.sql"
-  "supabase/003_ebooks.sql"
-)
+# `supabase db push` reads supabase/migrations/ and applies whatever the remote
+# has not seen, in filename order, recording each in the migration history
+# table. It takes no --file: an earlier version of this script passed one and
+# the CLI rejected it. The four live there, including the one that creates the
+# two private storage buckets — the CLI has no bucket command, and bucket
+# privacy is not something to leave to a click anyway.
+MIGRATION_DIR="supabase/migrations"
 
 FUNCTIONS=(content ebook-download stripe-webhook)
-
-# Both buckets are private. The whole point of splitting paid content out of the
-# bundles was that it stops being public — a public bucket undoes that in one
-# click, so these are created private and the entitlement check in the edge
-# function is the only way in.
-BUCKETS=(ebooks content)
 
 run() {
   if [ "$WRITE" = "--write" ]; then
@@ -82,31 +76,30 @@ echo "→ Link"
 run "${SUPABASE[@]}" link --project-ref "$REF"
 
 echo ""
-echo "→ Migrations"
-for m in "${MIGRATIONS[@]}"; do
-  if [ ! -f "$m" ]; then
-    echo "  MISSING $m — aborting rather than applying a partial schema."
-    exit 1
-  fi
-  run "${SUPABASE[@]}" db push --file "$m"
-done
-
-echo ""
-echo "→ Private buckets"
-for b in "${BUCKETS[@]}"; do
-  run "${SUPABASE[@]}" storage create "ss:///$b" --experimental
-done
+echo "→ Migrations and storage buckets"
+COUNT=$(ls "$MIGRATION_DIR"/*.sql 2>/dev/null | wc -l | tr -d ' ')
+if [ "$COUNT" -lt 4 ]; then
+  echo "  Only $COUNT migration(s) in $MIGRATION_DIR — expected at least 4."
+  echo "  Aborting rather than applying a partial schema."
+  exit 1
+fi
+for m in "$MIGRATION_DIR"/*.sql; do echo "    $(basename "$m")"; done
+run "${SUPABASE[@]}" db push --linked
 
 echo ""
 echo "→ Edge functions"
 for f in "${FUNCTIONS[@]}"; do
+  # --use-api bundles server-side. Without it the CLI wants a running Docker
+  # daemon, which is one more thing to install and the commonest reason a
+  # deploy fails on a laptop.
+  #
   # --no-verify-jwt on the webhook only: Stripe cannot present a Supabase JWT,
   # and the request is authenticated by its signature instead. The other two
   # must verify, because they decide what a signed-in user is entitled to.
   if [ "$f" = "stripe-webhook" ]; then
-    run "${SUPABASE[@]}" functions deploy "$f" --no-verify-jwt
+    run "${SUPABASE[@]}" functions deploy "$f" --use-api --no-verify-jwt
   else
-    run "${SUPABASE[@]}" functions deploy "$f"
+    run "${SUPABASE[@]}" functions deploy "$f" --use-api
   fi
 done
 
@@ -127,6 +120,8 @@ cat <<EOF
   automatically. Never set the service role key anywhere a browser can read it.
 
 → Upload the paid content — neither of these is in git, by design
+
+  The buckets are made private by the storage_buckets migration above.
 
     for f in ebooks/*.pdf;        do $SB storage cp "\$f" "ss:///ebooks/\$(basename "\$f")"; done
     for f in content/*/bank.json; do $SB storage cp "\$f" "ss:///content/\$(basename \$(dirname "\$f"))/bank.json"; done

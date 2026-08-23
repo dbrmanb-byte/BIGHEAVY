@@ -88,7 +88,7 @@ chmod +x setup.sh
 **Option B — Dashboard:**
 
 Open the SQL Editor in your Supabase dashboard, paste the contents of
-`supabase/schema.sql`, and click Run.
+the migrations in `supabase/migrations/` in filename order, and click Run. Easier: `./scripts/setup-supabase.sh <ref> --write` from the repo root.
 
 ### 3. Configure the app
 
