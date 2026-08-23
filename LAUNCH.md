@@ -72,6 +72,17 @@ The download route builds the path from the slug, so a mismatch 404s for someone
 who has already paid. `node scripts/check-ebooks.mjs` checks the names against
 the registry.
 
+## 2b. Check the backend before moving on
+
+```bash
+./scripts/check-supabase.sh
+```
+
+Read-only. It verifies the migrations applied, all three functions deployed, all
+ten PDFs and all ten banks uploaded, and the Stripe secrets set — every one of
+which fails silently in the same direction if it is missing: the site keeps
+working and quietly serves the free tier to someone who paid.
+
 ## 3. Stripe
 
 ```bash
