@@ -90,7 +90,7 @@ td.no{color:var(--text-dim);}
         <li>Long practice sets</li>
         <li>Timed full exam simulation</li>
         <li>Weak-area targeting</li>
-        <li>The on-device AI tutor</li>
+        <li data-needs-gpu>The on-device AI tutor</li>
       </ul>
       <a class="cta primary" href="#" data-plan="pro">Choose Pro</a>
     </div>
@@ -150,7 +150,7 @@ td.no{color:var(--text-dim);}
       <tr><td>Practice questions</td><td class="c no">10</td><td class="c yes">Full bank</td><td class="c yes">Full bank</td></tr>
       <tr><td>Timed exam simulation</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
       <tr><td>Weak-area targeting</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
-      <tr><td>On-device AI tutor</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+      <tr><td data-needs-gpu>On-device AI tutor</td><td class="c no">—</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
       <tr><td>Companion ebook (PDF)</td><td class="c no">$9.99 each</td><td class="c no">$9.99 each</td><td class="c no">$9.99 each</td></tr>
       <tr><td>Study planner and focus tips</td><td class="c yes">Yes</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
       <tr><td>Works offline</td><td class="c yes">Fully</td><td class="c yes">After first load</td><td class="c yes">After first load</td></tr>
@@ -180,6 +180,14 @@ td.no{color:var(--text-dim);}
     <div>
       <h4>How do the ebook discounts work?</h4>
       <p>Buy one companion book and you get 10% off a Pro subscription. Buy three or more and you get 20% off Unlimited. The discount code is sent with your book and applied at checkout. Books are yours to keep either way — the discount is a thank-you, not a trial.</p>
+    </div>
+    <div>
+      <h4>What does the tutor need to run?</h4>
+      <p>A recent browser with WebGPU — current Chrome or Edge on a reasonably modern computer.
+      Older machines, some work laptops, and Firefox cannot run it yet; on those, everything else
+      in Pro works exactly the same, and the rationales on every question carry most of what the
+      tutor explains. If this page shows a note next to the tutor, that is this device telling
+      you it cannot run it.</p>
     </div>
     <div>
       <h4>Is there a student or hardship rate?</h4>
@@ -250,6 +258,26 @@ allBtn?.addEventListener("click", e => {
   e.preventDefault();
   Checkout.start(Checkout.keyFor.allAccess());
 });
+</script>
+<script>
+/* Can this device run the on-device tutor? Checked before anyone pays for it.
+   navigator.gpu existing is not enough — the user's own laptop had the API but
+   no usable adapter — so the real test is whether an adapter comes back. On
+   unsupported devices the tutor line gets a plain note rather than a surprise
+   after checkout. */
+(async () => {
+  let ok = false;
+  try { ok = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch { /* no */ }
+  if (ok) return;
+  document.querySelectorAll("[data-needs-gpu]").forEach(el => {
+    const n = document.createElement("span");
+    n.textContent = "not supported on this device";
+    n.style.cssText = "font-family:var(--mono);font-size:9px;letter-spacing:.08em;" +
+      "text-transform:uppercase;color:var(--text-dim);border:1px solid var(--line);" +
+      "border-radius:3px;padding:1px 6px;margin-left:8px;white-space:nowrap;";
+    el.appendChild(n);
+  });
+})();
 </script>
 </body>
 </html>
