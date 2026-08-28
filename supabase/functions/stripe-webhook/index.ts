@@ -17,6 +17,24 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
 
 const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 
+// Where "something was bought" notices go: a Slack incoming webhook, or any
+// inbound URL an agent listens on. Optional — unset means no notices, and a
+// notice failing must never fail the purchase it describes, so errors are
+// logged and swallowed.
+const NOTIFY_URL = Deno.env.get("SLACK_WEBHOOK_URL") ?? "";
+async function notify(text: string) {
+  if (!NOTIFY_URL) return;
+  try {
+    await fetch(NOTIFY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+  } catch (err) {
+    console.error("notify failed (purchase unaffected):", err);
+  }
+}
+
 // How a Stripe price becomes an entitlement.
 //
 // Preferred: put metadata on the Price (or its Product) in Stripe —
@@ -245,7 +263,10 @@ async function handleEbookPurchase(supabase: any, session: Stripe.Checkout.Sessi
     }
   }
 
-  if (granted > 0) await issueDiscount(supabase, customerId, email);
+  if (granted > 0) {
+    await notify(`Ebook purchase — ${granted} book${granted === 1 ? "" : "s"} ($${(granted * 9.99).toFixed(2)}) by ${email ?? customerId}`);
+    await issueDiscount(supabase, customerId, email);
+  }
 }
 
 /** Give the buyer the coupon their library size has earned. */
@@ -342,4 +363,9 @@ async function applySubscription(
   });
 
   console.log("Tier set:", mapping.tier, "for customer:", customerId);
+  await notify(
+    mapping.tier === "all_access"
+      ? `New Unlimited subscription ($14.99/mo) — customer ${customerId}`
+      : `New Pro subscription ($7.99/mo) for ${mapping.app} — customer ${customerId}`
+  );
 }

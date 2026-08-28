@@ -146,6 +146,22 @@ Supabase → Edge Functions → stripe-webhook → Logs. (The CLI has no
 
 An `UNMAPPED PRICE` line means step 3 did not take for that price.
 
+## 4b. Signup and sale notices (optional)
+
+Purchases and signups can announce themselves to a Slack channel or any
+inbound URL an agent listens on. Two secrets switch it on:
+
+    supabase secrets set SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
+    supabase secrets set NOTIFY_TOKEN=<any long random string>
+
+Sales notify from the stripe-webhook function automatically. Signups need one
+dashboard hookup: Database → Webhooks → Create — table public.profiles, event
+INSERT, URL https://<project-ref>.supabase.co/functions/v1/notify, and an HTTP
+header x-notify-token set to the same NOTIFY_TOKEN value. The token is the
+gate; without it the notify URL would be public.
+
+A notice failing never fails the purchase or signup it describes.
+
 ## 5. The front end
 
 Set these on the host, not in source. Netlify → Site settings → Environment

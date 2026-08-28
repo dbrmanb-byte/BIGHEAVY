@@ -53,7 +53,7 @@ fi
 # privacy is not something to leave to a click anyway.
 MIGRATION_DIR="supabase/migrations"
 
-FUNCTIONS=(content ebook-download stripe-webhook checkout)
+FUNCTIONS=(content ebook-download stripe-webhook checkout notify)
 
 run() {
   if [ "$WRITE" = "--write" ]; then
@@ -96,7 +96,7 @@ for f in "${FUNCTIONS[@]}"; do
   # --no-verify-jwt on the webhook only: Stripe cannot present a Supabase JWT,
   # and the request is authenticated by its signature instead. The other two
   # must verify, because they decide what a signed-in user is entitled to.
-  if [ "$f" = "stripe-webhook" ]; then
+  if [ "$f" = "stripe-webhook" ] || [ "$f" = "notify" ]; then
     run "${SUPABASE[@]}" functions deploy "$f" --use-api --no-verify-jwt
   else
     run "${SUPABASE[@]}" functions deploy "$f" --use-api

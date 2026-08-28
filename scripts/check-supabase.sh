@@ -53,7 +53,7 @@ fi
 
 # ---- edge functions ----
 FN=$("${SB[@]}" functions list 2>/dev/null)
-for f in content ebook-download stripe-webhook checkout; do
+for f in content ebook-download stripe-webhook checkout notify; do
   if echo "$FN" | grep -q "$f"; then ok "function deployed" "$f"
   else bad "function MISSING" "$f — nothing will be entitled without it"; fi
 done
@@ -99,9 +99,9 @@ for k in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET; do
   if echo "$SEC" | grep -q "$k"; then ok "secret set" "$k"
   else bad "secret NOT set" "$k — the webhook cannot verify or charge anything"; fi
 done
-for k in COUPON_PRO_10 COUPON_ALL_ACCESS_20; do
+for k in COUPON_PRO_10 COUPON_ALL_ACCESS_20 SLACK_WEBHOOK_URL NOTIFY_TOKEN; do
   if echo "$SEC" | grep -q "$k"; then ok "secret set" "$k"
-  else printf "  --    %-46s %s\n" "optional secret not set" "$k — ebook discounts will not be issued"; fi
+  else printf "  --    %-46s %s\n" "optional secret not set" "$k — optional: discounts / signup+sale notices"; fi
 done
 
 echo ""
