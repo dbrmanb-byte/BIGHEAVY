@@ -118,6 +118,7 @@ function ensureOverlay() {
         <button class="go" data-a="signin">Sign in</button>
         <button class="alt" data-a="signup">Create account</button>
         <button class="alt" data-a="magic">Email me a link</button>
+        <a class="alt" href="/reset.html" style="text-decoration:underline;">Forgot password?</a>
       </div>
       <p class="msg" aria-live="polite"></p>
     </div>`;

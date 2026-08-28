@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reset password — BIGHEAVYINK</title>
+<meta name="description" content="Reset the password on your BIGHEAVYINK account.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<link rel="stylesheet" href="./site.css">
+<style>
+.box{max-width:420px;}
+.box label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-dim);margin:0 0 6px;}
+.box input{width:100%;box-sizing:border-box;background:var(--surface);color:var(--text);
+  border:1px solid var(--line);border-radius:5px;padding:11px 13px;font:inherit;font-size:15px;
+  margin-bottom:14px;}
+.box input:focus{border-color:var(--gold);outline:none;}
+.msg{font-family:var(--mono);font-size:11px;line-height:1.6;margin-top:12px;min-height:1.2em;}
+.msg.err{color:#D9455F;}
+.msg.ok{color:var(--good);}
+.state{font-family:var(--read);font-size:15.5px;line-height:1.6;color:var(--text-dim);max-width:56ch;}
+</style>
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./coach.html">Find your app</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./library.html">Your library</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap page">
+  <p class="kicker">Account</p>
+  <h1 id="head">Reset your password.</h1>
+
+  <!-- Ask for the recovery email -->
+  <section id="ask" class="hide">
+    <p class="state">Enter the email on your account and we will send a link. Clicking it brings
+    you back here, signed in, to choose a new password.</p>
+    <div class="box" style="margin-top:18px;">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+      <button class="cta primary" id="sendBtn" style="cursor:pointer;">Send the reset link</button>
+      <p class="msg" id="askMsg" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Arrived from the recovery link: choose the new password -->
+  <section id="choose" class="hide">
+    <p class="state">You are signed in — pick the new password. It takes effect immediately on
+    every device.</p>
+    <div class="box" style="margin-top:18px;">
+      <label for="pw1">New password (8+ characters)</label>
+      <input id="pw1" type="password" autocomplete="new-password">
+      <label for="pw2">Same password, again</label>
+      <input id="pw2" type="password" autocomplete="new-password">
+      <button class="cta primary" id="setBtn" style="cursor:pointer;">Set password</button>
+      <p class="msg" id="setMsg" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Done -->
+  <section id="done" class="hide">
+    <p class="state">Password changed. You are signed in here, and the new password works
+    everywhere from now on.</p>
+    <div class="cta-row" style="margin-top:20px;">
+      <a class="cta primary" href="./library.html">Your library</a>
+      <a class="cta" href="./#apps">The apps</a>
+    </div>
+  </section>
+
+  <!-- No backend on this build -->
+  <section id="noBackend" class="hide">
+    <p class="state">Accounts are not switched on for this build, so there is no password to
+    reset. Everything on the free tier works without one.</p>
+  </section>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="./config.js"></script>
+<script type="module">
+/* Both halves of password recovery live on this one page: requesting the email,
+   and — when the link brings the visitor back with a recovery session — setting
+   the new password. One URL means every "Forgot password?" everywhere is just a
+   link here. */
+import * as SB from "./js/supabase-client.js";
+
+const $ = id => document.getElementById(id);
+const show = id => {
+  for (const s of ["ask", "choose", "done", "noBackend"]) $(s).classList.toggle("hide", s !== id);
+};
+const say = (el, text, kind) => { el.className = "msg" + (kind ? " " + kind : ""); el.textContent = text; };
+
+if (!window.BH_SUPABASE_URL || !window.BH_SUPABASE_KEY) {
+  show("noBackend");
+} else {
+  // If the auth client cannot load (offline, blocked CDN), the visitor gets a
+  // sentence instead of a blank page.
+  try {
+    await SB.init(window.BH_SUPABASE_URL, window.BH_SUPABASE_KEY);
+  } catch (err) {
+    console.error("auth client failed to load:", err);
+    show("ask");
+    say($("askMsg"), "Could not reach the sign-in service — check your connection and reload.", "err");
+    $("sendBtn").disabled = true;
+    throw err;
+  }
+
+  // A recovery link carries type=recovery in the URL hash and arrives with a
+  // session. A visitor who is simply signed in may also change their password
+  // here — that is a feature, not an accident.
+  const fromRecovery = window.location.hash.includes("type=recovery");
+  if (SB.getUser() || fromRecovery) {
+    $("head").textContent = "Choose a new password.";
+    show("choose");
+  } else {
+    show("ask");
+    // The session from the link can land a beat after page load.
+    SB.onAuthChange(u => { if (u) { $("head").textContent = "Choose a new password."; show("choose"); } });
+  }
+
+  $("sendBtn").onclick = async () => {
+    const email = $("email").value.trim();
+    if (!email) return say($("askMsg"), "Enter your email first.", "err");
+    say($("askMsg"), "Sending…");
+    try {
+      await SB.resetPassword(email);
+      say($("askMsg"), "Sent. Check your inbox — the link brings you back here.", "ok");
+    } catch (err) {
+      say($("askMsg"), err.message || "Could not send the email.", "err");
+    }
+  };
+
+  $("setBtn").onclick = async () => {
+    const a = $("pw1").value, b = $("pw2").value;
+    if (a.length < 8) return say($("setMsg"), "At least 8 characters.", "err");
+    if (a !== b) return say($("setMsg"), "The two do not match.", "err");
+    say($("setMsg"), "Saving…");
+    try {
+      await SB.updatePassword(a);
+      show("done");
+    } catch (err) {
+      say($("setMsg"), err.message || "Could not set the password — the link may have expired. Request a fresh one.", "err");
+    }
+  };
+}
+</script>
+</body>
+</html>

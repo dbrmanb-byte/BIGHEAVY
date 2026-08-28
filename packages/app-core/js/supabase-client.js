@@ -76,6 +76,22 @@ export async function signOut() {
   if (error) throw error;
 }
 
+/** Send a password-recovery email. The link lands on /reset.html, which is the
+    one page that knows how to finish the job. */
+export async function resetPassword(email) {
+  const { error } = await _client.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset.html`,
+  });
+  if (error) throw error;
+}
+
+/** Set a new password for the signed-in user — including a user who just
+    arrived signed-in from a recovery link. */
+export async function updatePassword(newPassword) {
+  const { error } = await _client.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+}
+
 export async function getProfile() {
   if (!_user) return null;
   const { data, error } = await _client
