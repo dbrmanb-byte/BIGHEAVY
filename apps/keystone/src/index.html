@@ -467,7 +467,7 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
 <div class="rail">
   <div class="brand"><div class="bh">BIGHEAVYINK</div><b>Keystone</b><span>Real Estate Prep</span></div>
   <nav class="modes" role="tablist" aria-label="Study modes">
-    <button role="tab" data-mode="drill" data-tip="Flashcards on a schedule. Terms you miss come back sooner; terms you know wait longer." aria-selected="true">Drill</button>
+    <button role="tab" data-mode="drill" data-tip="Flashcards on a schedule — terms, plus the rationales behind questions you have answered. What you miss comes back sooner." aria-selected="true">Drill</button>
     <button role="tab" data-mode="setup" data-tip="Exam-style practice questions, with the reasoning behind every answer." aria-selected="false">Vignettes</button>
     <button role="tab" data-mode="dashboard" data-tip="Your progress — accuracy by topic, and where you are weakest." aria-selected="false">Dashboard</button>
     <button role="tab" data-mode="glossary" data-tip="Every term and its definition, in one searchable list. Free forever." aria-selected="false">Glossary</button>
@@ -488,6 +488,10 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
   <section class="wrap" id="v-drill">
     <div class="bar"><i id="drillBar"></i></div>
     <div class="eyebrow" id="drillMeta"></div>
+    <div class="filters" role="group" aria-label="Deck">
+      <button class="chip" id="deckTerms" aria-pressed="true">Terms</button>
+      <button class="chip" id="deckWhy" aria-pressed="false">Rationales</button>
+    </div>
     <div class="card" id="drillCard">
       <span class="tab" id="drillTab"></span>
       <div class="meta"><span id="drillBox"></span><span id="drillCount"></span></div>
@@ -750,6 +754,28 @@ function setMode(m){
 document.querySelectorAll(".modes button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
 
 /* ---------------- DRILL ---------------- */
+/* Two decks share this view. Terms runs the glossary on the Leitner schedule.
+   Rationales rebuilds the same drill from practice questions whose answer and
+   reasoning are already on this device — the free samples, plus every paid
+   item revealed by answering it in a practice set. Nothing is fetched here: a
+   rationale that has not been earned by answering is not a card yet, which is
+   also what keeps the deck honest about what has actually been studied. */
+S.deck = store.get("cb.deck", "terms");
+S.rsched = store.get("cb.rsched", {});         // questionId -> {box, due}
+S.whyQueue = []; S.whyPos = 0;
+
+const whyPool = () => ((window.DATA && DATA.questions) || [])
+  .filter(q => q.answer !== undefined && q.answer !== null && q.why);
+
+function setDeck(d){
+  if(S.deck === d) return;
+  S.deck = d; store.set("cb.deck", d);
+  S.drillShown = false;
+  renderDrill();
+}
+$("deckTerms").onclick = () => setDeck("terms");
+$("deckWhy").onclick = () => setDeck("why");
+
 function buildDrillQueue(){
   const now = Date.now();
   const due = [], fresh = [], later = [];
@@ -763,7 +789,24 @@ function buildDrillQueue(){
   if(!S.drillQueue.length) S.drillQueue = shuffle(later).slice(0,20);
   S.drillPos = 0; S.drillShown = false; S.drillDone = 0;
 }
+function buildWhyQueue(){
+  const now = Date.now();
+  const due = [], fresh = [], later = [];
+  whyPool().forEach(q => {
+    const s = S.rsched[q.id];
+    if(!s) fresh.push(q);
+    else if(s.due <= now) due.push(q);
+    else later.push(q);
+  });
+  S.whyQueue = shuffle(due).concat(shuffle(fresh)).slice(0,40);
+  if(!S.whyQueue.length) S.whyQueue = shuffle(later).slice(0,20);
+  S.whyPos = 0; S.drillShown = false;
+}
 function renderDrill(){
+  $("deckTerms").setAttribute("aria-pressed", String(S.deck !== "why"));
+  $("deckWhy").setAttribute("aria-pressed", String(S.deck === "why"));
+  if(S.deck === "why") return renderWhy();
+  $("drillTerm").className = "term";
   if(!S.drillQueue.length) buildDrillQueue();
   if(S.drillPos >= S.drillQueue.length){ buildDrillQueue(); }
   const c = S.drillQueue[S.drillPos];
@@ -792,12 +835,66 @@ function renderDrill(){
     );
   }
 }
+function renderWhy(){
+  const pool = whyPool();
+  if(!pool.length){
+    $("drillTerm").className = "term";
+    $("drillCard").style.setProperty("--tab", "var(--gold)");
+    $("drillTab").textContent = "Rationales";
+    $("drillBox").textContent = "Empty deck";
+    $("drillCount").textContent = "";
+    $("drillTerm").textContent = "No rationale cards yet.";
+    $("drillDef").textContent = "Every practice question you answer becomes a card here — the question on the front, the correct answer and its reasoning on the back. Work through a set and come back.";
+    $("drillDef").classList.remove("hide");
+    $("drillMeta").innerHTML = "Rationale drill";
+    $("drillBar").style.width = "0%";
+    const ctl = $("drillControls");
+    ctl.innerHTML = "";
+    ctl.append(mkBtn("Answer questions","btn primary wide",() => setMode("setup")));
+    return;
+  }
+  if(!S.whyQueue.length || S.whyPos >= S.whyQueue.length) buildWhyQueue();
+  const q = S.whyQueue[S.whyPos];
+  const s = S.rsched[q.id] || {box:0};
+  $("drillTerm").className = "stem";
+  $("drillCard").style.setProperty("--tab", catColor(q.cat));
+  $("drillTab").textContent = catLabel(q.cat);
+  $("drillBox").textContent = s.box ? "Box " + s.box + " of 5" : "New card";
+  $("drillCount").textContent = (S.whyPos+1) + " / " + S.whyQueue.length;
+  $("drillTerm").textContent = q.stem;
+  $("drillDef").innerHTML = '<p style="margin:0 0 10px;"><b>' + "ABCD"[q.answer] + ". " + esc(q.choices[q.answer]) + "</b></p>" + esc(q.why);
+  $("drillDef").classList.toggle("hide", !S.drillShown);
+  $("drillBar").style.width = (S.whyPos / S.whyQueue.length * 100) + "%";
+
+  const known = Object.values(S.rsched).filter(x => x.box >= 4).length;
+  $("drillMeta").innerHTML = "Rationale drill <em>&middot;</em> " + known + " of " + pool.length + " rationales in long-term boxes";
+
+  const ctl = $("drillControls");
+  ctl.innerHTML = "";
+  if(!S.drillShown){
+    ctl.append(mkBtn("Show the answer","btn primary wide",() => { S.drillShown = true; renderDrill(); }));
+  } else {
+    ctl.append(
+      mkBtn("Missed it","btn again wide",() => gradeWhy(q,false)),
+      mkBtn("Knew it","btn got wide",() => gradeWhy(q,true)),
+      mkBtn("Ask tutor","btn",() => askAbout("For this practice item, explain in plain language why \"" + q.choices[q.answer] + "\" is the correct answer. Item: " + q.stem))
+    );
+  }
+}
 function grade(c, ok){
   const cur = S.sched[c.id] || {box:0};
   const box = ok ? Math.min(5, cur.box + 1) : 1;
   S.sched[c.id] = {box, due: Date.now() + INTERVAL_H[box]*3600e3};
   store.set("cb.sched", S.sched);
   S.drillPos++; S.drillShown = false; S.drillDone++;
+  renderDrill();
+}
+function gradeWhy(q, ok){
+  const cur = S.rsched[q.id] || {box:0};
+  const box = ok ? Math.min(5, cur.box + 1) : 1;
+  S.rsched[q.id] = {box, due: Date.now() + INTERVAL_H[box]*3600e3};
+  store.set("cb.rsched", S.rsched);
+  S.whyPos++; S.drillShown = false;
   renderDrill();
 }
 function mkBtn(text, cls, fn){
@@ -807,10 +904,11 @@ function mkBtn(text, cls, fn){
 }
 document.addEventListener("keydown", e => {
   if(S.mode!=="drill" || e.target.matches("input,textarea,select")) return;
-  const c = S.drillQueue[S.drillPos]; if(!c) return;
+  const why = S.deck === "why";
+  const c = why ? S.whyQueue[S.whyPos] : S.drillQueue[S.drillPos]; if(!c) return;
   if(e.code==="Space"){ e.preventDefault(); if(!S.drillShown){ S.drillShown=true; renderDrill(); } }
-  else if(S.drillShown && e.key==="1"){ grade(c,false); }
-  else if(S.drillShown && e.key==="2"){ grade(c,true); }
+  else if(S.drillShown && e.key==="1"){ why ? gradeWhy(c,false) : grade(c,false); }
+  else if(S.drillShown && e.key==="2"){ why ? gradeWhy(c,true) : grade(c,true); }
 });
 
 /* ---------------- QUIZ ---------------- */

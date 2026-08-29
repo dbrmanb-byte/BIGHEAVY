@@ -3,7 +3,7 @@
    Deliberately does NOT touch model weight downloads — WebLLM manages its own
    multi-gigabyte cache, and duplicating it here would double the disk cost. */
 
-const VERSION = "forge-systems-v4";
+const VERSION = "forge-systems-v5";
 // Cache-name prefix for this app, so activation never touches a sibling's cache.
 const SCOPE = VERSION.replace(/-v[^-]*$/, "") + "-v";
 const SHELL = [
