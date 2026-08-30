@@ -106,6 +106,15 @@ The webhook refuses to guess when a price is unmapped — it grants nothing and
 logs loudly. That is the safe direction to fail, but it is still a refund. Re-run
 the script any time; it reports drift instead of creating duplicates.
 
+**Managed Payments.** Some live accounts have Stripe's merchant-of-record
+program enabled by default, which rejects checkouts for products without a
+tax code ("the product tax code is missing") — and its settings page offers
+no off switch, only setup. The checkout function opts every session out
+(`managed_payments: { enabled: false }`), which is harmless on accounts
+without the program. If you ever *want* Stripe as merchant of record
+(3.5% add-on fee, they remit global VAT), the products need tax codes and
+that line needs removing.
+
 ## 4. The webhook
 
 Easiest from the command line — it creates the endpoint with the right four

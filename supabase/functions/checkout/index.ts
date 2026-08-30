@@ -97,7 +97,13 @@ Deno.serve(async (req: Request) => {
       success_url: `${site}/thanks.html?bought=${encodeURIComponent(key)}`,
       cancel_url: `${site}/pricing.html`,
       metadata: { supabase_user_id: user.id },
-    });
+      // Stripe's merchant-of-record program (Managed Payments) is switched on
+      // by default on some accounts and rejects any product without a tax
+      // code — with no dashboard off switch. This store is its own merchant,
+      // so every session opts out explicitly. Harmless on accounts without
+      // the program.
+      managed_payments: { enabled: false },
+    } as unknown as Stripe.Checkout.SessionCreateParams);
 
     return new Response(JSON.stringify({ url: session.url }), { status: 200, headers });
   } catch (err) {
