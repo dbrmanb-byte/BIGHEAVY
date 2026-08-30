@@ -92,6 +92,13 @@ Deno.serve(async (req: Request) => {
       mode,
       line_items: [{ price: price.id, quantity: 1 }],
       ...(customerId ? { customer: customerId } : { customer_email: user.email }),
+      // One-time payments do not create a Stripe Customer unless told to, and
+      // the webhook attributes a purchase through session.customer — so a
+      // first-time book buyer would pay and be impossible to grant anything.
+      // (Unseen in test mode only because the test account bought a
+      // subscription first, which always creates a customer.) Subscription
+      // mode rejects this parameter, hence the guard.
+      ...(mode === "payment" && !customerId ? { customer_creation: "always" as const } : {}),
       // The ebook discount codes buyers receive are typed here.
       allow_promotion_codes: true,
       success_url: `${site}/thanks.html?bought=${encodeURIComponent(key)}`,
