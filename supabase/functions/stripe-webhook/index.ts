@@ -35,6 +35,26 @@ async function notify(text: string) {
   }
 }
 
+// A second, machine-readable destination: an agent inbox. Where Slack gets a
+// sentence, this gets the structured event — buyer email, items, discount
+// code — so an agent can act on it: send the thank-you, deliver the code.
+// Optional — unset means Slack-only. The x-notify-token header lets the
+// listener verify the post really came from here.
+const AGENT_URL = Deno.env.get("AGENT_WEBHOOK_URL") ?? "";
+const AGENT_TOKEN = Deno.env.get("NOTIFY_TOKEN") ?? "";
+async function notifyAgent(payload: Record<string, unknown>) {
+  if (!AGENT_URL) return;
+  try {
+    await fetch(AGENT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-notify-token": AGENT_TOKEN },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error("agent notice failed (purchase unaffected):", err);
+  }
+}
+
 // How a Stripe price becomes an entitlement.
 //
 // Preferred: put metadata on the Price (or its Product) in Stripe —
@@ -238,7 +258,8 @@ async function handleEbookPurchase(supabase: any, session: Stripe.Checkout.Sessi
     expand: ["data.price.product"],
   });
 
-  let granted = 0;
+  const slugs: string[] = [];
+  let cents = 0;
   for (const item of items.data) {
     const slug = await ebookSlugForPrice(item.price ?? undefined);
     if (!slug) {
@@ -256,25 +277,36 @@ async function handleEbookPurchase(supabase: any, session: Stripe.Checkout.Sessi
         p_stripe_session_id: session.id,
         p_amount_cents: item.amount_total ?? null,
       });
-      granted++;
+      slugs.push(slug);
+      cents += item.amount_total ?? 999;
       console.log("Granted ebook:", slug, "to", customerId);
     } catch (err) {
       console.error("Could not grant", slug, "to", customerId, err);
     }
   }
 
-  if (granted > 0) {
-    await notify(`Ebook purchase — ${granted} book${granted === 1 ? "" : "s"} ($${(granted * 9.99).toFixed(2)}) by ${email ?? customerId}`);
-    await issueDiscount(supabase, customerId, email);
+  if (slugs.length > 0) {
+    await notify(`Ebook purchase — ${slugs.join(", ")} ($${(cents / 100).toFixed(2)}) by ${email ?? customerId}`);
+    const discountCode = await issueDiscount(supabase, customerId, email);
+    await notifyAgent({
+      event: "ebook_purchase",
+      email: email ?? null,
+      customer_id: customerId,
+      ebooks: slugs,
+      amount_cents: cents,
+      discount_code: discountCode,
+    });
   }
 }
 
-/** Give the buyer the coupon their library size has earned. */
-async function issueDiscount(supabase: any, customerId: string, email?: string | null) {
+/** Give the buyer the coupon their library size has earned. Returns the
+    promotion code so the agent notice can carry it to the buyer — Stripe
+    creates the code but does not email it. */
+async function issueDiscount(supabase: any, customerId: string, email?: string | null): Promise<string | null> {
   const { data: count, error } = await supabase.rpc("ebook_count_for_customer", {
     p_stripe_customer_id: customerId,
   });
-  if (error) { console.error("Could not count books for", customerId, error); return; }
+  if (error) { console.error("Could not count books for", customerId, error); return null; }
 
   const owned = Number(count ?? 0);
   const coupon = owned >= 3 ? COUPON_THREE_PLUS : owned >= 1 ? COUPON_ONE_BOOK : "";
@@ -286,7 +318,7 @@ async function issueDiscount(supabase: any, customerId: string, email?: string |
         "| Create the coupons in Stripe and set COUPON_PRO_10 / COUPON_ALL_ACCESS_20."
       );
     }
-    return;
+    return null;
   }
 
   try {
@@ -298,11 +330,11 @@ async function issueDiscount(supabase: any, customerId: string, email?: string |
       max_redemptions: 1,
     });
     console.log("Discount issued:", promo.code, "to", customerId, `(${owned} books)`);
-    // The code still needs to reach the buyer — Stripe does not email it.
-    // Wire this to the receipt or a transactional email before launch.
     if (email) console.log("Deliver code", promo.code, "to", email);
+    return promo.code;
   } catch (err) {
     console.error("Could not create promotion code for", customerId, err);
+    return null;
   }
 }
 
@@ -363,9 +395,28 @@ async function applySubscription(
   });
 
   console.log("Tier set:", mapping.tier, "for customer:", customerId);
+
+  // The subscription object carries no email; the customer record does. A
+  // failed lookup still notifies — with the customer id as the fallback name.
+  let email: string | null = null;
+  try {
+    const cust = await stripe.customers.retrieve(customerId);
+    if (!("deleted" in cust && cust.deleted)) email = (cust as Stripe.Customer).email ?? null;
+  } catch (err) {
+    console.error("Could not load customer for notice:", customerId, err);
+  }
+
   await notify(
     mapping.tier === "all_access"
-      ? `New Unlimited subscription ($14.99/mo) — customer ${customerId}`
-      : `New Pro subscription ($7.99/mo) for ${mapping.app} — customer ${customerId}`
+      ? `New Unlimited subscription ($14.99/mo) — ${email ?? customerId}`
+      : `New Pro subscription ($7.99/mo) for ${mapping.app} — ${email ?? customerId}`
   );
+  await notifyAgent({
+    event: "subscription",
+    tier: mapping.tier,
+    app: mapping.app,
+    email,
+    customer_id: customerId,
+    subscription_id: subscription.id,
+  });
 }

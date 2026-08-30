@@ -163,6 +163,14 @@ inbound URL an agent listens on. Two secrets switch it on:
     supabase secrets set SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
     supabase secrets set NOTIFY_TOKEN=<any long random string>
 
+A third, optional secret adds a machine-readable copy of every event —
+signup, subscription, ebook purchase — POSTed as JSON (buyer email, item
+slugs, earned discount code) with the NOTIFY_TOKEN in an x-notify-token
+header, so an agent can verify the sender and act: send the thank-you,
+deliver the discount code, start a welcome sequence.
+
+    supabase secrets set AGENT_WEBHOOK_URL=https://<wherever the agent listens>
+
 Sales notify from the stripe-webhook function automatically. Signups need one
 dashboard hookup: Database → Webhooks → Create — table public.profiles, event
 INSERT, URL https://<project-ref>.supabase.co/functions/v1/notify, and an HTTP
