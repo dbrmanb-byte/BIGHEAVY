@@ -142,6 +142,10 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
 .stem{font-family:var(--read);font-size:clamp(17px,2.2vw,19.5px);line-height:1.62;margin:0 0 22px;}
 .term{font-family:var(--display);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.02em;margin:6px 0 0;}
 .term-def{font-family:var(--read);font-size:18px;line-height:1.6;margin:18px 0 0;padding-top:18px;border-top:1px solid var(--paper-line);}
+.said{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--paper-dim);margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--paper-line);}
+.said b{color:var(--paper-ink);}
+.saidscore{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);margin:0 0 10px;}
+#drillDef mark{background:rgba(95,184,107,.28);color:inherit;border-radius:2px;padding:0 1px;}
 
 /* ---------- choices ---------- */
 .choices{display:flex;flex-direction:column;gap:9px;}
@@ -496,6 +500,7 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
       <span class="tab" id="drillTab"></span>
       <div class="meta"><span id="drillBox"></span><span id="drillCount"></span></div>
       <h2 class="term" id="drillTerm"></h2>
+      <div class="said hide" id="drillSaid" aria-live="polite"></div>
       <div class="term-def hide" id="drillDef"></div>
     </div>
     <div class="controls" id="drillControls"></div>
@@ -756,6 +761,65 @@ S.deck = store.get("cb.deck", "terms");
 S.rsched = store.get("cb.rsched", {});         // questionId -> {box, due}
 S.whyQueue = []; S.whyPos = 0;
 
+/* "Say it first": speak your definition before flipping the card, then see
+   the real one with the ideas you actually said highlighted. Grading stays
+   yours — the point is that you grade against what you really said, not what
+   you feel you would have said. Uses the browser's speech recognition, which
+   exists in Chrome and Edge; elsewhere the button simply never renders. The
+   transcript lives and dies on the card — nothing is stored or uploaded. */
+const SAY_SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let _sayRec = null;
+S.sayOn = false; S.sayText = "";
+
+function sayStart(){
+  if(!SAY_SR || S.sayOn) return;
+  _sayRec = new SAY_SR();
+  _sayRec.continuous = true; _sayRec.interimResults = true; _sayRec.lang = "en-US";
+  _sayRec.onresult = e => {
+    let heard = "";
+    for(let i = 0; i < e.results.length; i++) heard += e.results[i][0].transcript + (e.results[i].isFinal ? " " : "");
+    S.sayText = heard.trim();
+    renderDrill();
+  };
+  _sayRec.onend = () => { S.sayOn = false; renderDrill(); };
+  _sayRec.onerror = e => {
+    S.sayOn = false;
+    if(e.error === "not-allowed") toast("Microphone blocked — allow mic access for this site and try again.");
+    renderDrill();
+  };
+  S.sayOn = true; S.sayText = "";
+  try{ _sayRec.start(); }catch(err){ S.sayOn = false; }
+  renderDrill();
+}
+function sayStop(){ S.sayOn = false; try{ _sayRec?.stop(); }catch(err){} renderDrill(); }
+function sayReset(){ S.sayText = ""; S.sayOn = false; try{ _sayRec?.stop(); }catch(err){} }
+
+/* Which words of the definition count as ideas, and which did they say?
+   Stopwords and short words are glue, not ideas; a crude stemmer lets
+   "boundaries" match "boundary". Deterministic and offline on purpose —
+   no request, no cost, identical behaviour in all ten apps. */
+const SAY_STOP = new Set(("the a an of to in and or is are was were for on with that this it as by be from at not no nor their its they them then than which who whose when where while into over under between within without also more most other others such each per may can could would should shall has have had been being do does did done but if else what how why all any some very much many few own same both either neither about across after against among around before behind below beside beyond during except inside near outside since through toward towards until upon via rather often usually instead including especially").split(" "));
+const sayStem = w => w.length > 4 ? w.replace(/(ings?|ies|ied|es|ed|s)$/, "") : w;
+function sayCompare(saidText, def){
+  const saidStems = new Set(
+    saidText.toLowerCase().replace(/[^a-z'\s-]/g, " ").split(/\s+/).filter(Boolean).map(sayStem)
+  );
+  const ideas = new Set(), hits = new Set();
+  const marked = def.replace(/[A-Za-z][A-Za-z'-]*/g, m => {
+    const lower = m.toLowerCase();
+    if(lower.length <= 3 || SAY_STOP.has(lower)) return m;
+    const st = sayStem(lower);
+    ideas.add(st);
+    if(!saidStems.has(st)) return m;
+    hits.add(st);
+    return "\u0001" + m + "\u0002";
+  });
+  const head = ideas.size
+    ? '<p class="saidscore">You said ' + hits.size + " of " + ideas.size + " key words</p>"
+    : "";
+  return head + esc(marked).replace(/\u0001/g, "<mark>").replace(/\u0002/g, "</mark>");
+}
+
 const whyPool = () => ((window.DATA && DATA.questions) || [])
   .filter(q => q.answer !== undefined && q.answer !== null && q.why);
 
@@ -763,6 +827,7 @@ function setDeck(d){
   if(S.deck === d) return;
   S.deck = d; store.set("cb.deck", d);
   S.drillShown = false;
+  sayReset();
   renderDrill();
 }
 $("deckTerms").onclick = () => setDeck("terms");
@@ -808,9 +873,19 @@ function renderDrill(){
   $("drillBox").textContent = s.box ? "Box " + s.box + " of 5" : "New card";
   $("drillCount").textContent = (S.drillPos+1) + " / " + S.drillQueue.length;
   $("drillTerm").textContent = c.term;
-  $("drillDef").textContent = c.def;
+  if(S.drillShown && S.sayText) $("drillDef").innerHTML = sayCompare(S.sayText, c.def);
+  else $("drillDef").textContent = c.def;
   $("drillDef").classList.toggle("hide", !S.drillShown);
   $("drillBar").style.width = (S.drillPos / S.drillQueue.length * 100) + "%";
+
+  const said = $("drillSaid");
+  if(S.sayOn || S.sayText){
+    said.classList.remove("hide");
+    said.innerHTML = (S.sayOn ? "<b>Listening&hellip;</b> " : "<b>You said:</b> ") + esc(S.sayText || "");
+  } else {
+    said.classList.add("hide");
+    said.textContent = "";
+  }
 
   const known = Object.values(S.sched).filter(x => x.box >= 4).length;
   $("drillMeta").innerHTML = "Recall drill <em>&middot;</em> " + known + " of " + DATA.cards.length + " terms in long-term boxes";
@@ -819,15 +894,21 @@ function renderDrill(){
   ctl.innerHTML = "";
   if(!S.drillShown){
     ctl.append(mkBtn("Show definition","btn primary wide",() => { S.drillShown = true; renderDrill(); }));
+    if(SAY_SR) ctl.append(mkBtn(S.sayOn ? "Stop listening" : "Say it first", S.sayOn ? "btn again" : "btn", () => S.sayOn ? sayStop() : sayStart()));
   } else {
     ctl.append(
       mkBtn("Missed it","btn again wide",() => grade(c,false)),
       mkBtn("Knew it","btn got wide",() => grade(c,true)),
-      mkBtn("Ask tutor","btn",() => askAbout("Explain the term \"" + c.term + "\" in plain language, then give one short clinical example."))
+      mkBtn("Ask tutor","btn",() => askAbout(
+        S.sayText
+          ? "I tried to define \"" + c.term + "\" from memory as: \"" + S.sayText + "\". The real definition is: \"" + c.def + "\". Briefly tell me what I got right and what I missed."
+          : "Explain the term \"" + c.term + "\" in plain language, then give one short clinical example."
+      ))
     );
   }
 }
 function renderWhy(){
+  $("drillSaid").classList.add("hide");
   const pool = whyPool();
   if(!pool.length){
     $("drillTerm").className = "term";
@@ -879,6 +960,7 @@ function grade(c, ok){
   S.sched[c.id] = {box, due: Date.now() + INTERVAL_H[box]*3600e3};
   store.set("cb.sched", S.sched);
   S.drillPos++; S.drillShown = false; S.drillDone++;
+  sayReset();
   renderDrill();
 }
 function gradeWhy(q, ok){
