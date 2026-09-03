@@ -1,0 +1,18 @@
+# Self-host on the GX10. Replace the domain, then:
+#   caddy run --config Caddyfile
+casebook.example.com {
+	root * /srv/casebook
+	encode zstd gzip
+	file_server
+
+	@immutable path *.png
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	@nocache path /sw.js /index.html /
+	header @nocache Cache-Control "no-cache"
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+}

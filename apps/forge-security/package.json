@@ -1,0 +1,16 @@
+{
+  "name": "forge-security",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge Security — CISSP, Security+ and CEH certification study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs forge-security",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs forge-security"
+  },
+  "bigheavy": {
+    "slug": "forge-security",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

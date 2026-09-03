@@ -1,0 +1,8 @@
+# Built from the monorepo root so packages/app-core is available to copy in.
+[build]
+  base    = "/"
+  command = "pnpm run build:packages && pnpm --filter casebook-lcsw build"
+  publish = "apps/casebook-lcsw/dist"
+
+[build.environment]
+  NODE_VERSION = "22"

@@ -1,0 +1,33 @@
+{
+  "name": "BIGHEAVYINK Forge Management",
+  "short_name": "BHI Mgmt",
+  "description": "40 terms, 18 scenarios for PMP, TOGAF & SAFe/Scrum.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E161E",
+  "theme_color": "#0E161E",
+  "categories": [
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

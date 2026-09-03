@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Canonical host. The site also answers on the .netlify.app URL; search engines are pointed here. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://bigheavyink.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://bigheavyink.com/coach.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/pricing.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/about.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://bigheavyink.com/contact.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://bigheavyink.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://bigheavyink.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://bigheavyink.com/casebook/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/casebook-lcsw/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/casebook-lbsw/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/casebook-nursing/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/forge-cloud/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/forge-security/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/forge-systems/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/forge-management/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/forge-trades/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/keystone/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://bigheavyink.com/links.html</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+</urlset>

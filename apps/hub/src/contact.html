@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact — BIGHEAVYINK</title>
+<meta name="description" content="Request an exam, report an error in a rationale, or ask about a plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<meta property="og:title" content="Contact — BIGHEAVYINK">
+<meta property="og:description" content="Request an exam, report an error, or ask about a plan.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://bigheavyink.com/icon-512.png">
+<meta property="og:image:alt" content="BIGHEAVYINK logo">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="./site.css">
+<style>
+form{max-width:520px;margin-top:8px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);
+  border-radius:5px;padding:11px 13px;font:inherit;font-size:15px;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);outline:none;}
+.field textarea{resize:vertical;min-height:110px;}
+.hp{position:absolute;left:-9999px;}
+button.send{background:var(--gold);color:#141414;border:1px solid var(--gold);border-radius:5px;
+  padding:13px 24px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;}
+button.send:hover{filter:brightness(1.07);}
+.consent{font-family:var(--mono);font-size:10px;letter-spacing:.04em;line-height:1.7;
+  color:var(--text-dim);margin-top:14px;max-width:52ch;}
+</style>
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./coach.html">Find your app</a>
+    <a href="./index.html#ebooks">Ebooks</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./about.html">About</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap page">
+  <p class="kicker">Contact</p>
+  <h1>Tell us which exam you are studying for.</h1>
+  <p class="dim">Requests genuinely decide what gets built next. Corrections to a rationale are just as welcome — if something in an app is wrong, we want to know before someone studies from it.</p>
+
+  <!-- Netlify Forms: the `netlify` attribute makes the host capture submissions,
+       so there is no backend here and no secret in this page. Notifications
+       (email, or a Slack incoming webhook) are configured in the Netlify site
+       settings, where the webhook URL stays server-side. -->
+  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="company" action="./thanks.html">
+    <input type="hidden" name="form-name" value="contact">
+    <p class="hp"><label>Do not fill this in: <input name="company" tabindex="-1" autocomplete="off"></label></p>
+
+    <div class="field">
+      <label for="name">Your name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required>
+    </div>
+
+    <div class="field">
+      <label for="topic">What is this about?</label>
+      <select id="topic" name="topic">
+        <option>Requesting an exam</option>
+        <option>Reporting an error in the content</option>
+        <option>A question about plans or billing</option>
+        <option>Something else</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required placeholder="Which exam, which jurisdiction, and anything that would help."></textarea>
+    </div>
+
+    <button class="send" type="submit">Send</button>
+    <p class="consent">Your name, email and message are sent so we can reply. They are not added to any marketing list and are not sold or shared.</p>
+  </form>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./library.html">Your library</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+      <a href="https://www.youtube.com/@bigheavyink" rel="me noopener" target="_blank">YouTube</a>
+      <a href="https://www.instagram.com/bigheavyink" rel="me noopener" target="_blank">Instagram</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Message sent — BIGHEAVYINK</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<link rel="stylesheet" href="./site.css">
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./coach.html">Find your app</a>
+    <a href="./index.html#ebooks">Ebooks</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./about.html">About</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap page">
+  <p class="kicker" id="tKick">Sent</p>
+  <h1 id="tHead">Thanks — that came through.</h1>
+  <p class="dim" id="tBody">If it needs a reply you will get one. In the meantime, everything on the free tier is there to study from.</p>
+  <div class="cta-row" style="margin-top:24px;" id="tActs">
+    <a class="cta primary" href="/casebook/">Start studying</a>
+    <a class="cta" href="./">Back to the apps</a>
+  </div>
+</div>
+</main>
+
+<script>
+/* This page doubles as Stripe's success_url (?bought=<lookup_key>). A buyer
+   should read a purchase confirmation, not the contact-form acknowledgement,
+   and the next step differs by what they bought. */
+(function () {
+  var bought = new URLSearchParams(location.search).get("bought");
+  if (!bought || !/^(pro_[a-z0-9_]+|all_access|ebook_[a-z0-9_]+)$/.test(bought)) return;
+  var kick = document.getElementById("tKick"), head = document.getElementById("tHead");
+  var body = document.getElementById("tBody"), acts = document.getElementById("tActs");
+  kick.textContent = "Paid";
+  if (bought === "all_access") {
+    head.textContent = "Unlimited is yours.";
+    body.textContent = "Every app is unlocked under this account. Sign in inside any of them and the full bank, the timed simulation and the tutor are open. It can take a few seconds for the payment to register — if an app still shows the free tier, refresh once.";
+    acts.innerHTML = '<a class="cta primary" href="./#apps">Pick an app</a><a class="cta" href="./library.html">Your library</a>';
+  } else if (bought.indexOf("ebook_") === 0) {
+    var slug = bought.slice(6).replace(/_/g, "-");
+    head.textContent = "The book is yours.";
+    body.textContent = "It lives in your library — sign in with the email you used at checkout and download it any time, on any device. Your subscription discount code arrives by email.";
+    acts.innerHTML = '<a class="cta primary" href="./library.html">Open your library</a><a class="cta" href="/' + slug + '/">Study the app</a>';
+  } else {
+    var slug2 = bought.slice(4).replace(/_/g, "-");
+    head.textContent = "Pro is yours.";
+    body.textContent = "Your app is fully unlocked — sign in inside it with the email you used at checkout. It can take a few seconds for the payment to register; if it still shows the free tier, refresh once.";
+    acts.innerHTML = '<a class="cta primary" href="/' + slug2 + '/">Open your app</a><a class="cta" href="./pricing.html">Plans</a>';
+  }
+})();
+</script>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./library.html">Your library</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+      <a href="https://www.youtube.com/@bigheavyink" rel="me noopener" target="_blank">YouTube</a>
+      <a href="https://www.instagram.com/bigheavyink" rel="me noopener" target="_blank">Instagram</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIGHEAVYINK — Study apps that work offline</title>
+<meta name="description" content="Focused, offline-first study apps for licensing exams. Free to start, private by design, with a tutor that runs on your own device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<meta property="og:title" content="BIGHEAVYINK — Study apps that work offline">
+<meta property="og:description" content="Focused, offline-first study apps for licensing exams. Free to start, private by design.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://bigheavyink.com/icon-512.png">
+<meta property="og:image:alt" content="BIGHEAVYINK logo">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="./site.css">
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./coach.html">Find your app</a>
+    <a href="./#plan">Planner</a>
+    <a href="./#ebooks">Ebooks</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./about.html">About</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero wrap">
+    <p class="kicker">Offline-first study apps</p>
+    <h1>Everything you need to pass, and nothing you don't.</h1>
+    <p class="lead">Focused study apps for licensing exams — a glossary to learn from, spaced-repetition drills to lock it in, and full-length practice to prove you can apply it. They work on a train, on a plane, and anywhere the signal drops.</p>
+    <div class="cta-row">
+      <a class="cta primary" href="./coach.html">Find your app</a>
+      <a class="cta" href="#apps">Browse all ten</a>
+      <a class="cta" href="./pricing.html">See plans</a>
+    </div>
+    <p class="micro">Free tier on every app · No ads · Nothing tracked</p>
+  </section>
+
+  <section class="wrap band">
+    <div class="pillars">
+      <div class="pillar">
+        <h3>Works with no connection</h3>
+        <p>Install it once and the glossary and drills live on your device. Practice sets load the first time you open them, then work offline too — on the commute, in a basement, mid-flight.</p>
+      </div>
+      <div class="pillar">
+        <h3>Private by design</h3>
+        <p>Your progress and your questions stay in your browser. The AI tutor downloads a small model and runs it locally — what you type never leaves your computer.</p>
+      </div>
+      <div class="pillar">
+        <h3>Free tier that is actually useful</h3>
+        <p>The full glossary and unlimited flashcard drills are free forever, plus a practice set. Pay only when you want the full question bank and the tutor.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="apps">
+    <h2 class="sec">The apps</h2>
+    <p class="secsub" id="appsSub">Each one is built for a single exam, with content written for that exam only.</p>
+    <p class="micro" style="margin:-16px 0 22px;">Not sure which? <a href="./coach.html">Answer two questions</a> and get the app, the hours, and the cheaper plan.</p>
+    <div class="grid" id="appGrid"></div>
+  </section>
+
+  <section class="wrap band" id="plan">
+    <h2 class="sec">Know what you are taking on</h2>
+    <p class="secsub">Every app estimates the work in front of you from the material it actually
+    contains, then breaks it into hour-long blocks — fifty minutes of study, ten of break. Set your
+    exam date and it tells you how many blocks a week that means.</p>
+    <div class="planbits">
+      <div><b id="planHours">—</b><span>hours across the catalogue</span></div>
+      <div><b>50 / 10</b><span>work and break, per block</span></div>
+      <div><b>30</b><span>focus tips, shown when they fit</span></div>
+    </div>
+    <p class="secsub" style="margin-top:18px;">Rate your focus after a block and say what pulled you
+    away — the phone, the television, too much on your plate — and the advice narrows to that. The
+    planner is free on every app, tracks nothing on a server, and never leaves your device.</p>
+  </section>
+
+  <section class="wrap band" id="ebooks">
+    <h2 class="sec">Every exam has its book</h2>
+    <p class="secsub">A companion PDF for each exam — the whole glossary and every rationale, laid out to read start to finish and to print. <b class="hi">$9.99</b> each, yours to keep, no subscription needed.</p>
+
+    <div class="offer">
+      <div><b>Buy one book</b><span>Take <b class="hi">10% off</b> Pro</span></div>
+      <div><b>Buy three or more</b><span>Take <b class="hi">20% off</b> Unlimited</span></div>
+    </div>
+
+    <div class="books" id="bookList"></div>
+    <p class="micro">PDF · Yours to keep · Discount applied at checkout · <a href="./pricing.html">See plans</a></p>
+  </section>
+
+  <section class="wrap band">
+    <h2 class="sec">How the plans work</h2>
+    <div class="tiers">
+      <div class="tier">
+        <h4>Free</h4>
+        <p class="amt">$0</p>
+        <p>Full glossary, unlimited drills, and a 10-question practice set on every app.</p>
+      </div>
+      <div class="tier best">
+        <h4>Pro</h4>
+        <p class="amt">$7.99<small>/mo</small></p>
+        <p>One app, completely unlocked — full question bank, timed exam simulation, and the tutor.</p>
+      </div>
+      <div class="tier">
+        <h4>Unlimited</h4>
+        <p class="amt">$14.99<small>/mo</small></p>
+        <p>Every app unlocked under one subscription, including apps released later.</p>
+      </div>
+    </div>
+    <p class="micro"><a href="./pricing.html">Full comparison and FAQ →</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./library.html">Your library</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+      <a href="https://www.youtube.com/@bigheavyink" rel="me noopener" target="_blank">YouTube</a>
+      <a href="https://www.instagram.com/bigheavyink" rel="me noopener" target="_blank">Instagram</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* The directory is rendered from the shared registry (packages/registry/apps.json,
+   copied to ./apps.json at build). Adding a vertical is a data change, not a code
+   change here. */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+fetch("./apps.json")
+  .then(r => { if(!r.ok) throw new Error("registry " + r.status); return r.json(); })
+  .then(reg => {
+    const all = reg.apps || [];
+    // Only shipped apps get a card. Everything else is roadmap: the registry
+    // carries the slugs so the count is real, but no invented detail is shown.
+    const apps = all.filter(a => a.status === "live");
+    const upcoming = all.filter(a => a.status !== "live");
+    const grid = document.getElementById("appGrid");
+    const planned = Math.max(reg.planned || 0, all.length);
+    const soon = Math.max(upcoming.length, planned - apps.length);
+
+    grid.innerHTML = apps.map(a => `
+      <a class="app" href="${esc(a.url || "#")}" style="--accent:${esc(a.accent || "#EBA83A")}">
+        <span class="exam">${esc(a.exam || "")}</span>
+        <h3>${esc(a.name)}</h3>
+        <p class="aud">${esc(a.audience || "")}</p>
+        ${a.hours ? `<p class="hrs">${esc(a.hours.study)} hours of study · ${esc(a.hours.blocks)} one-hour blocks</p>` : ""}
+        <p class="blurb">${esc(a.blurb || "")}</p>
+        <span class="open">Start studying →</span>
+      </a>`).join("");
+
+    if (soon > 0) {
+      const names = upcoming.map(a => a.name).filter(Boolean);
+      grid.insertAdjacentHTML("beforeend", `
+        <div class="app soon">
+          <span class="exam">In progress</span>
+          <h3>${soon} more app${soon === 1 ? "" : "s"} on the way</h3>
+          <p class="blurb">Same engine, same offline-first design, built for other licensing exams. Unlimited covers them as they land.</p>
+          ${names.length ? `<p class="soonlist">${names.map(esc).join(" · ")}</p>` : ""}
+          <a class="open" href="./contact.html">Tell us which exam →</a>
+        </div>`);
+    }
+
+    // Companion ebooks, drawn from the same registry entries.
+    const books = apps.filter(a => a.ebook);
+    const list = document.getElementById("bookList");
+    if (list && books.length) {
+      const price = p => "$" + Number(p).toFixed(2);
+      list.innerHTML = books.map(a => `
+        <div class="book" style="--accent:${esc(a.accent || "#EBA83A")}">
+          <span class="spine"></span>
+          <span class="btitle">${esc(a.ebook.title)}</span>
+          <span class="bmeta">${esc(a.ebook.format || "PDF")} · ${esc(a.name)}${a.ebook.hours ? " · " + esc(a.ebook.hours) + "h read" : ""}</span>
+          <span class="bprice">${esc(price(a.ebook.price ?? (reg.ebooks && reg.ebooks.price) ?? 9.99))}
+            <button class="bbuy" data-buy="${esc(a.slug)}">Buy</button></span>
+        </div>`).join("");
+    }
+
+    const totalHours = apps.reduce((n, a) => n + ((a.hours && a.hours.study) || 0), 0);
+    const hoursEl = document.getElementById("planHours");
+    if (hoursEl && totalHours) hoursEl.textContent = Math.round(totalHours);
+
+    const sub = document.getElementById("appsSub");
+    if (apps.length) {
+      sub.textContent = apps.length === 1
+        ? "One app is live today. Each is built for a single exam, with content written for that exam only."
+        : `${apps.length} apps are live. Each is built for a single exam, with content written for that exam only.`;
+    }
+  })
+  .catch(err => {
+    document.getElementById("appGrid").innerHTML =
+      '<div class="app soon"><h3>The app list could not load</h3>' +
+      '<p class="blurb">Refresh the page, or go straight to <a href="/casebook/">Casebook</a>.</p></div>';
+    console.error(err);
+  });
+</script>
+<script src="./config.js"></script>
+<script type="module">
+/* Book purchases. Delegated, because the shelf renders after the registry
+   loads; the buttons exist whenever the click happens. */
+import * as Checkout from "./js/checkout.js";
+document.getElementById("bookList")?.addEventListener("click", e => {
+  const b = e.target.closest("[data-buy]");
+  if (b) Checkout.start(Checkout.keyFor.ebook(b.dataset.buy));
+});
+</script>
+</body>
+</html>

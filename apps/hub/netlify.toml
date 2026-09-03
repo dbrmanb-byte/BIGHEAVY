@@ -1,0 +1,9 @@
+# The hub is the front door. Built from the monorepo root so the shared
+# packages it depends on are present.
+[build]
+  base    = "/"
+  command = "pnpm run build:packages && pnpm --filter hub build"
+  publish = "apps/hub/dist"
+
+[build.environment]
+  NODE_VERSION = "22"

@@ -1,0 +1,17 @@
+{
+  "name": "hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The front door — what BIGHEAVYINK is, the app directory, plans, and contact.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs hub",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs hub"
+  },
+  "bigheavy": {
+    "slug": "hub",
+    "shared": [
+      "registry",
+      "app-core"
+    ]
+  }
+}

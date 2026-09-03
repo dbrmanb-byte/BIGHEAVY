@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Find your app — BIGHEAVYINK</title>
+<meta name="description" content="Tell us the exam you are sitting and we will tell you which app, how many hours it takes, whether that fits your date, and which plan is cheapest for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#0E1A20">
+<meta property="og:title" content="BIGHEAVYINK — Find your app">
+<meta property="og:description" content="Which exam are you sitting? Two questions and you have the app, the hours, and the plan that costs least.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://bigheavyink.com/icon-512.png">
+<meta property="og:image:alt" content="BIGHEAVYINK logo">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="./site.css">
+<style>
+.step{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:24px 22px;margin-bottom:16px;}
+.step > h2{font-family:var(--display);font-size:19px;font-weight:800;letter-spacing:-.01em;
+  text-transform:none;color:var(--text);margin:0 0 6px;}
+.step > p.q{font-family:var(--read);font-size:15.5px;line-height:1.55;color:var(--text-dim);margin:0 0 16px;max-width:62ch;}
+.step .note{font-family:var(--mono);font-size:10.5px;line-height:1.75;letter-spacing:.03em;
+  color:var(--text-dim);border-left:2px solid var(--line);padding:2px 0 2px 12px;margin:0 0 16px;max-width:66ch;}
+
+.askrow{display:flex;gap:10px;flex-wrap:wrap;}
+.askrow input[type=text]{flex:1 1 260px;background:var(--ground);color:var(--text);border:1px solid var(--line);
+  border-radius:5px;padding:13px 14px;font:inherit;font-size:16px;}
+.askrow input[type=text]:focus{border-color:var(--gold);outline:none;}
+button.go{background:var(--gold);color:#141414;border:1px solid var(--gold);border-radius:5px;
+  padding:13px 22px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;}
+button.go:hover{filter:brightness(1.07);}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.chip{background:var(--ground);border:1px solid var(--line);border-radius:999px;color:var(--text-dim);
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:7px 13px;cursor:pointer;}
+.chip:hover{border-color:var(--gold);color:var(--gold);}
+
+.opts{display:grid;gap:10px;}
+.opt{text-align:left;background:var(--ground);border:1px solid var(--line);border-radius:6px;
+  padding:15px 17px;cursor:pointer;font:inherit;color:var(--text);display:block;width:100%;}
+.opt:hover{border-color:var(--gold);}
+.opt b{display:block;font-size:15.5px;font-weight:700;margin-bottom:4px;}
+.opt span{font-family:var(--read);font-size:14.5px;line-height:1.5;color:var(--text-dim);}
+/* Routes that answer in place rather than picking an app. Set apart from the
+   three that resolve, so nobody clicks one expecting a recommendation. */
+.opt.uncovered,.opt.dunno{border-style:dashed;}
+/* The tag is a flex item, not a float: a label that wraps to two lines on a
+   narrow screen would otherwise run underneath it. */
+.opt.uncovered b,.opt.dunno b{display:flex;justify-content:space-between;gap:12px;align-items:baseline;}
+.opt.uncovered b::after,.opt.dunno b::after{flex:0 0 auto;white-space:nowrap;font-family:var(--mono);
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);font-weight:400;}
+.opt.uncovered b::after{content:"not covered";}
+.opt.dunno b::after{content:"check first";}
+.opt.uncovered[aria-expanded="true"],.opt.dunno[aria-expanded="true"]{border-color:var(--gold);border-style:solid;}
+.aside-says{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);
+  border-left:2px solid var(--gold);padding:2px 0 2px 14px;margin:2px 0 4px 17px;max-width:62ch;}
+
+.pick{border-left:4px solid var(--accent,var(--gold));background:var(--ground);border-radius:6px;
+  padding:18px 20px;margin-bottom:14px;}
+.pick .exam{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--gold));}
+.pick h3{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:8px 0 6px;}
+.pick p{font-family:var(--read);font-size:15px;line-height:1.55;color:var(--text-dim);margin:0 0 10px;max-width:62ch;}
+.pick .covers{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px;}
+.pick .covers span{font-family:var(--mono);font-size:10px;letter-spacing:.06em;background:var(--surface-2);
+  border-radius:3px;padding:4px 9px;color:var(--text);}
+
+.facts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin:0 0 16px;}
+.facts > div{background:var(--ground);border:1px solid var(--line);border-radius:6px;padding:13px 15px;}
+.facts b{display:block;font-family:var(--mono);font-size:21px;color:var(--gold);letter-spacing:-.02em;margin-bottom:3px;}
+.facts span{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);line-height:1.5;display:block;}
+
+.verdict{border-radius:6px;padding:16px 18px;margin:0 0 14px;border:1px solid var(--line);background:var(--ground);}
+.verdict.comfortable,.verdict.workable{border-color:var(--good);}
+.verdict.tight{border-color:var(--gold);}
+.verdict.short,.verdict.past{border-color:#D9455F;}
+.verdict.pick{border-color:var(--gold);}
+.verdict b{display:block;font-size:16px;margin-bottom:6px;}
+.verdict p{font-family:var(--read);font-size:15px;line-height:1.58;color:var(--text-dim);margin:0;max-width:64ch;}
+
+.cutlist{display:grid;gap:8px;margin:14px 0 0;}
+.cutlist div{display:flex;gap:11px;align-items:flex-start;font-family:var(--read);font-size:14.5px;
+  line-height:1.5;color:var(--text-dim);}
+.cutlist div::before{font-family:var(--mono);font-size:10px;letter-spacing:.1em;flex:0 0 58px;padding-top:3px;}
+.cutlist div.keep::before{content:"KEEP";color:var(--good);}
+.cutlist div.drop::before{content:"CUT 1ST";color:var(--gold);}
+.cutlist b{color:var(--text);font-weight:600;}
+
+.fields{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:16px;}
+.fields label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
+.fields input{width:100%;background:var(--ground);color:var(--text);border:1px solid var(--line);
+  border-radius:5px;padding:11px 13px;font:inherit;font-size:15px;}
+.fields input:focus{border-color:var(--gold);outline:none;}
+
+.reasons{margin:0 0 14px;padding-left:18px;max-width:64ch;}
+.reasons li{font-family:var(--read);font-size:15px;line-height:1.58;color:var(--text-dim);margin-bottom:7px;}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px;}
+.linkish{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text-dim);
+  text-decoration:underline;background:none;border:none;cursor:pointer;padding:0;}
+.linkish:hover{color:var(--gold);}
+.step .cta{padding:11px 19px;font-size:14px;}
+
+.twocol{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+.twocol > div{background:var(--ground);border:1px solid var(--line);border-radius:6px;padding:16px 18px;}
+.twocol h4{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 9px;}
+.twocol p{font-family:var(--read);font-size:14.5px;line-height:1.55;color:var(--text-dim);margin:0 0 9px;}
+.twocol p:last-child{margin:0;}
+.twocol p.limit{color:var(--text-dim);opacity:.82;}
+
+.trail{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-dim);
+  margin:0 0 18px;display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
+/* display:flex outranks the user agent's [hidden] rule, so without this the
+   trail keeps showing the app you just cleared. */
+.trail[hidden]{display:none;}
+.trail em{font-style:normal;color:var(--text);}
+.alsoran{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);margin:14px 0 0;max-width:64ch;}
+.alsoran b{color:var(--text);font-weight:600;}
+.reversible{font-family:var(--read);font-size:14.5px;line-height:1.6;color:var(--text-dim);
+  border-left:2px solid var(--line);padding:2px 0 2px 14px;margin:16px 0 0;max-width:64ch;}
+noscript p{font-family:var(--read);font-size:16px;line-height:1.6;color:var(--text-dim);}
+</style>
+</head>
+<body>
+
+<header class="rail">
+  <a class="brand" href="./"><b>BIGHEAVYINK</b><span>Study apps</span></a>
+  <nav class="nav">
+    <a href="./#apps">Apps</a>
+    <a href="./coach.html">Find your app</a>
+    <a href="./index.html#ebooks">Ebooks</a>
+    <a href="./pricing.html">Plans</a>
+    <a href="./about.html">About</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap page">
+  <p class="kicker">Find your app</p>
+  <h1>Which exam are you sitting?</h1>
+  <p class="dim">Ten apps is a lot to pick from when you only need one. Tell me the exam and I will tell you which app covers it, how many hours it really takes, whether that fits your date, and which plan costs you least — including when that is the cheaper one.</p>
+
+  <p class="trail" id="trail" hidden></p>
+  <div id="steps"></div>
+
+  <noscript>
+    <div class="step">
+      <h2>This one needs JavaScript</h2>
+      <p class="q">It runs entirely in your browser — there is no server to ask. With scripts off, the <a href="./#apps">full app list</a> has the same information laid out by hand.</p>
+    </div>
+  </noscript>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap footgrid">
+    <div>
+      <p class="fbrand">BIGHEAVYINK</p>
+      <p class="fine">Study aids only. Content is condensed revision material, not official exam material — verify anything you rely on against current primary sources and your jurisdiction's rules.</p>
+    </div>
+    <nav class="flinks">
+      <a href="./pricing.html">Plans</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html">Contact</a>
+      <a href="./library.html">Your library</a>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+      <a href="https://www.youtube.com/@bigheavyink" rel="me noopener" target="_blank">YouTube</a>
+      <a href="https://www.instagram.com/bigheavyink" rel="me noopener" target="_blank">Instagram</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+/* The coach. Every answer below comes from apps.json and arithmetic — there is
+   no model here and no network call after the registry loads, which is what
+   makes it instant, offline, and unable to send anyone to the wrong exam. */
+import * as Coach from "./js/coach.js";
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const steps = $("steps");
+
+const STATE_KEY = "bh.coach";
+let REG = { apps: [], decisions: [] };
+let S = load();
+
+function load() {
+  try { return JSON.parse(sessionStorage.getItem(STATE_KEY) || "null") || fresh(); }
+  catch { return fresh(); }
+}
+function fresh() {
+  return { query: "", slug: null, examDate: "", hoursPerWeek: "", examCount: null, simultaneous: null, step: "ask" };
+}
+function save() {
+  try { sessionStorage.setItem(STATE_KEY, JSON.stringify(S)); } catch { /* private mode */ }
+}
+
+const appBySlug = slug => REG.apps.find(a => a.slug === slug);
+
+boot();
+
+async function boot() {
+  try {
+    const res = await fetch("./apps.json");
+    if (!res.ok) throw new Error("registry " + res.status);
+    REG = await res.json();
+  } catch (err) {
+    console.error(err);
+    steps.innerHTML = `<div class="step"><h2>The catalogue could not load</h2>
+      <p class="q">Refresh the page, or browse <a href="./#apps">the apps</a> directly.</p></div>`;
+    return;
+  }
+  render();
+}
+
+/* ---------------- render ---------------- */
+
+function render() {
+  save();
+  const parts = [];
+  const app = S.slug ? appBySlug(S.slug) : null;
+
+  parts.push(stepAsk());
+  if (S.step === "narrow") parts.push(stepNarrow());
+  if (app) {
+    parts.push(stepPick(app));
+    parts.push(stepWhen(app));
+    parts.push(stepPlan(app));
+    parts.push(stepBook(app));
+    parts.push(stepDo(app));
+  }
+  steps.innerHTML = parts.filter(Boolean).join("");
+  trail(app);
+  wire();
+  const focus = steps.querySelector("[data-autofocus]");
+  if (focus && !app) focus.focus({ preventScroll: true });
+}
+
+function trail(app) {
+  const el = $("trail");
+  if (!app) { el.hidden = true; el.innerHTML = ""; return; }
+  el.hidden = false;
+  el.innerHTML = `<em>${esc(app.name)}</em> · ${esc(Coach.sizeUp(app).hours)} hours`
+    + (S.examDate ? ` · exam ${esc(S.examDate)}` : "")
+    + ` <button class="linkish" data-act="restart">Start over</button>`;
+}
+
+/* ---------------- step 1: the question ---------------- */
+
+const FIELDS = [
+  ["Social work", "social work"], ["Nursing", "nclex"], ["Real estate", "real estate"],
+  ["Electrician", "journeyman electrician"], ["Cloud", "aws solutions architect"],
+  ["Cybersecurity", "cissp"], ["Kubernetes / Linux", "kubernetes"], ["Project management", "pmp"],
+];
+
+function stepAsk() {
+  const noMatch = S.query && !S.slug && S.step === "nomatch";
+  return `<div class="step">
+    <h2>Start here</h2>
+    <p class="q">Type the exam, the certificate, or just the job — “CISSP”, “NCLEX”, “I'm a social worker”. Spelling it out is not necessary.</p>
+    <div class="askrow">
+      <input type="text" id="q" data-autofocus value="${esc(S.query)}" placeholder="CISSP, NCLEX-RN, real estate…"
+             autocomplete="off" aria-label="What exam are you studying for?">
+      <button class="go" data-act="search">Find it</button>
+    </div>
+    <div class="chips">${FIELDS.map(([label, q]) =>
+      `<button class="chip" data-act="chip" data-q="${esc(q)}">${esc(label)}</button>`).join("")}</div>
+    ${noMatch ? `<p class="alsoran">Nothing in the catalogue matches “${esc(S.query)}”. That may well be an exam we have not written yet — <a href="./contact.html">tell us which one</a> and it goes on the list. In the meantime the <a href="./#apps">full directory</a> is ten cards long.</p>` : ""}
+  </div>`;
+}
+
+/* ---------------- step 2: narrowing ---------------- */
+
+function stepNarrow() {
+  const hits = Coach.search(S.query, REG.apps);
+  const d = Coach.decisionFor(hits, REG.decisions);
+  if (!d) return "";
+  return `<div class="step">
+    <h2>One more thing</h2>
+    <p class="q">${esc(d.question)}</p>
+    ${d.note ? `<p class="note">${esc(d.note)}</p>` : ""}
+    <div class="opts">
+      ${d.options.map(o => `<button class="opt" data-act="narrow" data-slug="${esc(o.picks)}">
+        <b>${esc(o.label)}</b><span>${esc(o.detail)}</span></button>`).join("")}
+      ${(d.escapes || []).map(e => aside(e, "uncovered")).join("")}
+      ${d.unsure ? aside(d.unsure, "dunno") : ""}
+    </div>
+  </div>`;
+}
+
+/* A route that answers in place instead of picking an app: the two ASWB
+   categories nothing here covers, and the one for people whose board has not
+   told them yet. */
+function aside(e, kind) {
+  const open = S.escape === e.id;
+  return `<button class="opt ${kind}" data-act="escape" data-id="${esc(e.id)}" aria-expanded="${open}">
+      <b>${esc(e.label)}</b><span>${esc(e.detail)}</span></button>
+    ${open ? `<p class="aside-says">${esc(e.says)}</p>` : ""}`;
+}
+
+/* ---------------- step 3: the recommendation ---------------- */
+
+function stepPick(app) {
+  const c = app.coach || {};
+  const size = Coach.sizeUp(app);
+  const rejected = (Coach.search(S.query, REG.apps) || [])
+    .map(h => h.app).filter(a => a.slug !== app.slug && a.coach && a.coach.notFor);
+
+  return `<div class="step" style="--accent:${esc(app.accent || "#EBA83A")}">
+    <h2>Your app</h2>
+    <div class="pick" style="--accent:${esc(app.accent || "#EBA83A")}">
+      <span class="exam">${esc(app.exam)}</span>
+      <h3>${esc(app.name)}</h3>
+      ${c.forYou ? `<p>${esc(c.forYou)}</p>` : ""}
+      <div class="covers">${(c.covers || []).map(x => `<span>${esc(x)}</span>`).join("")}</div>
+      <p>${esc(app.blurb)}</p>
+    </div>
+    <div class="facts">
+      <div><b>${esc(size.hours)}</b><span>hours of study</span></div>
+      <div><b>${esc(size.blocks)}</b><span>one-hour blocks</span></div>
+      <div><b>${esc(size.terms)}</b><span>terms</span></div>
+      <div><b>${esc(size.questions)}</b><span>questions</span></div>
+    </div>
+    ${rejected.length ? `<p class="alsoran">Not the others: ${rejected.map(a =>
+      `<b>${esc(a.name)}</b> — ${esc(a.coach.notFor)}`).join(" ")}</p>` : ""}
+    <p class="reversible">If this turns out to be the wrong pick, it costs you nothing: the free tier
+      opens with no account and no card, and Pro covers one app at a time and can be switched to
+      another. You are not locked into where you start.</p>
+  </div>`;
+}
+
+/* ---------------- step 4: is there time ---------------- */
+
+function stepWhen(app) {
+  const t = Coach.timeline(app, { examDate: S.examDate, hoursPerWeek: S.hoursPerWeek });
+  const asked = S.examDate && S.hoursPerWeek;
+
+  return `<div class="step">
+    <h2>Is there time?</h2>
+    <p class="q">Both optional — but this is the number worth knowing before you pay for anything.</p>
+    <div class="fields">
+      <div><label for="d">Exam date</label>
+        <input type="date" id="d" value="${esc(S.examDate)}"></div>
+      <div><label for="h">Hours a week you can find</label>
+        <input type="number" id="h" min="1" max="60" step="0.5" value="${esc(S.hoursPerWeek)}" placeholder="e.g. 7"></div>
+    </div>
+    <div class="actions" style="margin-bottom:${asked ? "18px" : "0"}">
+      <button class="go" data-act="time">${asked ? "Recalculate" : "Work it out"}</button>
+      ${asked ? `<button class="linkish" data-act="cleartime">Clear</button>` : ""}
+    </div>
+    ${asked ? `
+      <div class="verdict ${esc(t.verdict)}">
+        <b>${esc(t.headline)}</b>
+        <p>${esc(t.detail)}</p>
+      </div>
+      ${t.cut.length ? `<p class="q" style="margin:0 0 8px;">If you cut, cut in this order:</p>
+        <div class="cutlist">${t.cut.map(c =>
+          `<div class="${c.keep ? "keep" : "drop"}"><span><b>${esc(c.what)}</b> (${esc(c.hours)}h) — ${esc(c.why)}</span></div>`).join("")}</div>` : ""}
+    ` : `<p class="note" style="margin:16px 0 0;">${esc(t.detail)} As it stands: ${esc(t.headline)}</p>`}
+  </div>`;
+}
+
+/* ---------------- step 5: which plan ---------------- */
+
+function stepPlan(app) {
+  const answered = S.examCount !== null && (S.examCount === 1 || S.simultaneous !== null);
+
+  if (!answered) {
+    const needOverlap = S.examCount !== null && S.examCount > 1;
+    return `<div class="step">
+      <h2>Which plan</h2>
+      ${!needOverlap ? `
+        <p class="q">How many exams are you sitting in the next twelve months?</p>
+        <div class="opts">
+          <button class="opt" data-act="count" data-n="1"><b>Just this one</b><span>One exam, one app.</span></button>
+          <button class="opt" data-act="count" data-n="2"><b>Two</b><span>This one and another.</span></button>
+          <button class="opt" data-act="count" data-n="3"><b>Three or more</b><span>A run of them.</span></button>
+        </div>`
+      : `
+        <p class="q">Will you be studying for them at the same time, or one after the other?</p>
+        <p class="note">This is the whole question. Pro covers one app at a time and you can switch which — so exams taken in sequence do not need Unlimited, and I would rather say that than sell you the bigger plan.</p>
+        <div class="opts">
+          <button class="opt" data-act="overlap" data-v="0"><b>One after the other</b><span>Finish one, sit it, start the next.</span></button>
+          <button class="opt" data-act="overlap" data-v="1"><b>At the same time</b><span>Both banks open in the same weeks.</span></button>
+        </div>`}
+    </div>`;
+  }
+
+  // Only one app has been chosen, so a month span is only honest for one exam.
+  const months = S.examCount === 1 ? Coach.monthsOfStudy([app], S.hoursPerWeek) : null;
+  const advice = Coach.planAdvice({ examCount: S.examCount, simultaneous: !!S.simultaneous, months });
+  const price = advice.pick === "pro" ? "Pro — $7.99/mo" : "Unlimited — $14.99/mo";
+
+  return `<div class="step">
+    <h2>Which plan</h2>
+    <div class="verdict pick"><b>${esc(advice.headline)}</b>
+      <p>${esc(advice.reasoning[0])}</p></div>
+    <ul class="reasons">${advice.reasoning.slice(1).map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+    ${advice.alternative ? `<p class="note">${esc(advice.alternative.when)}</p>` : ""}
+    <p class="note">The free tier needs no plan at all: the whole glossary, unlimited drills, a ten-question set and the planner. Study on it first and buy when you hit the wall.</p>
+    <div class="actions">
+      <a class="cta primary" href="./pricing.html">${esc(price)}</a>
+      <button class="linkish" data-act="replan">Change my answers</button>
+    </div>
+  </div>`;
+}
+
+/* ---------------- step 6: book or app ---------------- */
+
+function stepBook(app) {
+  const b = Coach.bookOrApp(app);
+  if (!b.book) return "";
+  return `<div class="step">
+    <h2>And the book?</h2>
+    <p class="q">People ask whether the companion PDF replaces the app. It does not — they do different jobs, and it is worth being straight about which.</p>
+    <div class="twocol">
+      <div>
+        <h4>${esc(b.book.title)} · $${esc(b.book.price.toFixed(2))}</h4>
+        <p>${esc(b.book.does)}</p>
+        <p class="limit">${esc(b.book.doesNot)}</p>
+      </div>
+      <div>
+        <h4>${esc(app.name)} · the app</h4>
+        <p>${esc(b.app.does)}</p>
+        <p class="limit">${esc(b.app.doesNot)}</p>
+      </div>
+    </div>
+    <p class="alsoran">${esc(b.together)}</p>
+  </div>`;
+}
+
+/* ---------------- step 7: go ---------------- */
+
+function stepDo(app) {
+  return `<div class="step">
+    <h2>Start now, free</h2>
+    <p class="q">No account, no card. The glossary, the drills, a ten-question set and the planner are open from the first click — set your exam date in the app's Plan tab and it will keep the block count honest for you.</p>
+    <div class="actions">
+      <a class="cta primary" href="${esc(app.url)}">Open ${esc(app.name)}</a>
+      <a class="cta" href="./index.html#ebooks">See the book</a>
+      <a class="cta" href="./#apps">Browse all ten</a>
+    </div>
+  </div>`;
+}
+
+/* ---------------- events ---------------- */
+
+function wire() {
+  // The trail sits outside #steps, so binding to #steps alone leaves its
+  // "Start over" inert — the one control someone reaches for when the answer
+  // is wrong.
+  document.querySelectorAll("#steps [data-act], #trail [data-act]")
+    .forEach(el => el.addEventListener("click", onAct));
+  const q = $("q");
+  if (q) q.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); doSearch(q.value); } });
+}
+
+function onAct(e) {
+  const el = e.currentTarget;
+  const act = el.dataset.act;
+
+  if (act === "search")  return doSearch($("q").value);
+  if (act === "chip")    return doSearch(el.dataset.q);
+  if (act === "restart") { S = fresh(); sessionStorage.removeItem(STATE_KEY); return render(); }
+
+  if (act === "narrow") { S.slug = el.dataset.slug; S.escape = null; S.step = "picked"; return render(); }
+  if (act === "escape") { S.escape = S.escape === el.dataset.id ? null : el.dataset.id; return render(); }
+
+  if (act === "time") {
+    S.examDate = $("d").value;
+    S.hoursPerWeek = $("h").value;
+    return render();
+  }
+  if (act === "cleartime") { S.examDate = ""; S.hoursPerWeek = ""; return render(); }
+
+  if (act === "count") {
+    S.examCount = Number(el.dataset.n);
+    if (S.examCount === 1) S.simultaneous = false;
+    return render();
+  }
+  if (act === "overlap") { S.simultaneous = el.dataset.v === "1"; return render(); }
+  if (act === "replan")  { S.examCount = null; S.simultaneous = null; return render(); }
+}
+
+function doSearch(query) {
+  S.query = String(query || "").trim();
+  S.slug = null; S.escape = null;
+  S.examCount = null; S.simultaneous = null;
+
+  const hits = Coach.search(S.query, REG.apps);
+  if (!hits.length) { S.step = "nomatch"; return render(); }
+  if (hits.length === 1) { S.slug = hits[0].app.slug; S.step = "picked"; return render(); }
+
+  // Several candidates. If a question separates them, ask it; if not, take the
+  // strongest match rather than presenting a menu with no way to choose.
+  const d = Coach.decisionFor(hits, REG.decisions);
+  if (d) { S.step = "narrow"; return render(); }
+  S.slug = hits[0].app.slug; S.step = "picked";
+  render();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "forge-trades",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge Trades — electrician licensing exam study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs forge-trades",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs forge-trades"
+  },
+  "bigheavy": {
+    "slug": "forge-trades",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

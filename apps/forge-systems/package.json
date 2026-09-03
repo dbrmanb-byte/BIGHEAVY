@@ -1,0 +1,16 @@
+{
+  "name": "forge-systems",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge Systems — Kubernetes, Terraform and Linux certification study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs forge-systems",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs forge-systems"
+  },
+  "bigheavy": {
+    "slug": "forge-systems",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

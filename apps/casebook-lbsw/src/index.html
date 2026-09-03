@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIGHEAVYINK Casebook LBSW — Bachelor Exam Study</title>
+<meta name="description" content="Study companion for the LBSW bachelor social work exam. 125 terms, 52 scenarios, and an on-device AI tutor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="manifest" href="./manifest.webmanifest">
+<script src="./content-free.js"></script>
+<link rel="icon" href="./favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="theme-color" content="#0E1A20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Casebook">
+<meta property="og:title" content="Casebook LBSW — Bachelor Exam Study">
+<meta property="og:description" content="125 terms, 52 generalist scenarios with rationales. Works offline.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://bigheavyink.com/casebook-lbsw/icon-512.png">
+<meta property="og:image:alt" content="App icon">
+<meta name="twitter:card" content="summary">
+<style>
+:root{
+  --ground:#132229;
+  --ground-2:#0E1A20;
+  --surface:#1B2F38;
+  --surface-2:#223B46;
+  --line:#2E4A56;
+  --text:#DCE8ED;
+  --text-dim:#8FA8B3;
+  --paper:#F2EDE3;
+  --paper-line:#DAD1C1;
+  --paper-ink:#241D14;
+  --paper-dim:#6C6255;
+  --gold:#EBA83A;
+  --good:#5FB86B;
+  --bad:#D9455F;
+
+  --cat-hbse:#E4703A;
+  --cat-assessment:#3FA9B8;
+  --cat-intervention:#7B8FE0;
+  --cat-ethics:#D9455F;
+  --cat-policy:#5FB86B;
+  --cat-research:#C77CD6;
+  --cat-diversity:#E0B23A;
+  --cat-supervision:#93A4AF;
+
+  --display:"Bricolage Grotesque",'Segoe UI',system-ui,sans-serif;
+  --read:"Newsreader",Georgia,'Times New Roman',serif;
+  --mono:"IBM Plex Mono",ui-monospace,'SF Mono',Menlo,monospace;
+
+  --pad:clamp(16px,4vw,32px);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;background:var(--ground);color:var(--text);
+  font-family:var(--display);
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px;}
+
+/* ---------- rail ---------- */
+.rail{
+  display:flex;align-items:center;gap:20px;
+  padding:12px var(--pad);border-bottom:1px solid var(--line);
+  background:var(--ground-2);flex-wrap:wrap;
+}
+.brand{display:flex;flex-direction:column;line-height:1;margin-right:auto;gap:4px;}
+.brand .bh{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;}
+.brand .bh::after{content:"";display:block;width:28px;height:1.5px;background:var(--gold);margin-top:4px;}
+.brand b{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:19px;letter-spacing:0;color:var(--text);}
+.brand span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--text-dim);text-transform:uppercase;display:none;}
+.modes{display:flex;gap:2px;}
+.modes button{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 13px;color:var(--text-dim);border-bottom:2px solid transparent;
+}
+.modes button:hover{color:var(--text);}
+.modes button[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold);}
+/* What each tab is for, on hover and on keyboard focus. Pure CSS so it costs
+   nothing and cannot break a tab. Touch has no hover — there the tab labels
+   carry the load, which they did alone before this existed. */
+.modes button{position:relative;}
+.modes button[data-tip]::after{
+  content:attr(data-tip);position:absolute;top:calc(100% + 8px);left:0;z-index:30;
+  width:230px;padding:9px 12px;border:1px solid var(--line);border-radius:6px;
+  background:var(--surface,#1B2F38);color:var(--text);text-transform:none;letter-spacing:0;
+  font-family:var(--read,Georgia,serif);font-size:13.5px;line-height:1.5;font-weight:400;
+  text-align:left;white-space:normal;box-shadow:0 12px 28px -12px rgba(0,0,0,.7);
+  opacity:0;visibility:hidden;transition:opacity .12s ease .25s,visibility 0s linear .37s;
+  pointer-events:none;}
+.modes button[data-tip]:hover::after,.modes button[data-tip]:focus-visible::after{
+  opacity:1;visibility:visible;}
+.modes button[data-tip]:last-child::after{left:auto;right:0;}
+@media (max-width:640px){.modes button[data-tip]::after{display:none;}}
+.tutor-open{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:999px;padding:7px 14px;display:flex;align-items:center;gap:8px;
+}
+.tutor-open:hover{border-color:var(--gold);color:var(--gold);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--text-dim);}
+.dot.on{background:var(--good);}
+.dot.load{background:var(--gold);animation:pulse 1.1s ease-in-out infinite;}
+@keyframes pulse{50%{opacity:.25;}}
+
+/* ---------- shell ---------- */
+main{flex:1;overflow-y:auto;padding:var(--pad);}
+.wrap{max-width:760px;margin:0 auto;}
+.hide{display:none !important;}
+
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+}
+.eyebrow em{font-style:normal;color:var(--gold);}
+
+/* ---------- the case card (signature) ---------- */
+.card{
+  position:relative;background:var(--paper);color:var(--paper-ink);
+  border-radius:3px 3px 4px 4px;padding:clamp(22px,4vw,36px);
+  padding-top:clamp(30px,5vw,40px);
+  box-shadow:0 1px 0 var(--paper-line),0 18px 40px -18px rgba(0,0,0,.75);
+}
+.card::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:6px;
+  background:var(--tab,var(--gold));border-radius:3px 3px 0 0;
+}
+.card .tab{
+  position:absolute;top:-11px;left:24px;background:var(--tab,var(--gold));color:#141414;
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:4px 11px;border-radius:3px 3px 0 0;
+}
+.card .meta{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--paper-dim);display:flex;justify-content:space-between;gap:12px;
+  padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--paper-line);
+}
+.stem{font-family:var(--read);font-size:clamp(17px,2.2vw,19.5px);line-height:1.62;margin:0 0 22px;}
+.term{font-family:var(--display);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.02em;margin:6px 0 0;}
+.term-def{font-family:var(--read);font-size:18px;line-height:1.6;margin:18px 0 0;padding-top:18px;border-top:1px solid var(--paper-line);}
+.said{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--paper-dim);margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--paper-line);}
+.said b{color:var(--paper-ink);}
+.saidscore{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim);margin:0 0 10px;}
+#drillDef mark{background:rgba(95,184,107,.28);color:inherit;border-radius:2px;padding:0 1px;}
+
+/* ---------- choices ---------- */
+.choices{display:flex;flex-direction:column;gap:9px;}
+.choice{
+  display:flex;gap:13px;align-items:flex-start;text-align:left;width:100%;
+  border:1px solid var(--paper-line);border-radius:4px;padding:13px 15px;
+  font-family:var(--read);font-size:16.5px;line-height:1.45;transition:border-color .12s,background .12s;
+}
+.choice:hover:not(:disabled){border-color:var(--paper-ink);background:rgba(0,0,0,.03);}
+.choice:disabled{cursor:default;}
+.choice .ltr{
+  font-family:var(--mono);font-size:11px;font-weight:600;flex:0 0 22px;height:22px;
+  border:1px solid var(--paper-line);border-radius:3px;display:grid;place-items:center;margin-top:1px;
+}
+.choice.correct{border-color:var(--good);background:rgba(95,184,107,.13);}
+.choice.correct .ltr{background:var(--good);border-color:var(--good);color:#0C1A0E;}
+.choice.chosen-wrong{border-color:var(--bad);background:rgba(217,69,95,.11);}
+.choice.chosen-wrong .ltr{background:var(--bad);border-color:var(--bad);color:#fff;}
+
+.verdict{
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--paper-line);
+}
+.verdict h4{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  margin:0 0 9px;color:var(--paper-dim);
+}
+.verdict h4 b{color:var(--paper-ink);}
+.verdict p{font-family:var(--read);font-size:16.5px;line-height:1.6;margin:0;}
+
+/* ---------- controls under card ---------- */
+.controls{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:12px 20px;border:1px solid var(--line);border-radius:4px;color:var(--text);
+  transition:border-color .12s,background .12s,color .12s;
+}
+.btn:hover{border-color:var(--text-dim);background:var(--surface);}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#1A1206;font-weight:600;}
+.btn.primary:hover{filter:brightness(1.08);background:var(--gold);}
+.btn.again{border-color:#5A3038;color:#F0A0AE;}
+.btn.again:hover{background:rgba(217,69,95,.14);border-color:var(--bad);}
+.btn.got{border-color:#2F5537;color:#9FDBA8;}
+.btn.got:hover{background:rgba(95,184,107,.14);border-color:var(--good);}
+.btn.wide{flex:1;justify-content:center;text-align:center;}
+
+/* ---------- progress ---------- */
+.bar{height:3px;background:var(--surface);border-radius:2px;overflow:hidden;margin:0 0 20px;}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .35s ease;}
+
+/* ---------- filters / glossary ---------- */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  padding:6px 11px;border:1px solid var(--line);border-radius:999px;color:var(--text-dim);
+  display:flex;align-items:center;gap:7px;
+}
+.chip:hover{color:var(--text);}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--tab,var(--text-dim));}
+.chip[aria-pressed="true"]{border-color:var(--tab,var(--gold));color:var(--text);background:var(--surface);}
+.search{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:13px 15px;color:var(--text);font-family:var(--display);font-size:15px;margin-bottom:14px;
+}
+.search::placeholder{color:var(--text-dim);}
+.entry{
+  border-left:3px solid var(--tab,var(--line));background:var(--surface);
+  border-radius:0 4px 4px 0;padding:15px 17px;margin-bottom:8px;
+}
+.entry h3{font-size:16px;font-weight:700;margin:0 0 5px;letter-spacing:-.01em;}
+.entry p{font-family:var(--read);font-size:15.5px;line-height:1.55;color:var(--text-dim);margin:0;}
+.entry .cat{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--tab,var(--text-dim));margin-bottom:6px;display:block;
+}
+
+/* ---------- summary ---------- */
+.score{text-align:center;padding:36px 0 26px;}
+.score .n{font-size:clamp(56px,13vw,84px);font-weight:800;letter-spacing:-.04em;line-height:1;}
+.score .n small{font-size:.34em;color:var(--text-dim);font-weight:500;}
+.score p{font-family:var(--read);font-size:17px;color:var(--text-dim);max-width:44ch;margin:14px auto 0;line-height:1.55;}
+.breakdown{display:flex;flex-direction:column;gap:7px;margin:26px 0 0;}
+.brow{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;}
+.brow .nm{flex:0 0 108px;text-transform:uppercase;color:var(--text-dim);font-size:10px;}
+.brow .track{flex:1;height:7px;background:var(--surface);border-radius:2px;overflow:hidden;}
+.brow .track i{display:block;height:100%;background:var(--tab,var(--gold));}
+
+/* ---------- tutor ---------- */
+.tutor{
+  position:fixed;top:0;right:0;bottom:0;width:min(430px,100%);
+  background:var(--ground-2);border-left:1px solid var(--line);
+  display:flex;flex-direction:column;z-index:40;
+  transform:translateX(100%);transition:transform .26s cubic-bezier(.4,0,.2,1);
+}
+.tutor.open{transform:none;}
+.tutor header{
+  padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;
+}
+.tutor header h2{font-size:15px;font-weight:700;margin:0;margin-right:auto;letter-spacing:-.01em;}
+.tutor header .x{font-size:22px;line-height:1;color:var(--text-dim);padding:2px 6px;}
+.tutor header .x:hover{color:var(--text);}
+.log{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:15px;}
+.msg{font-family:var(--read);font-size:15.5px;line-height:1.58;}
+.msg.me{
+  align-self:flex-end;max-width:88%;background:var(--surface-2);
+  padding:11px 14px;border-radius:10px 10px 2px 10px;
+}
+.msg.ai{color:var(--text);white-space:pre-wrap;}
+.msg.ai::before{
+  content:"Tutor";display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:6px;
+}
+.msg.sys{
+  font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--text-dim);
+  border:1px dashed var(--line);border-radius:5px;padding:12px 13px;
+}
+.msg.sys b{color:var(--text);font-weight:600;}
+.sources{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;
+}
+.sources span{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--text-dim);
+  border:1px solid var(--line);border-radius:999px;padding:3px 9px;
+}
+.compose{padding:14px 18px 18px;border-top:1px solid var(--line);}
+.compose textarea{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:5px;
+  color:var(--text);font-family:var(--display);font-size:14.5px;padding:11px 13px;
+  resize:none;min-height:52px;max-height:150px;
+}
+.compose textarea::placeholder{color:var(--text-dim);}
+.compose .row{display:flex;gap:8px;margin-top:9px;align-items:center;}
+.compose .hint{font-family:var(--mono);font-size:9.5px;color:var(--text-dim);margin-right:auto;letter-spacing:.05em;}
+.setup{padding:18px;display:flex;flex-direction:column;gap:13px;}
+.setup p{font-family:var(--read);font-size:15px;line-height:1.58;color:var(--text-dim);margin:0;}
+.setup label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);}
+.setup select{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  color:var(--text);font-family:var(--display);font-size:14.5px;padding:11px 13px;
+}
+.prog{height:4px;background:var(--surface);border-radius:2px;overflow:hidden;}
+.prog i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s;}
+.scrim{
+  position:fixed;inset:0;background:rgba(8,15,19,.6);z-index:35;opacity:0;pointer-events:none;
+  transition:opacity .26s;
+}
+.scrim.on{opacity:1;pointer-events:auto;}
+
+
+.install{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:7px 14px;
+}
+.install:hover{background:var(--gold);color:#1A1206;}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);
+  background:var(--surface-2);border:1px solid var(--line);border-radius:6px;
+  padding:12px 14px;display:flex;align-items:center;gap:14px;z-index:60;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+  box-shadow:0 14px 34px -14px rgba(0,0,0,.8);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  max-width:calc(100% - 32px);
+}
+.toast.up{transform:translate(-50%,0);}
+.toast button{color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;}
+.setup-grid{display:grid;gap:10px;margin:4px 0 18px;}
+.len{
+  display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+  border:1px solid var(--line);border-radius:5px;padding:16px 18px;background:var(--surface);
+  transition:border-color .12s,background .12s;
+}
+.len:hover{border-color:var(--gold);background:var(--surface-2);}
+.len b{font-size:26px;font-weight:800;letter-spacing:-.03em;flex:0 0 58px;}
+.len .txt{flex:1;}
+.len .txt span{display:block;font-size:14.5px;font-weight:600;margin-bottom:3px;}
+.len .txt small{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-dim);text-transform:uppercase;}
+.len .dur{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.05em;}
+.opt{
+  display:flex;align-items:center;gap:11px;padding:12px 0;border-top:1px solid var(--line);
+  font-size:14px;cursor:pointer;
+}
+.opt input{accent-color:var(--gold);width:16px;height:16px;flex:0 0 auto;}
+.opt small{display:block;font-family:var(--mono);font-size:10.5px;color:var(--text-dim);letter-spacing:.04em;margin-top:3px;}
+.resume{
+  border:1px solid var(--gold);border-radius:5px;padding:15px 17px;margin-bottom:18px;background:rgba(235,168,58,.07);
+}
+.resume p{margin:0 0 12px;font-size:14.5px;line-height:1.5;}
+.resume .controls{margin-top:0;}
+.examtop{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.clock{
+  font-family:var(--mono);font-size:13px;letter-spacing:.08em;font-weight:500;
+  border:1px solid var(--line);border-radius:4px;padding:6px 12px;
+}
+.clock.warn{border-color:var(--gold);color:var(--gold);}
+.clock.crit{border-color:var(--bad);color:var(--bad);}
+.examtop .spacer{margin-left:auto;}
+.mini{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:4px;padding:7px 12px;color:var(--text-dim);
+}
+.mini:hover{color:var(--text);border-color:var(--text-dim);}
+.mini.flagged{border-color:var(--gold);color:var(--gold);}
+.nav-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:5px;
+  padding:16px;background:var(--surface);border-radius:5px;margin-bottom:16px;
+}
+.nav-grid button{
+  font-family:var(--mono);font-size:11px;padding:8px 0;border:1px solid var(--line);
+  border-radius:3px;color:var(--text-dim);
+}
+.nav-grid button.done{background:var(--surface-2);color:var(--text);border-color:var(--surface-2);}
+.nav-grid button.flag{border-color:var(--gold);color:var(--gold);}
+.nav-grid button.here{outline:2px solid var(--gold);outline-offset:1px;}
+.rev{
+  background:var(--paper);color:var(--paper-ink);border-radius:4px;padding:20px 22px;margin-bottom:12px;
+  border-left:4px solid var(--tab,var(--bad));
+}
+.rev .num{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-dim);margin-bottom:9px;display:block;}
+.rev .q{font-family:var(--read);font-size:16px;line-height:1.55;margin:0 0 14px;}
+.rev .line{font-family:var(--read);font-size:15.5px;line-height:1.5;margin:0 0 7px;padding-left:15px;border-left:2px solid var(--paper-line);}
+.rev .line b{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;display:block;color:var(--paper-dim);margin-bottom:2px;}
+.rev .line.ok{border-left-color:var(--good);}
+.rev .line.no{border-left-color:var(--bad);}
+.rev .exp{font-family:var(--read);font-size:15.5px;line-height:1.55;margin:14px 0 0;padding-top:13px;border-top:1px solid var(--paper-line);}
+
+/* ---------- dashboard ---------- */
+.dash-loading{font-family:var(--mono);font-size:12px;color:var(--text-dim);padding:40px 0;text-align:center;}
+.dash-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:26px;}
+.dash-stat{background:var(--surface);border-radius:5px;padding:18px 16px;text-align:center;}
+.ds-val{display:block;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.1;}
+.ds-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-top:6px;display:block;}
+.dash-h{font-size:14px;font-weight:700;margin:26px 0 12px;letter-spacing:-.01em;}
+.cat-bars{display:flex;flex-direction:column;gap:7px;}
+.cat-bar{display:grid;grid-template-columns:110px 1fr 44px 40px;align-items:center;gap:10px;font-size:13px;}
+.cat-nm{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);}
+.cat-track{height:8px;background:var(--surface);border-radius:2px;overflow:hidden;}
+.cat-track i{display:block;height:100%;border-radius:2px;transition:width .4s ease;}
+.cat-track i.high{opacity:1;}.cat-track i.mid{opacity:.85;}.cat-track i.low{opacity:.7;}
+.cat-pct{font-family:var(--mono);font-size:12px;text-align:right;}
+.cat-n{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:right;}
+.trend-svg{width:100%;max-height:160px;margin:6px 0;}
+.plan{display:flex;flex-direction:column;gap:6px;}
+.plan-row{background:var(--surface);border-radius:4px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;}
+.plan-row.urgent{border-left:3px solid var(--bad);}
+.plan-cat{font-size:13px;font-weight:600;}
+.plan-act{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.04em;}
+.sess-list{display:flex;flex-direction:column;gap:5px;}
+.sess-row{display:grid;grid-template-columns:100px 1fr 80px;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.sess-date{font-family:var(--mono);font-size:11px;color:var(--text-dim);}
+.sess-score{font-weight:600;}
+.sess-len{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:right;}
+.dash-note{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;margin-top:30px;letter-spacing:.03em;}
+.empty{text-align:center;padding:60px 0;}
+.empty p{font-family:var(--read);font-size:16px;color:var(--text-dim);max-width:36ch;margin:0 auto;line-height:1.6;}
+
+/* ---------- auth modal ---------- */
+.auth-scrim{position:fixed;inset:0;background:rgba(8,15,19,.7);z-index:50;display:grid;place-items:center;padding:20px;}
+.auth-modal{
+  background:var(--ground);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(24px,5vw,36px);width:min(400px,100%);position:relative;
+}
+.auth-close{position:absolute;top:12px;right:14px;font-size:24px;color:var(--text-dim);padding:4px;}
+.auth-close:hover{color:var(--text);}
+.auth-modal h2{font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em;}
+.auth-sub{font-family:var(--read);font-size:15px;color:var(--text-dim);margin:0 0 20px;line-height:1.5;}
+.auth-input{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  color:var(--text);font-family:var(--display);font-size:15px;padding:12px 14px;margin-bottom:10px;
+}
+.auth-input::placeholder{color:var(--text-dim);}
+.auth-msg{font-family:var(--mono);font-size:11.5px;color:var(--bad);margin-bottom:10px;min-height:16px;}
+.auth-msg.ok{color:var(--good);}
+#authForm .btn{margin-top:4px;}
+#authToggle,#authMagic{font-size:11px;color:var(--text-dim);margin-top:8px;}
+
+/* ---------- upgrade modal ---------- */
+.upgrade-scrim{position:fixed;inset:0;background:rgba(8,15,19,.75);z-index:52;display:grid;place-items:center;padding:20px;}
+.upgrade-modal{
+  background:var(--ground);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(24px,5vw,36px);width:min(480px,100%);position:relative;
+}
+.upgrade-modal .x{position:absolute;top:12px;right:14px;font-size:24px;color:var(--text-dim);padding:4px;}
+.upgrade-modal .x:hover{color:var(--text);}
+.upgrade-modal h2{font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em;}
+.upgrade-reason{font-family:var(--read);font-size:15px;color:var(--text-dim);margin:0 0 22px;line-height:1.5;}
+.plan-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.plan-card{
+  border:1px solid var(--line);border-radius:6px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;transition:border-color .12s;
+  text-align:left;width:100%;
+}
+.plan-card:hover{border-color:var(--gold);}
+.plan-card.featured{border-color:var(--gold);background:rgba(77,172,255,.06);}
+.plan-info{flex:1;}
+.plan-name{font-size:15px;font-weight:700;margin:0 0 3px;}
+.plan-desc{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--text-dim);text-transform:uppercase;}
+.plan-price{font-size:20px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;}
+.plan-price small{font-size:11px;font-weight:500;color:var(--text-dim);}
+.plan-save{
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(95,184,107,.15);color:var(--good);border-radius:3px;padding:3px 7px;
+  margin-left:8px;
+}
+.upgrade-note{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:center;margin-top:14px;letter-spacing:.03em;line-height:1.6;}
+
+.foot{
+  font-family:var(--mono);font-size:10px;line-height:1.7;color:var(--text-dim);
+  letter-spacing:.03em;text-align:center;padding:34px 0 8px;max-width:56ch;margin:0 auto;
+}
+
+@media (max-width:640px){
+  .rail{gap:12px;padding:10px 16px;}
+  .brand span{display:none;}
+  .modes{order:3;width:100%;overflow-x:auto;}
+  .tutor{width:100%;}
+  .brow .nm{flex:0 0 84px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="brand"><div class="bh">BIGHEAVYINK</div><b>Casebook LBSW</b><span>Bachelors Exam Prep</span></div>
+  <nav class="modes" role="tablist" aria-label="Study modes">
+    <button role="tab" data-mode="drill" data-tip="Flashcards on a schedule — terms, plus the rationales behind questions you have answered. What you miss comes back sooner." aria-selected="true">Drill</button>
+    <button role="tab" data-mode="setup" data-tip="Exam-style practice questions, with the reasoning behind every answer." aria-selected="false">Vignettes</button>
+    <button role="tab" data-mode="dashboard" data-tip="Your progress — accuracy by topic, and where you are weakest." aria-selected="false">Dashboard</button>
+    <button role="tab" data-mode="glossary" data-tip="Every term and its definition, in one searchable list. Free forever." aria-selected="false">Glossary</button>
+    <button role="tab" data-mode="plan" data-tip="Hour-long study blocks, your exam date, and focus tips that react to how it went." aria-selected="false">Plan</button>
+  </nav>
+  <button class="install hide" id="installBtn">Install</button>
+  <button class="tutor-open" id="userBtn" aria-label="Account"><span id="userLabel">Sign in</span></button>
+  <button class="tutor-open" id="tutorBtn" title="An AI tutor that runs on your own device — what you type never leaves it. Needs a recent browser with WebGPU (current Chrome or Edge)." aria-label="Open tutor"><i class="dot" id="engDot"></i>Tutor</button>
+</div>
+
+<div class="toast" id="toast" role="status">
+  <span id="toastMsg"></span>
+  <button id="toastAct"></button>
+</div>
+
+<main>
+  <!-- DRILL -->
+  <section class="wrap" id="v-drill">
+    <div class="bar"><i id="drillBar"></i></div>
+    <div class="eyebrow" id="drillMeta"></div>
+    <div class="filters" role="group" aria-label="Deck">
+      <button class="chip" id="deckTerms" aria-pressed="true">Terms</button>
+      <button class="chip" id="deckWhy" aria-pressed="false">Rationales</button>
+    </div>
+    <div class="card" id="drillCard">
+      <span class="tab" id="drillTab"></span>
+      <div class="meta"><span id="drillBox"></span><span id="drillCount"></span></div>
+      <h2 class="term" id="drillTerm"></h2>
+      <div class="said hide" id="drillSaid" aria-live="polite"></div>
+      <div class="term-def hide" id="drillDef"></div>
+    </div>
+    <div class="controls" id="drillControls"></div>
+  </section>
+
+  <!-- QUIZ SETUP -->
+  <section class="wrap hide" id="v-setup">
+    <div class="eyebrow">Practice sets <em>&middot;</em> <span id="bankSize"></span> items in the bank</div>
+    <div id="resumeBox"></div>
+    <div class="setup-grid" id="lenGrid"></div>
+    <label class="opt"><input type="checkbox" id="optFeedback"><span>Hold answers until the end<small>Exam conditions — no feedback between items</small></span></label>
+    <label class="opt"><input type="checkbox" id="optTimer"><span>Run the clock<small>Auto-submits when time is up</small></span></label>
+    <label class="opt"><input type="checkbox" id="optWeak"><span>Weight toward my weakest areas<small>Draws more from bands you have missed before</small></span></label>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="wrap hide" id="v-quiz">
+    <div class="examtop">
+      <span class="clock hide" id="clock"></span>
+      <button class="mini" id="flagBtn">Flag</button>
+      <button class="mini" id="navBtn">Overview</button>
+      <span class="spacer"></span>
+      <button class="mini" id="endBtn">End set</button>
+    </div>
+    <div class="nav-grid hide" id="navGrid"></div>
+    <div class="bar"><i id="quizBar"></i></div>
+    <div class="eyebrow" id="quizMeta"></div>
+    <div class="card" id="quizCard">
+      <span class="tab" id="quizTab"></span>
+      <div class="meta"><span id="quizNum"></span><span id="quizScore"></span></div>
+      <p class="stem" id="quizStem"></p>
+      <div class="choices" id="quizChoices"></div>
+      <div class="verdict hide" id="quizVerdict"><h4 id="quizVerdictHead"></h4><p id="quizWhy"></p></div>
+    </div>
+    <div class="controls" id="quizControls"></div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="wrap hide" id="v-summary">
+    <div class="score"><div class="n" id="sumScore"></div><p id="sumNote"></p></div>
+    <div class="eyebrow" id="sumMeta"></div>
+    <div class="breakdown" id="sumBreak"></div>
+    <div class="controls" style="margin-top:30px;">
+      <button class="btn primary wide" id="sumReview">Review the ones I missed</button>
+      <button class="btn wide" id="sumRetry">New set</button>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="wrap hide" id="v-review">
+    <div class="eyebrow" id="revMeta"></div>
+    <div id="revList"></div>
+    <div class="controls" style="margin-top:24px;"><button class="btn primary wide" id="revBack">Back to results</button></div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <!-- PLAN -->
+  <section class="wrap hide" id="v-plan">
+    <p class="lede"><b>Plan</b> turns this material into hour-long study blocks — fifty minutes of
+    work and a ten-minute break — and keeps track of what you have actually done. Nothing here
+    leaves your device, and none of it is behind a plan.</p>
+    <div id="planRoot"></div>
+  </section>
+
+  <section class="wrap hide" id="v-glossary">
+    <input class="search" id="gSearch" type="search" placeholder="Search 207 terms — try &ldquo;boundary&rdquo; or &ldquo;affect&rdquo;" autocomplete="off">
+    <div class="filters" id="gFilters"></div>
+    <div class="eyebrow" id="gCount"></div>
+    <div id="gList"></div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="wrap hide" id="v-dashboard">
+    <div class="dash-loading">Loading your data…</div>
+  </section>
+
+  <p class="foot">
+
+<!-- UPGRADE MODAL -->
+<div class="upgrade-scrim hide" id="upgradeScrim">
+  <div class="upgrade-modal">
+    <button class="x" id="upgradeClose">&times;</button>
+    <h2>Unlock full access</h2>
+    <p class="upgrade-reason" id="upgradeReason">Upgrade to unlock this feature.</p>
+    <div class="plan-cards">
+      <button class="plan-card" id="planProAnnual" data-plan="pro_annual">
+        <div class="plan-info">
+          <p class="plan-name">Pro <span class="plan-save">Best value</span></p>
+          <p class="plan-desc" id="proDesc">Full access to this app</p>
+        </div>
+        <span class="plan-price">$59.99<small>/yr</small></span>
+      </button>
+      <button class="plan-card" id="planProMonthly" data-plan="pro_monthly">
+        <div class="plan-info">
+          <p class="plan-name">Pro Monthly</p>
+          <p class="plan-desc">Cancel anytime</p>
+        </div>
+        <span class="plan-price">$9.99<small>/mo</small></span>
+      </button>
+      <button class="plan-card featured" id="planAllAnnual" data-plan="all_access_annual">
+        <div class="plan-info">
+          <p class="plan-name">All Access <span class="plan-save">Save 50%</span></p>
+          <p class="plan-desc">Every app, current and future</p>
+        </div>
+        <span class="plan-price">$89.99<small>/yr</small></span>
+      </button>
+      <button class="plan-card" id="planAllMonthly" data-plan="all_access_monthly">
+        <div class="plan-info">
+          <p class="plan-name">All Access Monthly</p>
+          <p class="plan-desc">Every app, cancel anytime</p>
+        </div>
+        <span class="plan-price">$14.99<small>/mo</small></span>
+      </button>
+    </div>
+    <p class="upgrade-note">7-day free trial on annual plans. Cancel in your account settings or email support. Your study progress is never deleted.</p>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-scrim hide" id="authScrim">
+  <div class="auth-modal" id="authModal">
+    <button class="auth-close" id="authClose">&times;</button>
+    <h2 id="authTitle">Sign in</h2>
+    <p class="auth-sub" id="authSub">Track your progress across devices.</p>
+    <div id="authMsg" class="auth-msg"></div>
+    <div id="authForm">
+      <input class="auth-input" id="authEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="auth-input" id="authPass" type="password" placeholder="Password" autocomplete="current-password">
+      <input class="auth-input hide" id="authName" type="text" placeholder="Display name (optional)" autocomplete="name">
+      <button class="btn primary wide" id="authSubmit">Sign in</button>
+      <button class="btn wide" id="authToggle">Need an account? Sign up</button>
+      <button class="btn wide" id="authMagic">Send magic link instead</button>
+      <a class="btn wide" href="/reset.html" style="text-align:center;text-decoration:none;display:block;">Forgot password?</a>
+    </div>
+    <div id="authDone" class="hide">
+      <p class="auth-sub" id="authDoneMsg"></p>
+      <button class="btn primary wide" id="authDoneBtn">OK</button>
+    </div>
+  </div>
+</div>
+    Study aid only. Not affiliated with or endorsed by ASWB&reg;.
+    ASWB is a registered trademark of the Association of Social Work Boards.
+    Generalist content is an original condensed summary &mdash; verify against the current
+    NASW Code of Ethics and your jurisdiction&rsquo;s statutes.
+    The tutor runs a small model on your device and can be wrong.
+  </p>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="tutor" id="tutor" aria-label="Tutor">
+  <header>
+    <h2>Tutor</h2>
+    <button class="x" id="tutorClose" aria-label="Close tutor">&times;</button>
+  </header>
+
+  <div class="setup" id="tutorSetup">
+    <p>The tutor runs a small language model <b>entirely on this device</b> — nothing you type leaves your computer. It has to download the model once, then works offline forever after.</p>
+    <div>
+      <label for="modelSel">Model</label>
+      <select id="modelSel">
+        <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen 2.5 1.5B — about 1.0 GB (recommended)</option>
+        <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 3.2 1B — about 0.7 GB (fastest)</option>
+        <option value="Llama-3.2-3B-Instruct-q4f16_1-MLC">Llama 3.2 3B — about 2.2 GB (best answers)</option>
+        <option value="Phi-3.5-mini-instruct-q4f16_1-MLC">Phi 3.5 Mini — about 2.2 GB</option>
+      </select>
+    </div>
+    <button class="btn primary" id="loadModel">Download and start</button>
+    <div class="prog hide" id="loadProg"><i></i></div>
+    <p id="loadNote" style="font-family:var(--mono);font-size:11px;letter-spacing:.03em;"></p>
+  </div>
+
+  <div class="log hide" id="log"></div>
+  <div class="compose hide" id="compose">
+    <textarea id="ask" rows="2" placeholder="Ask about a term, or why an answer was wrong…"></textarea>
+    <div class="row">
+      <span class="hint">Enter sends · Shift+Enter new line</span>
+      <button class="btn" id="clearChat">Clear</button>
+      <button class="btn primary" id="send">Ask</button>
+    </div>
+  </div>
+</aside>
+
+<!-- Backend config, generated at build time from the environment. The repo is
+     public, so the values are never in source; scripts/build-site.mjs writes
+     this file into dist from BH_SUPABASE_URL and BH_SUPABASE_KEY. Missing means
+     free-only, which is a working state, not a broken one. -->
+<script src="./config.js"></script>
+<script>
+
+// ---- App identity ----
+// Pro covers one app, so the tier check needs to know which app this is.
+// The slug must match apps/<slug> and the tier_app value the server returns.
+window.BH_APP_ID = "casebook-lbsw";
+window.BH_APP_FAMILY = "casebook";
+window.CASEBOOK_APP_NAME = "BIGHEAVYINK Casebook LBSW";
+</script>
+<script>
+/* Content is split: window.DATA is assigned by content-free.js, loaded
+   above. The paid questions arrive through js/content.js. */
+/* ---------------- categories ---------------- */
+const CATS = {
+  HBSE:{label:"Human Development", color:"#E4703A"},
+  Assessment:{label:"Assessment", color:"#3FA9B8"},
+  Interventions:{label:"Interventions", color:"#7B8FE0"},
+  Ethics:{label:"Ethics & Values", color:"#D9455F"},
+  Policy:{label:"Policy & Programs", color:"#5FB86B"},
+  Diversity:{label:"Diversity & Justice", color:"#E0B23A"}
+};
+const catColor = c => (CATS[c]||{}).color || "var(--gold)";
+const catLabel = c => (CATS[c]||{}).label || c;
+
+/* ---------------- storage (degrades to memory) ---------------- */
+const mem = {};
+/* Every app on the hub is served from one origin, so a bare "cb.sched" would have
+   two apps overwriting each other's drill schedule and stats — card ids start at
+   c000 in all of them, so the collision is silent and total. Keys are scoped to
+   the app id here rather than at each call site. Apps shipped standalone lived on
+   their own origin, so there is no shared history to migrate. */
+const NS = k => k.startsWith("cb.") ? "cb." + (window.BH_APP_ID || "app") + "." + k.slice(3) : k;
+const store = {
+  get(k,d){ k=NS(k); try{ const v=localStorage.getItem(k); return v?JSON.parse(v):(k in mem?mem[k]:d);}catch(e){ return k in mem?mem[k]:d; } },
+  set(k,v){ k=NS(k); try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ mem[k]=v; } }
+};
+
+/* ---------------- app state ---------------- */
+const INTERVAL_H = [0, 4, 24, 72, 168, 480];   // Leitner box -> hours until due
+const S = {
+  mode: "drill",
+  sched: store.get("cb.sched", {}),            // cardId -> {box, due}
+  drillQueue: [], drillPos: 0, drillShown: false, drillDone: 0,
+  quizQueue: [], quizPos: 0, quizAnswers: {}, quizLocked: false,
+  gFilter: null, gQuery: "",
+  engine: null, engineState: "off", chat: []
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+/* ---------------- mode switching ---------------- */
+function setMode(m){
+  S.mode = m;
+  const tabMap = {setup:"setup",quiz:"setup",summary:"setup",review:"setup",drill:"drill",glossary:"glossary"};
+  document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.mode===(tabMap[m]||m))));
+  ["drill","setup","quiz","glossary","summary","review","plan"].forEach(v => { const e=$("v-"+v); if(e) e.classList.add("hide"); });
+  const el = $("v-"+m); if(el) el.classList.remove("hide");
+  if(m==="drill") renderDrill();
+  if(m==="setup") renderSetup();
+  if(m==="quiz") renderQuiz();
+  if(m==="glossary") renderGlossary();
+  if(m==="review") renderReview();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".modes button").forEach(b => b.onclick = () => setMode(b.dataset.mode));
+
+/* ---------------- DRILL ---------------- */
+/* Two decks share this view. Terms runs the glossary on the Leitner schedule.
+   Rationales rebuilds the same drill from practice questions whose answer and
+   reasoning are already on this device — the free samples, plus every paid
+   item revealed by answering it in a practice set. Nothing is fetched here: a
+   rationale that has not been earned by answering is not a card yet, which is
+   also what keeps the deck honest about what has actually been studied. */
+S.deck = store.get("cb.deck", "terms");
+S.rsched = store.get("cb.rsched", {});         // questionId -> {box, due}
+S.whyQueue = []; S.whyPos = 0;
+
+/* "Say it first": speak your definition before flipping the card, then see
+   the real one with the ideas you actually said highlighted. Grading stays
+   yours — the point is that you grade against what you really said, not what
+   you feel you would have said. Uses the browser's speech recognition, which
+   exists in Chrome and Edge; elsewhere the button simply never renders. The
+   transcript lives and dies on the card — nothing is stored or uploaded. */
+const SAY_SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let _sayRec = null;
+S.sayOn = false; S.sayText = "";
+
+function sayStart(){
+  if(!SAY_SR || S.sayOn) return;
+  _sayRec = new SAY_SR();
+  _sayRec.continuous = true; _sayRec.interimResults = true; _sayRec.lang = "en-US";
+  _sayRec.onresult = e => {
+    let heard = "";
+    for(let i = 0; i < e.results.length; i++) heard += e.results[i][0].transcript + (e.results[i].isFinal ? " " : "");
+    S.sayText = heard.trim();
+    renderDrill();
+  };
+  _sayRec.onend = () => { S.sayOn = false; renderDrill(); };
+  _sayRec.onerror = e => {
+    S.sayOn = false;
+    // Every failure gets a sentence. A silent mic button is undebuggable —
+    // for the reader and for support alike.
+    if(e.error === "not-allowed" || e.error === "service-not-allowed")
+      toast("Microphone blocked — allow mic access for this site and try again.");
+    else if(e.error === "audio-capture")
+      toast("No working microphone found — check your system's sound input settings.");
+    else if(e.error === "network")
+      toast("The browser's speech service could not be reached — check your connection, or try Chrome.");
+    else if(e.error && e.error !== "no-speech" && e.error !== "aborted")
+      toast("Speech recognition failed: " + e.error);
+    renderDrill();
+  };
+  S.sayOn = true; S.sayText = "";
+  try{ _sayRec.start(); }catch(err){ S.sayOn = false; }
+  renderDrill();
+}
+function sayStop(){ S.sayOn = false; try{ _sayRec?.stop(); }catch(err){} renderDrill(); }
+function sayReset(){ S.sayText = ""; S.sayOn = false; try{ _sayRec?.stop(); }catch(err){} }
+
+/* Which words of the definition count as ideas, and which did they say?
+   Stopwords and short words are glue, not ideas; a crude stemmer lets
+   "boundaries" match "boundary". Deterministic and offline on purpose —
+   no request, no cost, identical behaviour in all ten apps. */
+const SAY_STOP = new Set(("the a an of to in and or is are was were for on with that this it as by be from at not no nor their its they them then than which who whose when where while into over under between within without also more most other others such each per may can could would should shall has have had been being do does did done but if else what how why all any some very much many few own same both either neither about across after against among around before behind below beside beyond during except inside near outside since through toward towards until upon via rather often usually instead including especially").split(" "));
+const sayStem = w => w.length > 4 ? w.replace(/(ings?|ies|ied|es|ed|s)$/, "") : w;
+function sayCompare(saidText, def){
+  const saidStems = new Set(
+    saidText.toLowerCase().replace(/[^a-z'\s-]/g, " ").split(/\s+/).filter(Boolean).map(sayStem)
+  );
+  const ideas = new Set(), hits = new Set();
+  const marked = def.replace(/[A-Za-z][A-Za-z'-]*/g, m => {
+    const lower = m.toLowerCase();
+    if(lower.length <= 3 || SAY_STOP.has(lower)) return m;
+    const st = sayStem(lower);
+    ideas.add(st);
+    if(!saidStems.has(st)) return m;
+    hits.add(st);
+    return "\u0001" + m + "\u0002";
+  });
+  const head = ideas.size
+    ? '<p class="saidscore">You said ' + hits.size + " of " + ideas.size + " key words</p>"
+    : "";
+  return head + esc(marked).replace(/\u0001/g, "<mark>").replace(/\u0002/g, "</mark>");
+}
+
+const whyPool = () => ((window.DATA && DATA.questions) || [])
+  .filter(q => q.answer !== undefined && q.answer !== null && q.why);
+
+function setDeck(d){
+  if(S.deck === d) return;
+  S.deck = d; store.set("cb.deck", d);
+  S.drillShown = false;
+  sayReset();
+  renderDrill();
+}
+$("deckTerms").onclick = () => setDeck("terms");
+$("deckWhy").onclick = () => setDeck("why");
+
+function buildDrillQueue(){
+  const now = Date.now();
+  const due = [], fresh = [], later = [];
+  DATA.cards.forEach(c => {
+    const s = S.sched[c.id];
+    if(!s) fresh.push(c);
+    else if(s.due <= now) due.push(c);
+    else later.push(c);
+  });
+  S.drillQueue = shuffle(due).concat(shuffle(fresh)).slice(0,40);
+  if(!S.drillQueue.length) S.drillQueue = shuffle(later).slice(0,20);
+  S.drillPos = 0; S.drillShown = false; S.drillDone = 0;
+}
+function buildWhyQueue(){
+  const now = Date.now();
+  const due = [], fresh = [], later = [];
+  whyPool().forEach(q => {
+    const s = S.rsched[q.id];
+    if(!s) fresh.push(q);
+    else if(s.due <= now) due.push(q);
+    else later.push(q);
+  });
+  S.whyQueue = shuffle(due).concat(shuffle(fresh)).slice(0,40);
+  if(!S.whyQueue.length) S.whyQueue = shuffle(later).slice(0,20);
+  S.whyPos = 0; S.drillShown = false;
+}
+function renderDrill(){
+  $("deckTerms").setAttribute("aria-pressed", String(S.deck !== "why"));
+  $("deckWhy").setAttribute("aria-pressed", String(S.deck === "why"));
+  if(S.deck === "why") return renderWhy();
+  $("drillTerm").className = "term";
+  if(!S.drillQueue.length) buildDrillQueue();
+  if(S.drillPos >= S.drillQueue.length){ buildDrillQueue(); }
+  const c = S.drillQueue[S.drillPos];
+  const s = S.sched[c.id] || {box:0};
+  $("drillCard").style.setProperty("--tab", catColor(c.cat));
+  $("drillTab").textContent = catLabel(c.cat);
+  $("drillBox").textContent = s.box ? "Box " + s.box + " of 5" : "New card";
+  $("drillCount").textContent = (S.drillPos+1) + " / " + S.drillQueue.length;
+  $("drillTerm").textContent = c.term;
+  if(S.drillShown && S.sayText) $("drillDef").innerHTML = sayCompare(S.sayText, c.def);
+  else $("drillDef").textContent = c.def;
+  $("drillDef").classList.toggle("hide", !S.drillShown);
+  $("drillBar").style.width = (S.drillPos / S.drillQueue.length * 100) + "%";
+
+  const said = $("drillSaid");
+  if(S.sayOn || S.sayText){
+    said.classList.remove("hide");
+    said.innerHTML = (S.sayOn ? "<b>Listening&hellip;</b> " : "<b>You said:</b> ") + esc(S.sayText || "");
+  } else {
+    said.classList.add("hide");
+    said.textContent = "";
+  }
+
+  const known = Object.values(S.sched).filter(x => x.box >= 4).length;
+  $("drillMeta").innerHTML = "Recall drill <em>&middot;</em> " + known + " of " + DATA.cards.length + " terms in long-term boxes";
+
+  const ctl = $("drillControls");
+  ctl.innerHTML = "";
+  if(!S.drillShown){
+    ctl.append(mkBtn("Show definition","btn primary wide",() => { S.drillShown = true; renderDrill(); }));
+    if(SAY_SR) ctl.append(mkBtn(S.sayOn ? "Stop listening" : "Say it first", S.sayOn ? "btn again" : "btn", () => S.sayOn ? sayStop() : sayStart()));
+  } else {
+    ctl.append(
+      mkBtn("Missed it","btn again wide",() => grade(c,false)),
+      mkBtn("Knew it","btn got wide",() => grade(c,true)),
+      mkBtn("Ask tutor","btn",() => askAbout(
+        S.sayText
+          ? "I tried to define \"" + c.term + "\" from memory as: \"" + S.sayText + "\". The real definition is: \"" + c.def + "\". Briefly tell me what I got right and what I missed."
+          : "Explain the term \"" + c.term + "\" in plain language, then give one short clinical example."
+      ))
+    );
+  }
+}
+function renderWhy(){
+  $("drillSaid").classList.add("hide");
+  const pool = whyPool();
+  if(!pool.length){
+    $("drillTerm").className = "term";
+    $("drillCard").style.setProperty("--tab", "var(--gold)");
+    $("drillTab").textContent = "Rationales";
+    $("drillBox").textContent = "Empty deck";
+    $("drillCount").textContent = "";
+    $("drillTerm").textContent = "No rationale cards yet.";
+    $("drillDef").textContent = "Every practice question you answer becomes a card here — the question on the front, the correct answer and its reasoning on the back. Work through a set and come back.";
+    $("drillDef").classList.remove("hide");
+    $("drillMeta").innerHTML = "Rationale drill";
+    $("drillBar").style.width = "0%";
+    const ctl = $("drillControls");
+    ctl.innerHTML = "";
+    ctl.append(mkBtn("Answer questions","btn primary wide",() => setMode("setup")));
+    return;
+  }
+  if(!S.whyQueue.length || S.whyPos >= S.whyQueue.length) buildWhyQueue();
+  const q = S.whyQueue[S.whyPos];
+  const s = S.rsched[q.id] || {box:0};
+  $("drillTerm").className = "stem";
+  $("drillCard").style.setProperty("--tab", catColor(q.cat));
+  $("drillTab").textContent = catLabel(q.cat);
+  $("drillBox").textContent = s.box ? "Box " + s.box + " of 5" : "New card";
+  $("drillCount").textContent = (S.whyPos+1) + " / " + S.whyQueue.length;
+  $("drillTerm").textContent = q.stem;
+  $("drillDef").innerHTML = '<p style="margin:0 0 10px;"><b>' + "ABCD"[q.answer] + ". " + esc(q.choices[q.answer]) + "</b></p>" + esc(q.why);
+  $("drillDef").classList.toggle("hide", !S.drillShown);
+  $("drillBar").style.width = (S.whyPos / S.whyQueue.length * 100) + "%";
+
+  const known = Object.values(S.rsched).filter(x => x.box >= 4).length;
+  $("drillMeta").innerHTML = "Rationale drill <em>&middot;</em> " + known + " of " + pool.length + " rationales in long-term boxes";
+
+  const ctl = $("drillControls");
+  ctl.innerHTML = "";
+  if(!S.drillShown){
+    ctl.append(mkBtn("Show the answer","btn primary wide",() => { S.drillShown = true; renderDrill(); }));
+  } else {
+    ctl.append(
+      mkBtn("Missed it","btn again wide",() => gradeWhy(q,false)),
+      mkBtn("Knew it","btn got wide",() => gradeWhy(q,true)),
+      mkBtn("Ask tutor","btn",() => askAbout("For this practice item, explain in plain language why \"" + q.choices[q.answer] + "\" is the correct answer. Item: " + q.stem))
+    );
+  }
+}
+function grade(c, ok){
+  const cur = S.sched[c.id] || {box:0};
+  const box = ok ? Math.min(5, cur.box + 1) : 1;
+  S.sched[c.id] = {box, due: Date.now() + INTERVAL_H[box]*3600e3};
+  store.set("cb.sched", S.sched);
+  S.drillPos++; S.drillShown = false; S.drillDone++;
+  sayReset();
+  renderDrill();
+}
+function gradeWhy(q, ok){
+  const cur = S.rsched[q.id] || {box:0};
+  const box = ok ? Math.min(5, cur.box + 1) : 1;
+  S.rsched[q.id] = {box, due: Date.now() + INTERVAL_H[box]*3600e3};
+  store.set("cb.rsched", S.rsched);
+  S.whyPos++; S.drillShown = false;
+  renderDrill();
+}
+function mkBtn(text, cls, fn){
+  const b = document.createElement("button");
+  b.className = cls; b.textContent = text; b.onclick = fn;
+  return b;
+}
+document.addEventListener("keydown", e => {
+  if(S.mode!=="drill" || e.target.matches("input,textarea,select")) return;
+  const why = S.deck === "why";
+  const c = why ? S.whyQueue[S.whyPos] : S.drillQueue[S.drillPos]; if(!c) return;
+  if(e.code==="Space"){ e.preventDefault(); if(!S.drillShown){ S.drillShown=true; renderDrill(); } }
+  else if(S.drillShown && e.key==="1"){ why ? gradeWhy(c,false) : grade(c,false); }
+  else if(S.drillShown && e.key==="2"){ why ? gradeWhy(c,true) : grade(c,true); }
+});
+
+/* ---------------- QUIZ ---------------- */
+const SEC_PER_Q = 84;                    // mirrors the real exam's pace: 170 items in 4 hours
+const LENGTHS = [
+  {n:10,  name:"Quick check",     sub:"One sitting, answers as you go"},
+  {n:50,  name:"Half set",        sub:"A solid study block"},
+  {n:100, name:"Long set",        sub:"Builds stamina"},
+  {n:150, name:"Full simulation", sub:"Timed, no answers until the end", exam:true}
+];
+const fmtDur = s => {
+  const h = Math.floor(s/3600), m = Math.round(s%3600/60);
+  return h ? h + " hr " + (m ? m + " min" : "") : m + " min";
+};
+const fmtClock = s => {
+  s = Math.max(0, Math.round(s));
+  const h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60;
+  return (h ? h + ":" + String(m).padStart(2,"0") : m) + ":" + String(x).padStart(2,"0");
+};
+
+S.cfg = store.get("cb.cfg", {hold:false, timed:false, weak:false});
+S.stats = store.get("cb.stats", {});      // cat -> {seen, right}
+S.flags = new Set();
+S.timerId = null;
+S.elapsed = 0;
+
+/* ---- setup screen ---- */
+function renderSetup(){
+  const saved = store.get("cb.session", null);
+  const box = $("resumeBox");
+  if(saved && saved.answered < saved.ids.length){
+    box.innerHTML =
+      '<div class="resume"><p>You have a set in progress — <b>' + saved.answered +
+      ' of ' + saved.ids.length + '</b> answered.</p><div class="controls">' +
+      '<button class="btn primary" id="doResume">Pick up where I left off</button>' +
+      '<button class="btn" id="doDiscard">Discard it</button></div></div>';
+    $("doResume").onclick = resumeSession;
+    $("doDiscard").onclick = () => { store.set("cb.session", null); renderSetup(); };
+  } else box.innerHTML = "";
+
+  $("optFeedback").checked = !!S.cfg.hold;
+  $("optTimer").checked = !!S.cfg.timed;
+  $("optWeak").checked = !!S.cfg.weak;
+
+  const grid = $("lenGrid"); grid.innerHTML = "";
+  LENGTHS.forEach(L => {
+    const b = document.createElement("button");
+    b.className = "len";
+    b.innerHTML = '<b>' + L.n + '</b><span class="txt"><span>' + L.name +
+      '</span><small>' + L.sub + '</small></span><span class="dur">' +
+      fmtDur(L.n * SEC_PER_Q) + '</span>';
+    b.onclick = () => startSet(L);
+    grid.append(b);
+  });
+}
+["optFeedback","optTimer","optWeak"].forEach((id,i) => {
+  $(id).onchange = e => {
+    S.cfg[["hold","timed","weak"][i]] = e.target.checked;
+    store.set("cb.cfg", S.cfg);
+  };
+});
+
+/* ---- drawing a set ---- */
+function drawQuestions(n){
+  const pool = DATA.questions.slice();
+  if(!S.cfg.weak) return shuffle(pool).slice(0, n);
+  const acc = {};
+  Object.entries(S.stats).forEach(([c,v]) => { if(v.seen >= 4) acc[c] = v.right / v.seen; });
+  const weighted = [];
+  pool.forEach(q => {
+    const a = acc[q.cat];
+    const reps = a === undefined ? 2 : Math.max(1, Math.round((1 - a) * 5) + 1);
+    for(let i=0;i<reps;i++) weighted.push(q);
+  });
+  const out = [], used = new Set();
+  const bag = shuffle(weighted);
+  for(const q of bag){ if(out.length >= n) break; if(!used.has(q.id)){ used.add(q.id); out.push(q); } }
+  for(const q of shuffle(pool)){ if(out.length >= n) break; if(!used.has(q.id)){ used.add(q.id); out.push(q); } }
+  return out;
+}
+
+async function startSet(L){
+  // Sets beyond the free sample need the paid bank, which is not in the bundle.
+  const free = (window.DATA && window.DATA.meta && window.DATA.meta.free) || 0;
+  if(window.DATA && window.DATA.meta && window.DATA.meta.split && L.n > free && window.Content){
+    const btns = document.querySelectorAll("#lenGrid .len");
+    btns.forEach(b => b.disabled = true);
+    try{
+      await window.Content.loadBank();
+    }catch(err){
+      btns.forEach(b => b.disabled = false);
+      toast(err && err.message ? err.message : "Could not load the question bank.");
+      return;
+    }
+    btns.forEach(b => b.disabled = false);
+  }
+  if(L.exam){
+    S.cfg.hold = true; S.cfg.timed = true;
+    store.set("cb.cfg", S.cfg);
+  }
+  S.quizQueue = drawQuestions(L.n);
+  S.quizPos = 0; S.quizAnswers = {}; S.flags = new Set();
+  S.elapsed = 0; S.limit = S.cfg.timed ? L.n * SEC_PER_Q : null;
+  S.lastTick = Date.now();
+  saveSession();
+  startClock();
+  setMode("quiz");
+}
+function resumeSession(){
+  const s = store.get("cb.session", null); if(!s) return;
+  const byId = {}; DATA.questions.forEach(q => byId[q.id] = q);
+  S.quizQueue = s.ids.map(id => byId[id]).filter(Boolean);
+  S.quizAnswers = s.answers || {};
+  S.flags = new Set(s.flags || []);
+  S.quizPos = Math.min(s.pos || 0, S.quizQueue.length - 1);
+  S.elapsed = s.elapsed || 0;
+  S.limit = s.limit || null;
+  S.lastTick = Date.now();
+  startClock();
+  setMode("quiz");
+}
+function saveSession(){
+  store.set("cb.session", {
+    ids: S.quizQueue.map(q => q.id),
+    answers: S.quizAnswers,
+    flags: [...S.flags],
+    pos: S.quizPos,
+    elapsed: S.elapsed,
+    limit: S.limit,
+    answered: Object.keys(S.quizAnswers).length
+  });
+}
+
+/* ---- clock ---- */
+function startClock(){
+  stopClock();
+  S.lastTick = Date.now();
+  if(!S.limit){ $("clock").classList.add("hide"); return; }
+  $("clock").classList.remove("hide");
+  tick();
+  S.timerId = setInterval(tick, 1000);
+}
+function stopClock(){ if(S.timerId){ clearInterval(S.timerId); S.timerId = null; } }
+function tick(){
+  const now = Date.now();
+  S.elapsed += (now - S.lastTick) / 1000;
+  S.lastTick = now;
+  if(!S.limit) return;
+  const left = S.limit - S.elapsed;
+  const c = $("clock");
+  c.textContent = fmtClock(left) + " left";
+  c.className = "clock" + (left < 300 ? " crit" : left < 900 ? " warn" : "");
+  if(left <= 0){ stopClock(); finishSet(true); }
+}
+window.addEventListener("beforeunload", () => { if(S.quizQueue.length) saveSession(); });
+
+/* ---- the item ---- */
+function renderQuiz(){
+  if(!S.quizQueue.length){ setMode("setup"); return; }
+  const q = S.quizQueue[S.quizPos];
+  const picked = S.quizAnswers[q.id];
+  const hold = S.cfg.hold;
+  const answered = Object.keys(S.quizAnswers).length;
+  const right = S.quizQueue.filter(x => S.quizAnswers[x.id] === x.answer).length;
+
+  $("quizCard").style.setProperty("--tab", catColor(q.cat));
+  $("quizTab").textContent = catLabel(q.cat);
+  $("quizNum").textContent = "Item " + (S.quizPos+1) + " of " + S.quizQueue.length;
+  $("quizScore").textContent = hold ? answered + " answered" : (answered ? right + " correct" : "");
+  $("quizStem").textContent = q.stem;
+  $("quizBar").style.width = (answered / S.quizQueue.length * 100) + "%";
+  $("quizMeta").innerHTML = (hold ? "Exam conditions" : "Practice set") +
+    " <em>&middot;</em> pick the best generalist response";
+  $("flagBtn").className = "mini" + (S.flags.has(q.id) ? " flagged" : "");
+  $("flagBtn").textContent = S.flags.has(q.id) ? "Flagged" : "Flag";
+
+  const box = $("quizChoices"); box.innerHTML = "";
+  q.choices.forEach((txt,i) => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.innerHTML = '<span class="ltr">' + "ABCD"[i] + '</span><span>' + esc(txt) + '</span>';
+    if(!hold && picked !== undefined){
+      b.disabled = true;
+      if(i === q.answer) b.classList.add("correct");
+      else if(i === picked) b.classList.add("chosen-wrong");
+    } else {
+      if(hold && picked === i) b.classList.add("correct");
+      b.onclick = async () => {
+        S.quizAnswers[q.id] = i; saveSession();
+        // The answer key is not in the bundle for paid items; ask for it now
+        // that a choice has been made. Held sets reveal everything at the end.
+        if(!hold && window.Content && window.Content.needsGrading(q)){
+          try{ await window.Content.grade({[q.id]: i}); }
+          catch(err){ toast(err && err.message ? err.message : "Could not check that answer."); }
+        }
+        hold ? next() : renderQuiz();
+      };
+    }
+    box.append(b);
+  });
+
+  const v = $("quizVerdict");
+  const showWhy = !hold && picked !== undefined;
+  v.classList.toggle("hide", !showWhy);
+  if(showWhy){
+    const ok = picked === q.answer;
+    $("quizVerdictHead").innerHTML = (ok ? "Correct &mdash; " : "The answer is ") +
+      "<b>" + "ABCD"[q.answer] + ". " + esc(q.label) + "</b>";
+    $("quizWhy").textContent = q.why;
+  }
+
+  const ctl = $("quizControls"); ctl.innerHTML = "";
+  const last = S.quizPos === S.quizQueue.length - 1;
+  if(S.quizPos > 0) ctl.append(mkBtn("Back","btn",() => { S.quizPos--; renderQuiz(); }));
+  if(hold || picked !== undefined){
+    ctl.append(mkBtn(last ? "Finish set" : "Next", "btn primary wide",
+      () => last ? finishSet(false) : next()));
+  } else {
+    ctl.append(mkBtn("Skip","btn wide",() => last ? finishSet(false) : next()));
+  }
+  if(!hold && picked !== undefined){
+    ctl.append(mkBtn("Ask tutor","btn",() => askAbout(
+      "For this exam item, explain why \"" + q.choices[q.answer] + "\" is correct and why \"" +
+      q.choices[picked] + "\" is not. Item: " + q.stem)));
+  }
+  if(!$("navGrid").classList.contains("hide")) renderNav();
+}
+function next(){ if(S.quizPos < S.quizQueue.length - 1){ S.quizPos++; saveSession(); renderQuiz(); window.scrollTo(0,0); } }
+
+$("flagBtn").onclick = () => {
+  const q = S.quizQueue[S.quizPos]; if(!q) return;
+  S.flags.has(q.id) ? S.flags.delete(q.id) : S.flags.add(q.id);
+  saveSession(); renderQuiz();
+};
+$("navBtn").onclick = () => {
+  const g = $("navGrid");
+  g.classList.toggle("hide");
+  if(!g.classList.contains("hide")) renderNav();
+};
+function renderNav(){
+  const g = $("navGrid"); g.innerHTML = "";
+  S.quizQueue.forEach((q,i) => {
+    const b = document.createElement("button");
+    b.textContent = i+1;
+    if(S.quizAnswers[q.id] !== undefined) b.classList.add("done");
+    if(S.flags.has(q.id)) b.classList.add("flag");
+    if(i === S.quizPos) b.classList.add("here");
+    b.onclick = () => { S.quizPos = i; saveSession(); renderQuiz(); window.scrollTo(0,0); };
+    g.append(b);
+  });
+}
+$("endBtn").onclick = () => {
+  const left = S.quizQueue.length - Object.keys(S.quizAnswers).length;
+  if(left && !confirm(left + " item" + (left===1?"":"s") + " still unanswered. End the set and see results?")) return;
+  finishSet(false);
+};
+
+document.addEventListener("keydown", e => {
+  if(S.mode !== "quiz" || e.target.matches("input,textarea,select")) return;
+  const q = S.quizQueue[S.quizPos]; if(!q) return;
+  const k = e.key.toUpperCase();
+  const i = "ABCD".indexOf(k) >= 0 ? "ABCD".indexOf(k) : "1234".indexOf(e.key);
+  if(i >= 0){
+    if(S.cfg.hold || S.quizAnswers[q.id] === undefined){
+      S.quizAnswers[q.id] = i; saveSession();
+      if(!S.cfg.hold && window.Content && window.Content.needsGrading(q)){
+        window.Content.grade({[q.id]: i})
+          .catch(err => toast(err && err.message ? err.message : "Could not check that answer."))
+          .then(() => renderQuiz());
+      } else {
+        S.cfg.hold ? next() : renderQuiz();
+      }
+    }
+  } else if(e.key === "ArrowRight") next();
+  else if(e.key === "ArrowLeft" && S.quizPos > 0){ S.quizPos--; renderQuiz(); }
+  else if(k === "F"){ $("flagBtn").click(); }
+});
+
+/* ---- results ---- */
+async function finishSet(timedOut){
+  stopClock();
+  // Scoring reads q.answer, so anything still keyless has to be revealed first.
+  if(window.Content){
+    const pending = {};
+    S.quizQueue.forEach(q => {
+      if(S.quizAnswers[q.id] !== undefined && window.Content.needsGrading(q)){
+        pending[q.id] = S.quizAnswers[q.id];
+      }
+    });
+    if(Object.keys(pending).length){
+      try{ await window.Content.grade(pending); }
+      catch(err){ toast(err && err.message ? err.message : "Could not score every item."); }
+    }
+  }
+  const answered = S.quizQueue.filter(q => S.quizAnswers[q.id] !== undefined);
+  answered.forEach(q => {
+    const s = S.stats[q.cat] || {seen:0, right:0};
+    s.seen++; if(S.quizAnswers[q.id] === q.answer) s.right++;
+    S.stats[q.cat] = s;
+  });
+  store.set("cb.stats", S.stats);
+  store.set("cb.session", null);
+  S.timedOut = timedOut;
+  showSummary();
+}
+function showSummary(){
+  const total = S.quizQueue.length;
+  const right = S.quizQueue.filter(q => S.quizAnswers[q.id] === q.answer).length;
+  const skipped = total - Object.keys(S.quizAnswers).length;
+  const pct = Math.round(right/total*100);
+  $("sumScore").innerHTML = right + '<small> / ' + total + '</small>';
+  $("sumNote").textContent =
+    pct >= 85 ? "Strong. Keep the sets short and frequent from here, and spend your time on the rationales you had to think hardest about."
+    : pct >= 70 ? "Solid footing. Look at the bands below and drill the weakest one before your next set."
+    : pct >= 50 ? "The content is there but the application is inconsistent. Read every rationale and name why the distractor pulled you."
+    : "Go back to the glossary for the weakest bands below, then come back to vignettes. Recognition has to come before application.";
+
+  const bits = [pct + "% correct"];
+  if(S.elapsed > 30) bits.push("time used " + fmtClock(S.elapsed));
+  if(skipped) bits.push(skipped + " left blank");
+  if(S.flags.size) bits.push(S.flags.size + " flagged");
+  if(S.timedOut) bits.push("time expired");
+  $("sumMeta").innerHTML = bits.join(" <em>&middot;</em> ");
+
+  const byCat = {};
+  S.quizQueue.forEach(q => {
+    byCat[q.cat] = byCat[q.cat] || {n:0, r:0};
+    byCat[q.cat].n++;
+    if(S.quizAnswers[q.id] === q.answer) byCat[q.cat].r++;
+  });
+  $("sumBreak").innerHTML = Object.entries(byCat).sort((a,b) => a[1].r/a[1].n - b[1].r/b[1].n)
+    .map(([c,v]) =>
+      '<div class="brow" style="--tab:' + catColor(c) + '">' +
+      '<span class="nm">' + esc(catLabel(c)) + '</span>' +
+      '<span class="track"><i style="width:' + (v.r/v.n*100) + '%"></i></span>' +
+      '<span>' + v.r + '/' + v.n + '</span></div>'
+    ).join("");
+  const miss = S.quizQueue.filter(q => S.quizAnswers[q.id] !== q.answer).length;
+  $("sumReview").textContent = miss ? "Review the " + miss + " I missed" : "Review the whole set";
+  setMode("summary");
+}
+$("sumRetry").onclick = () => setMode("setup");
+$("sumReview").onclick = () => setMode("review");
+$("revBack").onclick = () => setMode("summary");
+
+function renderReview(){
+  let list = S.quizQueue.filter(q => S.quizAnswers[q.id] !== q.answer);
+  if(!list.length) list = S.quizQueue.slice();
+  $("revMeta").innerHTML = list.length + " item" + (list.length===1?"":"s") +
+    " <em>&middot;</em> the principle each one tests is in the explanation";
+  $("revList").innerHTML = list.map(q => {
+    const picked = S.quizAnswers[q.id];
+    const yours = picked === undefined
+      ? '<p class="line no"><b>You left this blank</b></p>'
+      : (picked === q.answer ? "" : '<p class="line no"><b>You chose</b>' + esc(q.choices[picked]) + '</p>');
+    return '<div class="rev" style="--tab:' + catColor(q.cat) + '">' +
+      '<span class="num">' + esc(catLabel(q.cat)) + '</span>' +
+      '<p class="q">' + esc(q.stem) + '</p>' + yours +
+      '<p class="line ok"><b>Correct</b>' + esc(q.choices[q.answer]) + '</p>' +
+      '<p class="exp">' + esc(q.why) + '</p></div>';
+  }).join("");
+}
+
+
+/* ---------------- GLOSSARY ---------------- */
+function renderFilters(){
+  const f = $("gFilters"); f.innerHTML = "";
+  Object.keys(CATS).forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.style.setProperty("--tab", catColor(c));
+    b.setAttribute("aria-pressed", String(S.gFilter === c));
+    b.innerHTML = '<i></i>' + esc(catLabel(c));
+    b.onclick = () => { S.gFilter = S.gFilter === c ? null : c; renderGlossary(); };
+    f.append(b);
+  });
+}
+function renderGlossary(){
+  renderFilters();
+  const q = S.gQuery.trim().toLowerCase();
+  const hits = DATA.cards.filter(c =>
+    (!S.gFilter || c.cat === S.gFilter) &&
+    (!q || c.term.toLowerCase().includes(q) || c.def.toLowerCase().includes(q))
+  );
+  $("gCount").innerHTML = hits.length + " term" + (hits.length===1?"":"s") +
+    (S.gFilter ? " <em>&middot;</em> " + esc(catLabel(S.gFilter)) : "");
+  $("gList").innerHTML = hits.length ? hits.map(c =>
+    '<div class="entry" style="--tab:' + catColor(c.cat) + '">' +
+    '<span class="cat">' + esc(catLabel(c.cat)) + '</span>' +
+    '<h3>' + esc(c.term) + '</h3><p>' + esc(c.def) + '</p></div>'
+  ).join("") : '<div class="entry"><p>No term matches that. Try a shorter word — the search looks inside definitions too.</p></div>';
+}
+$("gSearch").oninput = e => { S.gQuery = e.target.value; renderGlossary(); };
+
+/* ---------------- retrieval for the tutor ---------------- */
+const STOP = new Set("the a an of to in and or is are was for on with that this it as by be from at what why how which when who does do i my me you your".split(" "));
+function retrieve(query, k=5){
+  const terms = query.toLowerCase().match(/[a-z]{3,}/g) || [];
+  const words = terms.filter(w => !STOP.has(w));
+  if(!words.length) return [];
+  return DATA.cards.map(c => {
+    const t = c.term.toLowerCase(), d = c.def.toLowerCase();
+    let score = 0;
+    words.forEach(w => {
+      if(t.includes(w)) score += 6;
+      if(d.includes(w)) score += 1;
+    });
+    if(t && query.toLowerCase().includes(t.split("(")[0].trim().toLowerCase())) score += 8;
+    return {c, score};
+  }).filter(x => x.score > 0)
+    .sort((a,b) => b.score - a.score)
+    .slice(0,k).map(x => x.c);
+}
+
+/* ---------------- tutor engine ---------------- */
+const SYSTEM = `You are a study tutor for the LBSW bachelor-level social work licensing exam. Focus on generalist practice, human development, community systems, case management, and foundational ethics.
+
+Rules you must follow:
+- Answer ONLY from the STUDY NOTES supplied in the user message. They are your single source of truth.
+- If the notes do not cover something, say plainly: "That isn't in my notes — check your official study materials." Never invent DSM criteria, statutes, dates, or numbers.
+- Be concise: three to five sentences, or a short list. This is revision, not a lecture.
+- When contrasting two terms, state the single distinguishing feature first.
+- When explaining an exam item, name the principle being tested (for example: assess before intervening, safety first, self-determination).
+- Plain language. No preamble, no "great question", no restating the question.`;
+
+function setEngineState(s, note){
+  S.engineState = s;
+  const d = $("engDot");
+  d.className = "dot" + (s==="ready" ? " on" : s==="loading" ? " load" : "");
+  if(note !== undefined) $("loadNote").textContent = note;
+}
+function openTutor(){ $("tutor").classList.add("open"); $("scrim").classList.add("on"); }
+function closeTutor(){ $("tutor").classList.remove("open"); $("scrim").classList.remove("on"); }
+$("tutorBtn").onclick = openTutor;
+$("tutorClose").onclick = closeTutor;
+$("scrim").onclick = closeTutor;
+
+$("loadModel").onclick = async () => {
+  // The tutor is a paid feature. Check before the multi-gigabyte download,
+  // not after — a free user must never start fetching model weights.
+  // Tiers lives in a module; this script is classic, so it is read off window
+  // at click time (the module has executed by then). No tier API means the
+  // gate cannot be evaluated, so deny rather than hand out a paid feature.
+  if(!window.Tiers || !window.Tiers.requireGate("tutor", "The on-device tutor is part of Pro.")) return;
+  if(!navigator.gpu){
+    setEngineState("off");
+    $("loadNote").innerHTML = "This browser can't run the model — it needs WebGPU. Chrome or Edge 113+ on desktop works. Everything else in Casebook works fine without it.";
+    return;
+  }
+  const model = $("modelSel").value;
+  $("loadModel").disabled = true;
+  $("loadProg").classList.remove("hide");
+  setEngineState("loading", "Starting…");
+  try{
+    const webllm = await import("https://esm.run/@mlc-ai/web-llm");
+    S.engine = await webllm.CreateMLCEngine(model, {
+      initProgressCallback: r => {
+        $("loadProg").querySelector("i").style.width = Math.round((r.progress||0)*100) + "%";
+        $("loadNote").textContent = r.text || "";
+      }
+    });
+    setEngineState("ready","");
+    $("tutorSetup").classList.add("hide");
+    $("log").classList.remove("hide");
+    $("compose").classList.remove("hide");
+    pushMsg("sys","<b>Tutor ready.</b> It answers only from the 207 terms and 40 rationales bundled in this file. Ask it to compare two terms, or hit &ldquo;Ask tutor&rdquo; on any card.");
+    if(S.pending){ const p = S.pending; S.pending = null; sendAsk(p); }
+  }catch(err){
+    setEngineState("off");
+    $("loadModel").disabled = false;
+    $("loadNote").textContent = "Couldn't load the model: " + (err && err.message ? err.message : err) + ". Check the connection and try again — the download only has to succeed once.";
+  }
+};
+
+function pushMsg(kind, html){
+  const d = document.createElement("div");
+  d.className = "msg " + kind;
+  if(kind === "ai" || kind === "sys") d.innerHTML = html; else d.textContent = html;
+  $("log").append(d);
+  $("log").scrollTop = $("log").scrollHeight;
+  return d;
+}
+function askAbout(prompt){
+  openTutor();
+  if(S.engineState !== "ready"){
+    S.pending = prompt;
+    $("loadNote").textContent = "Start the model and this question will run automatically.";
+    return;
+  }
+  sendAsk(prompt);
+}
+async function sendAsk(text){
+  if(!text.trim() || S.engineState !== "ready") return;
+  pushMsg("me", text);
+  const notes = retrieve(text, 6);
+  const noteBlock = notes.length
+    ? notes.map(c => "- " + c.term + " [" + catLabel(c.cat) + "]: " + c.def).join("\n")
+    : "(no matching notes)";
+  const bubble = pushMsg("ai", "…");
+  let out = "";
+  try{
+    const stream = await S.engine.chat.completions.create({
+      stream: true, temperature: 0.3, max_tokens: 400,
+      messages: [
+        {role:"system", content: SYSTEM},
+        ...S.chat.slice(-4),
+        {role:"user", content: "STUDY NOTES:\n" + noteBlock + "\n\nQUESTION: " + text}
+      ]
+    });
+    for await (const chunk of stream){
+      out += chunk.choices[0]?.delta?.content || "";
+      bubble.innerHTML = esc(out);
+      $("log").scrollTop = $("log").scrollHeight;
+    }
+  }catch(err){
+    bubble.innerHTML = esc("The model stopped partway: " + (err && err.message ? err.message : err));
+    return;
+  }
+  S.chat.push({role:"user", content:text}, {role:"assistant", content: out});
+  if(notes.length){
+    const s = document.createElement("div");
+    s.className = "sources";
+    s.innerHTML = notes.slice(0,4).map(c => "<span>" + esc(c.term) + "</span>").join("");
+    bubble.append(s);
+  }
+}
+$("send").onclick = () => { const t = $("ask").value; $("ask").value = ""; sendAsk(t); };
+$("ask").addEventListener("keydown", e => {
+  if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); $("send").click(); }
+});
+$("clearChat").onclick = () => { S.chat = []; $("log").innerHTML = ""; pushMsg("sys","Cleared."); };
+
+/* ---------------- pwa ---------------- */
+function toast(msg,actionLabel,fn){
+  $("toastMsg").textContent=msg;const a=$("toastAct");
+  a.textContent=actionLabel||"Dismiss";
+  a.onclick=()=>{$("toast").classList.remove("up");if(fn)fn();};
+  $("toast").classList.add("up");if(!fn)setTimeout(()=>$("toast").classList.remove("up"),4200);
+}
+let deferredInstall=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("installBtn").classList.remove("hide");});
+$("installBtn").onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$("installBtn").classList.add("hide");};
+window.addEventListener("appinstalled",()=>{$("installBtn").classList.add("hide");toast("Installed. Casebook now opens like an app.");});
+if("serviceWorker" in navigator&&location.protocol!=="file:"){
+  window.addEventListener("load",async()=>{try{
+    const reg=await navigator.serviceWorker.register("./sw.js");
+    reg.addEventListener("updatefound",()=>{const nw=reg.installing;if(!nw)return;
+      nw.addEventListener("statechange",()=>{if(nw.state==="installed"&&navigator.serviceWorker.controller){
+        toast("A newer version is ready.","Reload",()=>{nw.postMessage({type:"SKIP_WAITING"});location.reload();});
+      }});
+    });
+  }catch(e){}});
+}
+window.addEventListener("offline",()=>toast("Offline. Drills, vignettes and glossary keep working."));
+
+/* ---------------- boot ---------------- */
+if(!navigator.gpu){
+  $("loadNote").innerHTML = "Heads up: this browser doesn't support WebGPU, so the tutor won't start. Chrome or Edge on a desktop will run it. The drills, vignettes, and glossary all work without it.";
+}
+/* The integration layer below runs as a module, in its own scope. Classic-script
+   declarations never land on window, so the handful it reaches for are published
+   here. Without window.S the patched setMode throws on every navigation. */
+window.S = S;
+window.renderDrill = renderDrill;
+window.renderQuiz = renderQuiz;
+window.renderGlossary = renderGlossary;
+window.renderReview = renderReview;
+if(!window.renderSetup) window.renderSetup = renderSetup;
+
+buildDrillQueue();
+setMode("drill");
+</script>
+
+<script type="module">
+// ---- Integration layer: connects the core app to Supabase ----
+
+import * as SB from "./js/supabase-client.js";
+import * as Tracker from "./js/tracker.js";
+import * as Dashboard from "./js/dashboard.js";
+import { recommend } from "./js/recommend.js";
+import * as Tiers from "./js/tiers.js";
+import * as Content from "./js/content.js";
+import * as PlannerUI from "./js/planner-ui.js";
+
+// The core app runs in a classic script that cannot import modules.
+// Expose the tier API so it can gate paid features.
+window.Tiers = Tiers;
+window.Content = Content;
+
+const $ = id => document.getElementById(id);
+
+// ---- Config: set these from your Supabase project ----
+const SUPABASE_URL = window.BH_SUPABASE_URL || "";
+const SUPABASE_KEY = window.BH_SUPABASE_KEY || "";
+
+let sbReady = false;
+
+async function boot() {
+  if (SUPABASE_URL && SUPABASE_KEY) {
+    try {
+      await SB.init(SUPABASE_URL, SUPABASE_KEY);
+      sbReady = true;
+    } catch (e) {
+      console.warn("Supabase init failed:", e);
+    }
+  }
+  SB.onAuthChange(onAuthChange);
+  onAuthChange(SB.getUser());
+}
+
+// ---- Auth UI ----
+let authMode = "signin"; // signin | signup | magic
+
+function openAuth() { $("authScrim").classList.remove("hide"); }
+function closeAuth() { $("authScrim").classList.add("hide"); $("authMsg").textContent = ""; }
+
+$("userBtn").onclick = () => {
+  if (SB.getUser()) {
+    if (confirm("Sign out?")) SB.signOut();
+  } else if (sbReady) {
+    authMode = "signin";
+    renderAuthForm();
+    openAuth();
+  } else {
+    // no Supabase configured
+    alert("Accounts are not switched on for this build — everything on the free tier still works.");
+  }
+};
+$("authClose").onclick = closeAuth;
+$("authScrim").addEventListener("click", e => { if (e.target === $("authScrim")) closeAuth(); });
+
+$("authToggle").onclick = () => {
+  authMode = authMode === "signin" ? "signup" : "signin";
+  renderAuthForm();
+};
+$("authMagic").onclick = () => { authMode = "magic"; renderAuthForm(); };
+
+function renderAuthForm() {
+  $("authMsg").textContent = "";
+  $("authForm").classList.remove("hide");
+  $("authDone").classList.add("hide");
+  if (authMode === "signup") {
+    $("authTitle").textContent = "Create account";
+    $("authSub").textContent = "Your progress syncs across devices.";
+    $("authName").classList.remove("hide");
+    $("authPass").classList.remove("hide");
+    $("authSubmit").textContent = "Sign up";
+    $("authToggle").textContent = "Already have an account? Sign in";
+    $("authMagic").classList.remove("hide");
+  } else if (authMode === "magic") {
+    $("authTitle").textContent = "Magic link";
+    $("authSub").textContent = "We'll email you a one-click sign-in link.";
+    $("authName").classList.add("hide");
+    $("authPass").classList.add("hide");
+    $("authSubmit").textContent = "Send link";
+    $("authToggle").textContent = "Use password instead";
+    $("authMagic").classList.add("hide");
+  } else {
+    $("authTitle").textContent = "Sign in";
+    $("authSub").textContent = "Track your progress across devices.";
+    $("authName").classList.add("hide");
+    $("authPass").classList.remove("hide");
+    $("authSubmit").textContent = "Sign in";
+    $("authToggle").textContent = "Need an account? Sign up";
+    $("authMagic").classList.remove("hide");
+  }
+}
+
+$("authSubmit").onclick = async () => {
+  const email = $("authEmail").value.trim();
+  const pass = $("authPass").value;
+  const name = $("authName").value.trim();
+  $("authMsg").textContent = "";
+  $("authMsg").className = "auth-msg";
+
+  if (!email) { $("authMsg").textContent = "Email is required."; return; }
+  if ((authMode !== "magic") && !pass) { $("authMsg").textContent = "Password is required."; return; }
+
+  $("authSubmit").disabled = true;
+  try {
+    if (authMode === "signup") {
+      await SB.signUp(email, pass, name);
+      $("authForm").classList.add("hide");
+      $("authDone").classList.remove("hide");
+      $("authDoneMsg").textContent = "Check your email for a confirmation link, then sign in.";
+      $("authDoneBtn").onclick = closeAuth;
+    } else if (authMode === "magic") {
+      await SB.signInMagicLink(email);
+      $("authForm").classList.add("hide");
+      $("authDone").classList.remove("hide");
+      $("authDoneMsg").textContent = "Check your email — click the link to sign in.";
+      $("authDoneBtn").onclick = closeAuth;
+    } else {
+      await SB.signIn(email, pass);
+      closeAuth();
+    }
+  } catch (e) {
+    $("authMsg").textContent = e.message || "Something went wrong.";
+  }
+  $("authSubmit").disabled = false;
+};
+
+function onAuthChange(user) {
+  $("userLabel").textContent = user ? (user.email?.split("@")[0] || "Account") : "Sign in";
+  if (user) {
+    Tracker.backfillHistory().catch(() => {});
+    Tracker.flush().catch(() => {});
+  }
+}
+
+// ---- Hook into the quiz engine ----
+// The core app exposes globals; we monkey-patch to add tracking.
+
+const origFinishSet = window.finishSet;
+if (typeof origFinishSet === "function") {
+  // not accessible — it's in a closure. Instead, use MutationObserver.
+}
+
+// Watch for answer selections by observing the quiz choices container.
+// When a choice gets the 'correct' or 'chosen-wrong' class, we record it.
+const quizCard = $("quizCard");
+if (quizCard) {
+  const observer = new MutationObserver(() => {
+    const choices = quizCard.querySelectorAll(".choice");
+    const correct = quizCard.querySelector(".choice.correct");
+    const wrong = quizCard.querySelector(".choice.chosen-wrong");
+    if (!correct && !wrong) return;
+
+    // Extract item data from the visible card
+    const numEl = $("quizNum");
+    const tabEl = $("quizTab");
+    if (!numEl) return;
+
+    const itemMatch = numEl.textContent.match(/Item (\d+)/);
+    if (!itemMatch) return;
+    const pos = parseInt(itemMatch[1]) - 1;
+
+    // Read from the global DATA and quiz state
+    if (!window.DATA) return;
+
+    // Find which item is showing by stem text
+    const stemEl = $("quizStem");
+    if (!stemEl) return;
+    const stem = stemEl.textContent;
+
+    const item = window.DATA.questions.find(q => q.stem === stem);
+    if (!item) return;
+
+    // Deduplicate: check if we already recorded this item in this render
+    const key = "cb." + (window.BH_APP_ID || "app") + ".lastRecorded";
+    if (sessionStorage.getItem(key) === item.id) return;
+    sessionStorage.setItem(key, item.id);
+
+    let answerIdx = -1;
+    choices.forEach((c, i) => {
+      if (c.classList.contains("correct") && !wrong) answerIdx = i; // they got it right
+      if (c.classList.contains("chosen-wrong")) answerIdx = i;
+    });
+    if (answerIdx < 0) answerIdx = item.answer; // fallback
+
+    Tracker.record({
+      item_id: item.id,
+      category: item.cat,
+      correct: !wrong,
+      answer_idx: answerIdx,
+    });
+  });
+  observer.observe(quizCard, { subtree: true, attributes: true, attributeFilter: ["class"] });
+}
+
+// Also hook the "Finish set" / end-set flow via the summary screen
+const sumScore = $("sumScore");
+if (sumScore) {
+  const sumObs = new MutationObserver(() => {
+    // When summary renders, record the session
+    const scoreText = sumScore.textContent;
+    const match = scoreText.match(/(\d+)\s*\/\s*(\d+)/);
+    if (!match) return;
+
+    const correct = parseInt(match[1]);
+    const total = parseInt(match[2]);
+
+    Tracker.recordSession({
+      length: total,
+      correct,
+      total,
+      config: {},
+      started_at: new Date(Date.now() - 60000).toISOString(), // approximate
+    });
+  });
+  sumObs.observe(sumScore, { childList: true, characterData: true, subtree: true });
+}
+
+// ---- Dashboard ----
+// Patch setMode to handle dashboard rendering
+const origSetMode = window.setMode;
+const _setMode = window.setMode;
+const patchedSetMode = function(m) {
+  // Extend the modes list
+  const tabMap = {setup:"setup",quiz:"setup",summary:"setup",review:"setup",drill:"drill",glossary:"glossary",dashboard:"dashboard"};
+  document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.mode===(tabMap[m]||m))));
+  ["drill","setup","quiz","glossary","summary","review","dashboard","plan"].forEach(v => { const e=$(v.startsWith("v-")?v:"v-"+v); if(e) e.classList.add("hide"); });
+  const el = $("v-"+m); if(el) el.classList.remove("hide");
+
+  // Call original renderers
+  if(m==="drill" && window.renderDrill) window.renderDrill();
+  if(m==="setup" && window.renderSetup) window.renderSetup();
+  if(m==="quiz" && window.renderQuiz) window.renderQuiz();
+  if(m==="glossary" && window.renderGlossary) window.renderGlossary();
+  if(m==="review" && window.renderReview) window.renderReview();
+
+  if(m==="dashboard") _loadDash();
+  // The planner draws itself; it only needs to be told the tab is visible.
+  if(m==="plan") PlannerUI.mount(document.getElementById("planRoot"));
+  else PlannerUI.unmount();
+
+  window.S.mode = m;
+  window.scrollTo(0,0);
+};
+
+// Override setMode globally
+window.setMode = patchedSetMode;
+
+// Re-attach mode button listeners
+document.querySelectorAll(".modes button").forEach(b => {
+  b.onclick = () => patchedSetMode(b.dataset.mode);
+});
+
+async function loadDashboard() {
+  const el = $("v-dashboard");
+  el.innerHTML = '<div class="dash-loading">Loading…</div>';
+
+  const data = await Dashboard.fetchDashboard();
+  const CATS = {
+    HBSE:{label:"Human Development", color:"#E4703A"},
+    Assessment:{label:"Assessment", color:"#3FA9B8"},
+    Interventions:{label:"Interventions", color:"#7B8FE0"},
+    Ethics:{label:"Ethics & Values", color:"#D9455F"},
+    Policy:{label:"Policy & Programs", color:"#5FB86B"},
+    Diversity:{label:"Diversity & Justice", color:"#E0B23A"},
+  };
+  Dashboard.renderDashboard(el, data, CATS);
+}
+
+// ---- Adaptive recommendations ----
+// Patch the setup screen's "Weight toward weakest" option
+const origStartSet = window.startSet;
+if (typeof origStartSet === "function") {
+  // Can't patch closure functions directly; the recommendation
+  // engine is already wired into drawQuestions via S.cfg.weak
+  // which uses localStats(). That's sufficient for v1.
+}
+
+// Add a "Recommended set" button to the setup screen
+const bankSizeEl = $("bankSize");
+if (bankSizeEl) {
+  const origRenderSetup = window.renderSetup;
+  const newRenderSetup = function() {
+    if (origRenderSetup) origRenderSetup();
+    bankSizeEl.textContent = (window.DATA.meta && window.DATA.meta.total) || window.DATA.questions.length;
+
+    // Add recommended set option if not already there
+    if ($("recSet")) return;
+    const grid = $("lenGrid");
+    if (!grid) return;
+
+    const recBtn = document.createElement("button");
+    recBtn.className = "len";
+    recBtn.id = "recSet";
+    recBtn.style.borderColor = "var(--gold)";
+    recBtn.innerHTML =
+      '<b style="color:var(--gold)">✦</b>' +
+      '<span class="txt"><span>Recommended for you</span>' +
+      '<small id="recReason">Adaptive set based on your weaknesses</small></span>' +
+      '<span class="dur">~25 min</span>';
+    recBtn.onclick = async () => {
+      recBtn.disabled = true;
+      recBtn.querySelector("small").textContent = "Building your set…";
+      try {
+        const { questions, reason } = await recommend(
+          window.DATA.questions, 20,
+          { useServer: sbReady && !!SB.getUser() }
+        );
+        window.S.quizQueue = questions;
+        window.S.quizPos = 0;
+        window.S.quizAnswers = {};
+        window.S.flags = new Set();
+        window.S.elapsed = 0;
+        window.S.limit = null;
+        window.S.lastTick = Date.now();
+        if (window.saveSession) window.saveSession();
+        if (window.startClock) window.startClock();
+        patchedSetMode("quiz");
+      } catch (e) {
+        recBtn.querySelector("small").textContent = "Couldn't build set: " + e.message;
+      }
+      recBtn.disabled = false;
+    };
+    grid.insertBefore(recBtn, grid.firstChild);
+
+    // Update the reason text asynchronously
+    recommend(window.DATA.questions, 20, { useServer: false }).then(({ reason }) => {
+      const el = $("recReason");
+      if (el) el.textContent = reason;
+    }).catch(() => {});
+  };
+  window.renderSetup = newRenderSetup;
+}
+
+// ---- Boot ----
+boot().catch(console.error);
+
+// ---- Upgrade modal ----
+$("upgradeClose").onclick = () => Tiers.hideUpgrade();
+$("upgradeScrim").addEventListener("click", e => {
+  if (e.target === $("upgradeScrim")) Tiers.hideUpgrade();
+});
+document.querySelectorAll(".plan-card").forEach(btn => {
+  btn.onclick = () => {
+    const plan = btn.dataset.plan;
+    if (!SB.getUser()) {
+      Tiers.hideUpgrade();
+      $("userBtn").click();
+      return;
+    }
+    Tiers.checkout(plan);
+  };
+});
+
+// ---- Gate the set length buttons ----
+const origRenderSetupBase = window.renderSetup;
+const gatedRenderSetup = function() {
+  if (origRenderSetupBase) origRenderSetupBase();
+
+  // After setup renders, apply gates to length buttons
+  const grid = $("lenGrid");
+  if (!grid) return;
+  const buttons = grid.querySelectorAll(".len");
+  buttons.forEach(btn => {
+    const numEl = btn.querySelector("b");
+    if (!numEl) return;
+    const n = parseInt(numEl.textContent);
+    if (n > 10 && !Tiers.can("set_" + n)) {
+      btn.addEventListener("click", function gateHandler(e) {
+        if (!Tiers.can("set_" + n)) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          Tiers.requireGate("set_" + n, n + "-question sets are a Pro feature. Upgrade to build real exam stamina.");
+        }
+      }, true);
+      // Add a lock indicator
+      if (!btn.querySelector(".lock")) {
+        const lock = document.createElement("span");
+        lock.className = "lock";
+        lock.textContent = "PRO";
+        lock.style.cssText = "font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--gold);border:1px solid var(--gold);border-radius:3px;padding:2px 6px;";
+        btn.appendChild(lock);
+      }
+    }
+  });
+
+  // Gate the options
+  const optFeedback = $("optFeedback");
+  const optTimer = $("optTimer");
+  const optWeak = $("optWeak");
+  [optFeedback, optTimer].forEach(el => {
+    if (el && !Tiers.can("exam_mode")) {
+      el.disabled = true;
+      el.closest(".opt").style.opacity = "0.5";
+      el.closest(".opt").title = "Pro feature";
+    }
+  });
+  if (optWeak && !Tiers.can("weak_weight")) {
+    optWeak.disabled = true;
+    optWeak.closest(".opt").style.opacity = "0.5";
+    optWeak.closest(".opt").title = "Pro feature";
+  }
+};
+window.renderSetup = gatedRenderSetup;
+
+// ---- Gate the dashboard ----
+const origLoadDashboard = loadDashboard;
+async function gatedLoadDashboard() {
+  if (!Tiers.can("dashboard")) {
+    const el = $("v-dashboard");
+    if (el) {
+      el.innerHTML =
+        '<div class="empty" style="padding:60px 0;text-align:center;">' +
+        '<p style="font-size:17px;font-weight:700;margin:0 0 10px;">Your performance dashboard</p>' +
+        '<p style="font-family:var(--read);font-size:15px;color:var(--text-dim);max-width:36ch;margin:0 auto 20px;line-height:1.6;">' +
+        'Track your accuracy by category, see trends over time, and get a personalized study plan.</p>' +
+        '<button class="btn primary" id="dashUpgrade">Upgrade to Pro</button></div>';
+      $("dashUpgrade").onclick = () => Tiers.showUpgrade("The dashboard tracks your progress and tells you exactly what to study next.");
+    }
+    return;
+  }
+  await origLoadDashboard();
+}
+// Reassign for the mode switcher
+const _loadDash = gatedLoadDashboard;
+
+// ---- Tier badge in the rail ----
+Tiers.onTierChange(t => {
+  const label = $("userLabel");
+  if (!label) return;
+  const user = SB.getUser();
+  if (user && t.tier !== "free") {
+    label.textContent = t.tier === "all_access" ? "All Access" : "Pro";
+    label.style.color = "var(--gold)";
+  } else if (user) {
+    label.textContent = user.email?.split("@")[0] || "Account";
+    label.style.color = "";
+  }
+});
+
+// Refresh tier on visibility change (catches returning from Stripe Checkout)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && SB.getUser()) {
+    Tiers.refreshTier();
+  }
+});
+</script>
+</body>
+</html>

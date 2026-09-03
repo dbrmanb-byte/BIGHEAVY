@@ -1,0 +1,26 @@
+{
+  "name": "bigheavy",
+  "private": true,
+  "version": "0.1.0",
+  "description": "BIGHEAVYINK study apps — offline-first PWAs built from one monorepo against shared packages.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:packages": "pnpm --filter \"./packages/*\" build",
+    "build": "pnpm run build:packages && pnpm --filter \"./apps/*\" build",
+    "preflight": "bash scripts/preflight.sh",
+    "serve": "node scripts/serve.mjs",
+    "test": "node scripts/test-entitlement.mjs && node scripts/test-coach.mjs",
+    "check:ebooks": "node scripts/check-ebooks.mjs",
+    "sync:registry": "node scripts/sync-registry.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright-core": "^1.62.1"
+  }
+}

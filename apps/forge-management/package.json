@@ -1,0 +1,16 @@
+{
+  "name": "forge-management",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge Management — PMP, TOGAF and Scrum/SAFe certification study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs forge-management",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs forge-management"
+  },
+  "bigheavy": {
+    "slug": "forge-management",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

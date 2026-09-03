@@ -1,0 +1,22 @@
+# systemd unit for the Agent OS listener.
+# Install (paths assume the repo is cloned at ~/BIGHEAVY for user bigheavyink1969):
+#   sudo cp agent/bigheavyink-agent.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now bigheavyink-agent
+# Logs:
+#   journalctl -u bigheavyink-agent -f
+
+[Unit]
+Description=BIGHEAVYINK agent listener (signup and sale events -> emails)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=bigheavyink1969
+EnvironmentFile=/home/bigheavyink1969/.bigheavyink-agent.env
+ExecStart=/usr/bin/env node /home/bigheavyink1969/BIGHEAVY/agent/listener.mjs
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

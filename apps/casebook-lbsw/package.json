@@ -1,0 +1,16 @@
+{
+  "name": "casebook-lbsw",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Casebook LBSW — bachelor social work exam study.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs casebook-lbsw",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs casebook-lbsw"
+  },
+  "bigheavy": {
+    "slug": "casebook-lbsw",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

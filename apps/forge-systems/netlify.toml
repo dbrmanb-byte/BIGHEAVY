@@ -1,0 +1,8 @@
+# Built from the monorepo root so packages/app-core is available to copy in.
+[build]
+  base    = "/"
+  command = "pnpm run build:packages && pnpm --filter forge-systems build"
+  publish = "apps/forge-systems/dist"
+
+[build.environment]
+  NODE_VERSION = "22"

@@ -1,0 +1,10 @@
+# Casebook builds from the monorepo root so packages/entitlements is available
+# to copy into dist. Publishing anything but apps/casebook/dist would ship the
+# source tree without the shared files.
+[build]
+  base    = "/"
+  command = "pnpm run build:packages && pnpm --filter casebook build"
+  publish = "apps/casebook/dist"
+
+[build.environment]
+  NODE_VERSION = "22"

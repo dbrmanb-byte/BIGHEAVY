@@ -1,0 +1,609 @@
+{
+  "comment": "The catalogue of verticals. The hub renders its directory from this file at runtime, so adding an app is a data change, not a code change. slug must match the directory under apps/, the window.BH_APP_ID the app declares, and the tier_app value the billing backend returns — a Pro subscription is matched against that id.",
+  "planned": 10,
+  "apps": [
+    {
+      "slug": "casebook",
+      "name": "Casebook LMSW",
+      "exam": "LMSW",
+      "audience": "Master's social work",
+      "blurb": "207 terms, 217 exam vignettes with rationales, spaced-repetition drills, and a tutor that runs on your own device.",
+      "accent": "#EBA83A",
+      "status": "live",
+      "url": "/casebook/",
+      "terms": 207,
+      "questions": 217,
+      "ebook": {
+        "title": "The LMSW Companion",
+        "format": "PDF",
+        "exam": "LMSW",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 2
+      },
+      "hours": {
+        "study": 28.5,
+        "reading": 2,
+        "blocks": 29
+      },
+      "coach": {
+        "covers": [
+          "ASWB Masters (LMSW)"
+        ],
+        "keywords": [
+          "lmsw",
+          "msw",
+          "masters social work",
+          "master's social work",
+          "social work",
+          "social worker",
+          "aswb",
+          "aswb masters",
+          "clinical social work masters",
+          "case management",
+          "dsw",
+          "advanced generalist",
+          "aswb associate"
+        ],
+        "forYou": "You hold or are finishing an MSW and are sitting the master's-level social work exam.",
+        "notFor": "If you are sitting the clinical exam after your supervised hours, Casebook LCSW is written for that."
+      }
+    },
+    {
+      "slug": "casebook-lcsw",
+      "name": "Casebook LCSW",
+      "family": "casebook",
+      "exam": "LCSW",
+      "audience": "Clinical social work",
+      "blurb": "159 terms and 84 clinical scenarios for the clinical social work licensing exam.",
+      "accent": "#EBA83A",
+      "status": "live",
+      "url": "/casebook-lcsw/",
+      "terms": 159,
+      "questions": 84,
+      "ebook": {
+        "title": "The LCSW Clinical Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 16,
+        "reading": 1,
+        "blocks": 16
+      },
+      "coach": {
+        "covers": [
+          "ASWB Clinical (LCSW)"
+        ],
+        "keywords": [
+          "lcsw",
+          "licsw",
+          "lisw",
+          "clinical social work",
+          "clinical exam",
+          "aswb clinical",
+          "therapist licence",
+          "therapist license",
+          "psychotherapy licensing",
+          "supervised hours",
+          "diagnosis dsm",
+          "social work",
+          "social worker",
+          "aswb",
+          "advanced generalist",
+          "aswb associate"
+        ],
+        "forYou": "You have an MSW plus post-degree supervised clinical hours and are sitting the clinical exam.",
+        "notFor": "If you have not started supervised hours yet, the master's-level exam comes first — that is Casebook LMSW."
+      }
+    },
+    {
+      "slug": "casebook-lbsw",
+      "name": "Casebook LBSW",
+      "family": "casebook",
+      "exam": "LBSW",
+      "audience": "Bachelor social work",
+      "blurb": "125 terms and 52 scenarios for the bachelor-level social work exam.",
+      "accent": "#EBA83A",
+      "status": "live",
+      "url": "/casebook-lbsw/",
+      "terms": 125,
+      "questions": 52,
+      "ebook": {
+        "title": "The LBSW Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 0.5
+      },
+      "hours": {
+        "study": 11,
+        "reading": 0.5,
+        "blocks": 12
+      },
+      "coach": {
+        "covers": [
+          "ASWB Bachelors (LBSW)"
+        ],
+        "keywords": [
+          "lbsw",
+          "bsw",
+          "bachelor social work",
+          "bachelors social work",
+          "bachelor's social work",
+          "undergraduate social work",
+          "aswb bachelors",
+          "entry level social work",
+          "social work",
+          "social worker",
+          "aswb",
+          "advanced generalist",
+          "aswb associate"
+        ],
+        "forYou": "You hold or are finishing a BSW and are sitting the bachelor's-level social work exam.",
+        "notFor": "If you went on to an MSW, sit the master's-level exam instead — that is Casebook LMSW."
+      }
+    },
+    {
+      "slug": "casebook-nursing",
+      "name": "Casebook Nursing",
+      "family": "casebook",
+      "exam": "NCLEX-RN / PN",
+      "audience": "Nursing licensure",
+      "blurb": "115 terms and 200 clinical scenarios for NCLEX-RN and NCLEX-PN.",
+      "accent": "#3FA9B8",
+      "status": "live",
+      "url": "/casebook-nursing/",
+      "terms": 115,
+      "questions": 200,
+      "ebook": {
+        "title": "The NCLEX Clinical Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 2
+      },
+      "hours": {
+        "study": 23.5,
+        "reading": 2,
+        "blocks": 24
+      },
+      "coach": {
+        "covers": [
+          "NCLEX-RN",
+          "NCLEX-PN"
+        ],
+        "keywords": [
+          "nclex",
+          "nclex-rn",
+          "nclex rn",
+          "nclex-pn",
+          "nclex pn",
+          "nursing",
+          "nurse",
+          "rn",
+          "lpn",
+          "lvn",
+          "registered nurse",
+          "practical nurse",
+          "bsn",
+          "adn",
+          "nursing boards",
+          "nursing licensure"
+        ],
+        "forYou": "You are sitting NCLEX-RN or NCLEX-PN. Both are in this one app — the content overlaps heavily and the app marks what is RN-only.",
+        "notFor": ""
+      }
+    },
+    {
+      "slug": "forge-cloud",
+      "name": "Forge Cloud",
+      "family": "forge",
+      "exam": "AWS · GCP · Azure",
+      "audience": "Cloud architecture",
+      "blurb": "120 terms and 90 scenarios for AWS Solutions Architect Professional, Google Professional Cloud Architect, and Azure Solutions Architect Expert.",
+      "accent": "#7B8FE0",
+      "status": "live",
+      "url": "/forge-cloud/",
+      "terms": 120,
+      "questions": 90,
+      "ebook": {
+        "title": "The Cloud Architecture Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "AWS Solutions Architect Professional",
+          "Google Professional Cloud Architect",
+          "Azure Solutions Architect Expert"
+        ],
+        "keywords": [
+          "aws",
+          "amazon web services",
+          "gcp",
+          "google cloud",
+          "azure",
+          "cloud",
+          "solutions architect",
+          "sa pro",
+          "cloud architect",
+          "saa",
+          "multi-cloud",
+          "cloud design",
+          "well-architected",
+          "cloud cost"
+        ],
+        "forYou": "You are certifying as a cloud architect — designing what runs where, and what it costs.",
+        "notFor": "If your day is running the clusters rather than designing them, Forge Systems is the closer fit."
+      }
+    },
+    {
+      "slug": "forge-security",
+      "name": "Forge Security",
+      "family": "forge",
+      "exam": "CISSP · Security+ · CEH",
+      "audience": "Cybersecurity",
+      "blurb": "120 terms and 90 scenarios for CISSP, CompTIA Security+, and Certified Ethical Hacker.",
+      "accent": "#D9455F",
+      "status": "live",
+      "url": "/forge-security/",
+      "terms": 120,
+      "questions": 90,
+      "ebook": {
+        "title": "The Cybersecurity Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "CISSP",
+          "CompTIA Security+",
+          "Certified Ethical Hacker (CEH)"
+        ],
+        "keywords": [
+          "cissp",
+          "security+",
+          "security plus",
+          "sec+",
+          "comptia",
+          "ceh",
+          "ethical hacker",
+          "cyber",
+          "cybersecurity",
+          "infosec",
+          "information security",
+          "soc",
+          "penetration testing",
+          "pentest",
+          "risk management",
+          "grc",
+          "isc2"
+        ],
+        "forYou": "You are sitting CISSP, Security+ or CEH. All three are in this one app.",
+        "notFor": ""
+      }
+    },
+    {
+      "slug": "forge-systems",
+      "name": "Forge Systems",
+      "family": "forge",
+      "exam": "CKA · Terraform · Linux",
+      "audience": "Systems and infrastructure",
+      "blurb": "120 terms and 90 scenarios for CKA/CKAD Kubernetes, Terraform Associate, and Linux Foundation Certified Engineer.",
+      "accent": "#5FB86B",
+      "status": "live",
+      "url": "/forge-systems/",
+      "terms": 120,
+      "questions": 90,
+      "ebook": {
+        "title": "The Systems & Infrastructure Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "CKA / CKAD (Kubernetes)",
+          "Terraform Associate",
+          "Linux Foundation Certified Engineer"
+        ],
+        "keywords": [
+          "cka",
+          "ckad",
+          "kubernetes",
+          "k8s",
+          "terraform",
+          "hashicorp",
+          "linux",
+          "lfce",
+          "lfcs",
+          "devops",
+          "sre",
+          "site reliability",
+          "platform engineering",
+          "containers",
+          "docker",
+          "infrastructure as code",
+          "ansible"
+        ],
+        "forYou": "You are certifying on the running of infrastructure — Kubernetes, Terraform, Linux.",
+        "notFor": "If the exam is about designing cloud architecture rather than operating it, that is Forge Cloud."
+      }
+    },
+    {
+      "slug": "forge-management",
+      "name": "Forge Management",
+      "family": "forge",
+      "exam": "PMP · TOGAF · SAFe",
+      "audience": "Technical management",
+      "blurb": "120 terms and 90 scenarios for PMP, TOGAF, and Scrum/SAFe certifications.",
+      "accent": "#C77CD6",
+      "status": "live",
+      "url": "/forge-management/",
+      "terms": 120,
+      "questions": 90,
+      "ebook": {
+        "title": "The Technical Management Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "PMP",
+          "TOGAF",
+          "Scrum / SAFe"
+        ],
+        "keywords": [
+          "pmp",
+          "project management",
+          "pmi",
+          "togaf",
+          "enterprise architecture",
+          "safe",
+          "scrum",
+          "agile",
+          "scrum master",
+          "product owner",
+          "capm",
+          "prince2",
+          "program management",
+          "technical management",
+          "delivery lead"
+        ],
+        "forYou": "You are certifying in how technical work is planned, governed and delivered.",
+        "notFor": ""
+      }
+    },
+    {
+      "slug": "forge-trades",
+      "name": "Forge Trades",
+      "family": "forge",
+      "exam": "Electrician",
+      "audience": "Skilled trades",
+      "blurb": "117 terms and 88 NEC-based scenarios for the journeyman and master electrician licensing exams.",
+      "accent": "#E4703A",
+      "status": "live",
+      "url": "/forge-trades/",
+      "terms": 117,
+      "questions": 88,
+      "ebook": {
+        "title": "The Electrician's Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 14.5,
+        "reading": 1,
+        "blocks": 15
+      },
+      "coach": {
+        "covers": [
+          "Journeyman electrician",
+          "Master electrician"
+        ],
+        "keywords": [
+          "electrician",
+          "journeyman",
+          "master electrician",
+          "nec",
+          "national electrical code",
+          "electrical licence",
+          "electrical license",
+          "apprentice electrician",
+          "trade licence",
+          "trade license",
+          "wiring",
+          "conduit",
+          "ampacity"
+        ],
+        "forYou": "You are sitting the journeyman or master electrician exam, built on the National Electrical Code.",
+        "notFor": ""
+      }
+    },
+    {
+      "slug": "keystone",
+      "name": "Keystone",
+      "family": "keystone",
+      "exam": "Real estate",
+      "audience": "Real estate licensure",
+      "blurb": "156 terms and 94 practice scenarios for the real estate licensing exam.",
+      "accent": "#E0B23A",
+      "status": "live",
+      "url": "/keystone/",
+      "terms": 156,
+      "questions": 94,
+      "ebook": {
+        "title": "The Real Estate Companion",
+        "format": "PDF",
+        "price": 9.99,
+        "currency": "USD",
+        "hours": 1
+      },
+      "hours": {
+        "study": 17,
+        "reading": 1,
+        "blocks": 17
+      },
+      "coach": {
+        "covers": [
+          "Real estate salesperson",
+          "Real estate broker"
+        ],
+        "keywords": [
+          "real estate",
+          "realtor",
+          "real estate agent",
+          "salesperson exam",
+          "broker exam",
+          "property licence",
+          "property license",
+          "realty",
+          "listing agent",
+          "escrow",
+          "title",
+          "appraisal",
+          "landlord tenant"
+        ],
+        "forYou": "You are sitting a real estate salesperson or broker licensing exam.",
+        "notFor": ""
+      }
+    }
+  ],
+  "ebooks": {
+    "comment": "Ebooks are sold standalone, and buying them discounts a subscription. The discount is issued as a Stripe coupon after purchase — see PROMOS.",
+    "price": 9.99,
+    "currency": "USD",
+    "format": "PDF",
+    "count": 10,
+    "promos": [
+      {
+        "id": "ebook1_pro10",
+        "trigger": "1 ebook purchased",
+        "applies_to": "pro",
+        "percent_off": 10
+      },
+      {
+        "id": "ebook3_unlimited20",
+        "trigger": "3 or more ebooks purchased",
+        "applies_to": "all_access",
+        "percent_off": 20
+      }
+    ]
+  },
+  "hoursModel": {
+    "comment": "Derived by scripts/estimate-hours.mjs from the content itself. Timings are stated in that file; change them there and re-run rather than editing these numbers.",
+    "termFirstRead": 90,
+    "termRepetition": 15,
+    "termRepetitions": 5,
+    "questionFirst": 165,
+    "questionRedo": 90,
+    "redoShare": 0.4,
+    "examSimItems": 150,
+    "examSimPace": 84,
+    "examSims": 2,
+    "wordsPerMinute": 200,
+    "rereadFactor": 1.35
+  },
+  "decisions": [
+    {
+      "id": "social-work-level",
+      "among": [
+        "casebook",
+        "casebook-lcsw",
+        "casebook-lbsw"
+      ],
+      "question": "Which exam has your board told you to sit?",
+      "note": "ASWB writes the exams; your state board decides which one you sit and what it calls the licence. The same three letters mean different levels in different states, so this asks which exam you are taking — not which one you qualify for. If your board has not told you yet, say so below.",
+      "options": [
+        {
+          "label": "Bachelors",
+          "detail": "Usually the exam taken after a BSW. Your board confirms it.",
+          "picks": "casebook-lbsw"
+        },
+        {
+          "label": "Masters",
+          "detail": "Usually the exam taken after an MSW, before post-degree supervised hours. Your board confirms it.",
+          "picks": "casebook"
+        },
+        {
+          "label": "Clinical",
+          "detail": "Usually the exam taken after an MSW plus post-degree supervised clinical hours — diagnosis, therapy, direct practice. Your board confirms it.",
+          "picks": "casebook-lcsw"
+        }
+      ],
+      "escapes": [
+        {
+          "id": "advanced-generalist",
+          "label": "Advanced Generalist",
+          "detail": "Usually the exam taken after an MSW plus post-degree supervised hours in macro work — administration, policy, community organising, supervision.",
+          "says": "Advanced Generalist and Clinical sit at the same level: they are a fork, not a ladder, and yours is the macro one. None of these three apps is written for Advanced Generalist. There is real overlap with Casebook LMSW in the human development and ethics material, but it carries none of the program development, supervision or administration content — compare it against the ASWB content outline for that category and judge for yourself before relying on it."
+        },
+        {
+          "id": "associate",
+          "label": "Associate",
+          "detail": "Used by only a few jurisdictions, usually after an associate degree in social work or credits toward a BSW.",
+          "says": "None of these apps is written for the Associate exam. Casebook LBSW is the nearest on content, since the bachelor's-level material overlaps. Before you buy anything, check two things with your board: that the Associate exam is the one it requires of you, and how far its outline differs from the bachelor's one."
+        }
+      ],
+      "unsure": {
+        "id": "unsure",
+        "label": "My board has not told me yet",
+        "detail": "Or I am not certain which of these applies to me.",
+        "says": "Then find that out before you buy anything. Your board's website states which exam it requires, and it takes about five minutes. It is worth the five minutes: the levels test different material, and studying the wrong one is wasted work. Nothing here expires while you check — the free tier is open on all three apps, with the full glossary, unlimited drills and a ten-question practice set, no account and no card. Come back when you know."
+      }
+    },
+    {
+      "id": "cloud-or-systems",
+      "among": [
+        "forge-cloud",
+        "forge-systems"
+      ],
+      "question": "Those two overlap in the job and split in the exam. Which is yours?",
+      "note": "",
+      "options": [
+        {
+          "label": "Designing it",
+          "detail": "What runs where, how it is sized, what it costs — AWS/GCP/Azure architect exams.",
+          "picks": "forge-cloud"
+        },
+        {
+          "label": "Running it",
+          "detail": "Clusters, provisioning, the Linux underneath — CKA, Terraform, LFCE.",
+          "picks": "forge-systems"
+        }
+      ]
+    }
+  ]
+}
