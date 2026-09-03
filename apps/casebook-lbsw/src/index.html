@@ -792,7 +792,16 @@ function sayStart(){
   _sayRec.onend = () => { S.sayOn = false; renderDrill(); };
   _sayRec.onerror = e => {
     S.sayOn = false;
-    if(e.error === "not-allowed") toast("Microphone blocked — allow mic access for this site and try again.");
+    // Every failure gets a sentence. A silent mic button is undebuggable —
+    // for the reader and for support alike.
+    if(e.error === "not-allowed" || e.error === "service-not-allowed")
+      toast("Microphone blocked — allow mic access for this site and try again.");
+    else if(e.error === "audio-capture")
+      toast("No working microphone found — check your system's sound input settings.");
+    else if(e.error === "network")
+      toast("The browser's speech service could not be reached — check your connection, or try Chrome.");
+    else if(e.error && e.error !== "no-speech" && e.error !== "aborted")
+      toast("Speech recognition failed: " + e.error);
     renderDrill();
   };
   S.sayOn = true; S.sayText = "";
