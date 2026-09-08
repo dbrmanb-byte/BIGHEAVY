@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Forge Trading — agentic trading drills</title>
 <meta name="description" content="Vocabulary and scenario drills for supervising a paper-trading agent. Educational only.">
-<meta name="theme-color" content="#EEF1F4">
+<meta name="theme-color" content="#0E1A20">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
@@ -14,13 +17,17 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="top">
-  <div class="brand">
-    <span class="brand-name">Forge Trading</span>
-    <span class="brand-sub" id="bank-meta">Loading bank…</span>
-  </div>
-  <div class="ruler" aria-hidden="true"><span id="ruler-fill"></span></div>
-</header>
+<div class="rail">
+  <div class="brand"><div class="bh">BIGHEAVYINK</div><b>Forge Trading</b><span>Agentic trading drills</span></div>
+  <nav class="tabs" aria-label="Modes">
+    <button class="tab" data-view="terms" aria-current="page">Terms</button>
+    <button class="tab" data-view="say">Say it</button>
+    <button class="tab" data-view="scenarios">Scenarios</button>
+    <button class="tab" data-view="progress">Progress</button>
+  </nav>
+</div>
+<div class="ruler" aria-hidden="true"><span id="ruler-fill"></span></div>
+<div class="meta" id="bank-meta">Loading bank…</div>
 
 <main id="main" class="main" tabindex="-1">
   <section id="view-terms" class="view" hidden></section>
@@ -28,13 +35,6 @@
   <section id="view-scenarios" class="view" hidden></section>
   <section id="view-progress" class="view" hidden></section>
 </main>
-
-<nav class="tabs" aria-label="Modes">
-  <button class="tab" data-view="terms" aria-current="page">Terms</button>
-  <button class="tab" data-view="say">Say it</button>
-  <button class="tab" data-view="scenarios">Scenarios</button>
-  <button class="tab" data-view="progress">Progress</button>
-</nav>
 
 <footer class="legal">
   Educational content only. Not investment advice. Every exercise assumes a simulated account.

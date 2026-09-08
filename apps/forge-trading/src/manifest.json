@@ -4,7 +4,13 @@
   "description": "Vocabulary and scenario drills for supervising a paper-trading agent.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#EEF1F4",
-  "theme_color": "#EEF1F4",
-  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+  "background_color": "#0E1A20",
+  "theme_color": "#0E1A20",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
 }
