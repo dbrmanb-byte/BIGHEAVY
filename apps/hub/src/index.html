@@ -154,8 +154,10 @@ fetch("./apps.json")
     const all = reg.apps || [];
     // Only shipped apps get a card. Everything else is roadmap: the registry
     // carries the slugs so the count is real, but no invented detail is shown.
-    const apps = all.filter(a => a.status === "live");
-    const upcoming = all.filter(a => a.status !== "live");
+    // "live" and "free" are both shipped; free apps simply have no paid tier.
+    const shipped = a => a.status === "live" || a.status === "free";
+    const apps = all.filter(shipped);
+    const upcoming = all.filter(a => !shipped(a));
     const grid = document.getElementById("appGrid");
     const planned = Math.max(reg.planned || 0, all.length);
     const soon = Math.max(upcoming.length, planned - apps.length);
@@ -205,7 +207,7 @@ fetch("./apps.json")
     if (apps.length) {
       sub.textContent = apps.length === 1
         ? "One app is live today. Each is built for a single exam, with content written for that exam only."
-        : `${apps.length} apps are live. Each is built for a single exam, with content written for that exam only.`;
+        : `${apps.length} apps are live. Each is built for a single subject, with content written for it alone.`;
     }
   })
   .catch(err => {

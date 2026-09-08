@@ -453,6 +453,19 @@
       }
     },
     {
+      "slug": "forge-trading",
+      "name": "Forge Trading",
+      "family": "forge",
+      "exam": "Agentic trading",
+      "audience": "People supervising AI trading agents",
+      "blurb": "120 terms and 90 scenarios for supervising a paper-trading agent — risk limits, order mechanics, and when to pull the plug. Free, and educational only: not investment advice.",
+      "accent": "#3E9C8B",
+      "status": "free",
+      "url": "/forge-trading/",
+      "terms": 120,
+      "questions": 90
+    },
+    {
       "slug": "keystone",
       "name": "Keystone",
       "family": "keystone",

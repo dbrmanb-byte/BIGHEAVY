@@ -22,7 +22,10 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "site");
 
 const reg = JSON.parse(await readFile(join(ROOT, "packages/registry/apps.json"), "utf8"));
-const slugs = reg.apps.filter(a => a.status === "live").map(a => a.slug);
+// "live" is the paid catalogue; "free" ships the same way but carries no
+// Stripe price, no ebook and no private bank — the commerce scripts skip it.
+const SHIPPED = new Set(["live", "free"]);
+const slugs = reg.apps.filter(a => SHIPPED.has(a.status)).map(a => a.slug);
 
 // The hub is the storefront; without it there is no site to assemble into.
 const hubDist = join(ROOT, "apps/hub/dist");
@@ -48,7 +51,7 @@ for (const s of slugs) {
 
 // The apps' registry URLs must resolve inside this layout, or the storefront
 // links to pages that are not there.
-for (const a of reg.apps.filter(x => x.status === "live")) {
+for (const a of reg.apps.filter(x => SHIPPED.has(x.status))) {
   const target = join(OUT, a.url.replace(/^\/|\/$/g, ""), "index.html");
   if (!existsSync(target)) {
     console.error(`assemble-site: registry url ${a.url} does not resolve to ${target}`);

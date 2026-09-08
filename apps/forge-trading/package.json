@@ -1,0 +1,16 @@
+{
+  "name": "forge-trading",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Forge Trading — agentic paper-trading drills. Free vertical.",
+  "scripts": {
+    "build": "node ../../scripts/build-site.mjs forge-trading",
+    "dev": "pnpm run build && node ../../scripts/serve.mjs forge-trading"
+  },
+  "bigheavy": {
+    "slug": "forge-trading",
+    "shared": [
+      "app-core"
+    ]
+  }
+}

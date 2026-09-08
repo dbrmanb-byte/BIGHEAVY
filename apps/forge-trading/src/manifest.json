@@ -1,0 +1,10 @@
+{
+  "name": "Forge Trading",
+  "short_name": "Forge Trading",
+  "description": "Vocabulary and scenario drills for supervising a paper-trading agent.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#EEF1F4",
+  "theme_color": "#EEF1F4",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

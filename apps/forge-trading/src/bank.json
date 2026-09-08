@@ -1,0 +1,2138 @@
+{
+ "vertical": "Agentic Trading",
+ "reviewed": "2026-09-07",
+ "sections": [
+  {
+   "key": "A",
+   "name": "Market structure and orders"
+  },
+  {
+   "key": "B",
+   "name": "Technical indicators"
+  },
+  {
+   "key": "C",
+   "name": "Fundamentals and valuation"
+  },
+  {
+   "key": "D",
+   "name": "Risk and position management"
+  },
+  {
+   "key": "E",
+   "name": "Tax and accounting"
+  },
+  {
+   "key": "F",
+   "name": "Regulation and compliance"
+  },
+  {
+   "key": "G",
+   "name": "Agent and automation"
+  }
+ ],
+ "terms": [
+  {
+   "id": "T001",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Bid / ask",
+   "def": "highest price a buyer will pay / lowest a seller will accept; the gap is the spread."
+  },
+  {
+   "id": "T002",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Spread",
+   "def": "bid\u2013ask difference; a direct trading cost, wider in thin names and after hours."
+  },
+  {
+   "id": "T003",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Market order",
+   "def": "executes immediately at the best available price; guarantees fill, not price."
+  },
+  {
+   "id": "T004",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Limit order",
+   "def": "executes only at a stated price or better; guarantees price, not fill."
+  },
+  {
+   "id": "T005",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Stop order",
+   "def": "becomes a market order once a trigger price trades; used to exit losers."
+  },
+  {
+   "id": "T006",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Stop-limit order",
+   "def": "becomes a limit order at trigger; can fail to fill in a fast move."
+  },
+  {
+   "id": "T007",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Trailing stop",
+   "def": "stop that moves with price by a fixed amount or percent, locking in gains."
+  },
+  {
+   "id": "T008",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Time in force",
+   "def": "how long an order lives: day, good-till-canceled (GTC), immediate-or-cancel (IOC), fill-or-kill (FOK)."
+  },
+  {
+   "id": "T009",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Extended hours",
+   "def": "pre-market and after-hours sessions; thinner liquidity, wider spreads, limit orders only on most platforms."
+  },
+  {
+   "id": "T010",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Liquidity",
+   "def": "ease of trading size without moving price; measured by volume and depth."
+  },
+  {
+   "id": "T011",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Level 2 / order book",
+   "def": "visible resting bids and asks at each price level."
+  },
+  {
+   "id": "T012",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Slippage",
+   "def": "difference between expected and actual fill price."
+  },
+  {
+   "id": "T013",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Partial fill",
+   "def": "order executed for fewer shares than requested."
+  },
+  {
+   "id": "T014",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Lot",
+   "def": "round lot is 100 shares; odd lots are anything smaller."
+  },
+  {
+   "id": "T015",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Settlement (T+1)",
+   "def": "trade date plus one business day before cash and shares officially change hands."
+  },
+  {
+   "id": "T016",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Volume",
+   "def": "shares traded in a period; confirms or contradicts price moves."
+  },
+  {
+   "id": "T017",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Gap",
+   "def": "price opens away from the prior close; gap up / gap down."
+  },
+  {
+   "id": "T018",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "term": "Halt",
+   "def": "exchange pause in trading, usually for news or volatility."
+  },
+  {
+   "id": "T019",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "OHLC",
+   "def": "open, high, low, close; the four prices that make a candle or bar."
+  },
+  {
+   "id": "T020",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Candlestick",
+   "def": "chart bar showing OHLC with a body and wicks; color indicates direction."
+  },
+  {
+   "id": "T021",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Support",
+   "def": "price level where buying has repeatedly stopped declines."
+  },
+  {
+   "id": "T022",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Resistance",
+   "def": "price level where selling has repeatedly stopped advances."
+  },
+  {
+   "id": "T023",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Trend",
+   "def": "sequence of higher highs and higher lows (uptrend) or the reverse."
+  },
+  {
+   "id": "T024",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Simple moving average (SMA)",
+   "def": "arithmetic mean of the last N closes."
+  },
+  {
+   "id": "T025",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Exponential moving average (EMA)",
+   "def": "weighted mean that reacts faster to recent prices."
+  },
+  {
+   "id": "T026",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Golden cross / death cross",
+   "def": "50-day SMA crossing above / below the 200-day."
+  },
+  {
+   "id": "T027",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "RSI (relative strength index)",
+   "def": "0\u2013100 momentum oscillator; conventionally under 30 oversold, over 70 overbought."
+  },
+  {
+   "id": "T028",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "MACD",
+   "def": "difference between 12- and 26-period EMAs plus a 9-period signal line; crossovers flag momentum shifts."
+  },
+  {
+   "id": "T029",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Bollinger Bands",
+   "def": "SMA with bands at \u00b12 standard deviations; width tracks volatility."
+  },
+  {
+   "id": "T030",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "ATR (average true range)",
+   "def": "average of recent bar ranges; a volatility measure used to size stops."
+  },
+  {
+   "id": "T031",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "VWAP",
+   "def": "volume-weighted average price for the session; institutional benchmark."
+  },
+  {
+   "id": "T032",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Stochastic oscillator",
+   "def": "position of the close within the recent high\u2013low range."
+  },
+  {
+   "id": "T033",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Divergence",
+   "def": "price makes a new high or low that the indicator does not confirm."
+  },
+  {
+   "id": "T034",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Breakout",
+   "def": "price moves through support or resistance on rising volume."
+  },
+  {
+   "id": "T035",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Mean reversion",
+   "def": "assumption that stretched prices return toward an average."
+  },
+  {
+   "id": "T036",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Momentum",
+   "def": "assumption that recent direction persists."
+  },
+  {
+   "id": "T037",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Overbought / oversold",
+   "def": "indicator readings suggesting a move is stretched; not a signal by itself."
+  },
+  {
+   "id": "T038",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "term": "Lookback period",
+   "def": "number of bars an indicator uses; the main tuning knob."
+  },
+  {
+   "id": "T039",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Market capitalization",
+   "def": "share price \u00d7 shares outstanding."
+  },
+  {
+   "id": "T040",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "EPS (earnings per share)",
+   "def": "net income \u00f7 shares outstanding."
+  },
+  {
+   "id": "T041",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "P/E ratio",
+   "def": "price \u00f7 EPS; trailing uses the last four quarters, forward uses estimates."
+  },
+  {
+   "id": "T042",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "PEG ratio",
+   "def": "P/E \u00f7 expected earnings growth rate."
+  },
+  {
+   "id": "T043",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Revenue",
+   "def": "top-line sales before any costs."
+  },
+  {
+   "id": "T044",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Gross, operating, net margin",
+   "def": "profit at each stage as a percent of revenue."
+  },
+  {
+   "id": "T045",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Free cash flow",
+   "def": "operating cash flow minus capital expenditures."
+  },
+  {
+   "id": "T046",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Debt-to-equity",
+   "def": "total liabilities \u00f7 shareholder equity; leverage measure."
+  },
+  {
+   "id": "T047",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Dividend yield",
+   "def": "annual dividend \u00f7 share price."
+  },
+  {
+   "id": "T048",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Ex-dividend date",
+   "def": "first day a buyer no longer receives the declared dividend."
+  },
+  {
+   "id": "T049",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Earnings call / earnings date",
+   "def": "quarterly results release; the highest-volatility scheduled event for a stock."
+  },
+  {
+   "id": "T050",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Guidance",
+   "def": "management's forward projections; misses drive most post-earnings moves."
+  },
+  {
+   "id": "T051",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "10-K / 10-Q / 8-K",
+   "def": "annual report, quarterly report, material-event filing."
+  },
+  {
+   "id": "T052",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Insider transaction (Form 4)",
+   "def": "officer or director buys and sells, filed within two business days."
+  },
+  {
+   "id": "T053",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "term": "Analyst consensus",
+   "def": "average of published estimates and price targets."
+  },
+  {
+   "id": "T054",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Position size",
+   "def": "dollars or shares committed to one trade."
+  },
+  {
+   "id": "T055",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Risk per trade",
+   "def": "amount you accept losing if the stop is hit; commonly 0.5\u20132% of account."
+  },
+  {
+   "id": "T056",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Stop distance",
+   "def": "entry price minus stop price; combined with risk per trade, it determines size."
+  },
+  {
+   "id": "T057",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Risk-reward ratio",
+   "def": "potential gain \u00f7 potential loss at the planned exit points."
+  },
+  {
+   "id": "T058",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Expectancy",
+   "def": "(win rate \u00d7 average win) \u2212 (loss rate \u00d7 average loss); the only number that says whether a rule makes money."
+  },
+  {
+   "id": "T059",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Win rate",
+   "def": "percent of trades closed at a profit; meaningless without average win and loss."
+  },
+  {
+   "id": "T060",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Drawdown",
+   "def": "peak-to-trough decline in account value."
+  },
+  {
+   "id": "T061",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Max drawdown",
+   "def": "the largest drawdown over a period; the pain metric."
+  },
+  {
+   "id": "T062",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Round trip",
+   "def": "a completed buy-and-sell (or sell-and-cover) pair."
+  },
+  {
+   "id": "T063",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Realized vs. unrealized P&L",
+   "def": "closed profit or loss vs. open mark-to-market."
+  },
+  {
+   "id": "T064",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Scaling in / out",
+   "def": "entering or exiting in tranches instead of all at once."
+  },
+  {
+   "id": "T065",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Correlation",
+   "def": "degree to which positions move together; concentrated correlation is hidden size."
+  },
+  {
+   "id": "T066",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Diversification",
+   "def": "spreading exposure across uncorrelated positions."
+  },
+  {
+   "id": "T067",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Leverage / margin",
+   "def": "borrowing to increase position size; amplifies both directions."
+  },
+  {
+   "id": "T068",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Margin call",
+   "def": "broker demand for cash when equity falls below the maintenance requirement."
+  },
+  {
+   "id": "T069",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Pattern day trader rule",
+   "def": "four or more day trades in five business days in a margin account triggers a $25,000 equity minimum."
+  },
+  {
+   "id": "T070",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Buying power",
+   "def": "cash plus available margin."
+  },
+  {
+   "id": "T071",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Kelly criterion",
+   "def": "formula for the bet size that maximizes long-run growth; usually applied at a fraction."
+  },
+  {
+   "id": "T072",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Trade journal",
+   "def": "record of thesis, entry, exit, size, and outcome; the raw material for every review."
+  },
+  {
+   "id": "T073",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "term": "Post-mortem",
+   "def": "structured review of a closed trade against its original thesis."
+  },
+  {
+   "id": "T074",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Cost basis",
+   "def": "purchase price plus commissions; the starting point for gain calculations."
+  },
+  {
+   "id": "T075",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Tax lot",
+   "def": "a specific purchase batch with its own basis and date."
+  },
+  {
+   "id": "T076",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Lot selection (FIFO, LIFO, specific ID)",
+   "def": "method for choosing which lot a sale closes; changes the taxable gain."
+  },
+  {
+   "id": "T077",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Short-term vs. long-term gain",
+   "def": "held one year or less vs. more than one year; taxed at different rates."
+  },
+  {
+   "id": "T078",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Wash sale",
+   "def": "selling at a loss and rebuying substantially identical shares within 30 days before or after; the loss is deferred."
+  },
+  {
+   "id": "T079",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Capital loss carryforward",
+   "def": "net losses beyond the annual deduction limit carry to future years."
+  },
+  {
+   "id": "T080",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "1099-B",
+   "def": "broker's annual report of sales and basis."
+  },
+  {
+   "id": "T081",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Qualified dividend",
+   "def": "dividend taxed at long-term rates if holding-period rules are met."
+  },
+  {
+   "id": "T082",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Mark-to-market",
+   "def": "valuing open positions at current price; also an election available to trader-status filers."
+  },
+  {
+   "id": "T083",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "term": "Trader tax status",
+   "def": "IRS classification for high-frequency, full-time traders; hard to qualify for."
+  },
+  {
+   "id": "T084",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "SEC",
+   "def": "federal regulator of securities markets and issuers."
+  },
+  {
+   "id": "T085",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "FINRA",
+   "def": "self-regulatory body for broker-dealers and registered representatives."
+  },
+  {
+   "id": "T086",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Broker-dealer",
+   "def": "firm that executes trades for customers or its own account; registered with SEC and FINRA."
+  },
+  {
+   "id": "T087",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Registered investment adviser (RIA)",
+   "def": "firm or person paid to give individualized investment advice; registered with SEC or a state."
+  },
+  {
+   "id": "T088",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Fiduciary duty",
+   "def": "obligation to act in the client's best interest; applies to RIAs."
+  },
+  {
+   "id": "T089",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Publisher's exclusion",
+   "def": "Advisers Act carve-out for impersonal, general, regularly circulated publications; the line an education product must stay behind."
+  },
+  {
+   "id": "T090",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Investment advice",
+   "def": "recommendations tailored to a specific person's situation; the trigger for RIA registration."
+  },
+  {
+   "id": "T091",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Regulation Best Interest",
+   "def": "standard broker-dealers owe retail customers when recommending securities."
+  },
+  {
+   "id": "T092",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Insider trading",
+   "def": "trading on material non-public information; illegal regardless of how it was obtained."
+  },
+  {
+   "id": "T093",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Market manipulation",
+   "def": "pump-and-dump, spoofing, wash trading; illegal."
+  },
+  {
+   "id": "T094",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Accredited investor",
+   "def": "income or net-worth threshold that unlocks private offerings."
+  },
+  {
+   "id": "T095",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Suitability",
+   "def": "older broker standard: recommendation must fit the customer's profile."
+  },
+  {
+   "id": "T096",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "SIPC",
+   "def": "insures brokerage accounts against firm failure, not against losses."
+  },
+  {
+   "id": "T097",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "term": "Disclaimer / disclosure",
+   "def": "required plain-language statements that content is educational and not advice."
+  },
+  {
+   "id": "T098",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Agent",
+   "def": "LLM plus tools plus a loop that observes, reasons, acts, and repeats."
+  },
+  {
+   "id": "T099",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Tool call",
+   "def": "structured request from the model to an external function (get quote, place order)."
+  },
+  {
+   "id": "T100",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "MCP (Model Context Protocol)",
+   "def": "open standard for exposing tools to a model; Robinhood and others ship MCP servers."
+  },
+  {
+   "id": "T101",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Brokerage API",
+   "def": "programmatic interface for quotes, orders, and positions (Robinhood, Alpaca, Interactive Brokers)."
+  },
+  {
+   "id": "T102",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Paper trading",
+   "def": "simulated account with real prices and fake money; the only environment for learning."
+  },
+  {
+   "id": "T103",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Human-in-the-loop",
+   "def": "every consequential action waits for explicit human approval."
+  },
+  {
+   "id": "T104",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Approval gate",
+   "def": "the specific checkpoint where an order is proposed but not sent."
+  },
+  {
+   "id": "T105",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Preview / review order",
+   "def": "dry-run API call returning cost, fees, and buying-power impact without executing."
+  },
+  {
+   "id": "T106",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Watchlist rule",
+   "def": "condition the agent evaluates on a schedule (e.g., RSI below a threshold)."
+  },
+  {
+   "id": "T107",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Trigger",
+   "def": "condition that fires a rule; price level, indicator value, time, or news."
+  },
+  {
+   "id": "T108",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Alert",
+   "def": "notification that a trigger fired; the agent's lowest-risk output."
+  },
+  {
+   "id": "T109",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Scheduler / cron",
+   "def": "mechanism that runs the agent at fixed intervals."
+  },
+  {
+   "id": "T110",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "System prompt",
+   "def": "standing instructions defining the agent's role, limits, and forbidden actions."
+  },
+  {
+   "id": "T111",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Structured output",
+   "def": "model response constrained to a schema (JSON) so code can act on it."
+  },
+  {
+   "id": "T112",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Grammar / schema constraint",
+   "def": "technique forcing the model to emit only valid structured output."
+  },
+  {
+   "id": "T113",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Guardrail",
+   "def": "hard-coded check outside the model: max position size, allowed symbols, order-type whitelist."
+  },
+  {
+   "id": "T114",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Idempotency",
+   "def": "designing actions so a retry does not place a duplicate order."
+  },
+  {
+   "id": "T115",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Audit log",
+   "def": "immutable record of every observation, reasoning step, proposal, and approval."
+  },
+  {
+   "id": "T116",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Hallucination",
+   "def": "model states a price, fill, or position that does not exist; why every fact must come from a tool result."
+  },
+  {
+   "id": "T117",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Confirmation bias (in agents)",
+   "def": "model rationalizes a trade it already leaned toward; countered by requiring a stated invalidation condition."
+  },
+  {
+   "id": "T118",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Backtest",
+   "def": "running a rule against historical data; useful, and easy to overfit."
+  },
+  {
+   "id": "T119",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Overfitting",
+   "def": "rule tuned so tightly to past data that it fails on new data."
+  },
+  {
+   "id": "T120",
+   "section": "G",
+   "sectionName": "Agent and automation concepts",
+   "term": "Kill switch",
+   "def": "single action that halts the agent and cancels open orders."
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "A1",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "A stock shows bid 41.20 / ask 41.28. You place a market order to buy 100 shares during regular hours. What is your most likely fill?",
+   "options": [
+    "41.20",
+    "41.24",
+    "41.28",
+    "The prior close"
+   ],
+   "answer": 2,
+   "rationale": "Market buys take the ask; market sells take the bid. The 8-cent spread is your cost."
+  },
+  {
+   "id": "A2",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "You place a limit buy at 41.00 while the ask is 41.28. Price drifts to 41.05 and then rallies to 44. What happened to your order?",
+   "options": [
+    "Filled at 41.05",
+    "Filled at 41.28",
+    "Never filled",
+    "Converted to a market order"
+   ],
+   "answer": 2,
+   "rationale": "A limit order only fills at its price or better. Price never reached 41.00."
+  },
+  {
+   "id": "A3",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "You own shares bought at 50 and place a stop order at 46. Overnight, bad news gaps the stock open at 40. Where does your stop fill?",
+   "options": [
+    "46",
+    "Approximately 40",
+    "It does not fill",
+    "43, the midpoint"
+   ],
+   "answer": 1,
+   "rationale": "A stop becomes a market order once 46 trades; the first trade is near 40, so that's where it executes."
+  },
+  {
+   "id": "A4",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "Same setup as A3, but you used a stop-limit with stop 46 and limit 45.50. What happens on the gap to 40?",
+   "options": [
+    "Fills near 40",
+    "Fills at 45.50",
+    "Does not fill; you still hold",
+    "Fills at 46"
+   ],
+   "answer": 2,
+   "rationale": "The stop triggers a limit at 45.50, but price is below that, so nothing executes. Stop-limits protect price, not exit."
+  },
+  {
+   "id": "A5",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "You submit a limit order at 3:58 p.m. with time in force \"day.\" It's unfilled at the close. What is its status at 9:30 a.m. the next day?",
+   "options": [
+    "Still open",
+    "Canceled",
+    "Converted to GTC",
+    "Filled at the open"
+   ],
+   "answer": 1,
+   "rationale": "Day orders expire at session close."
+  },
+  {
+   "id": "A6",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "A thinly traded stock averages 30,000 shares a day. Your agent proposes a market order for 5,000 shares. What is the main risk?",
+   "options": [
+    "Regulatory violation",
+    "Slippage and moving the price",
+    "Order rejection",
+    "Wash sale"
+   ],
+   "answer": 1,
+   "rationale": "You are 17% of daily volume; the order will walk up the book. Use limits and scale in."
+  },
+  {
+   "id": "A7",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "You sold shares on Monday. When can you withdraw the cash?",
+   "options": [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Friday"
+   ],
+   "answer": 1,
+   "rationale": "U.S. equity settlement is T+1."
+  },
+  {
+   "id": "A8",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "Your agent places a limit order for 500 shares; the fill report shows 300. What should the next step be?",
+   "options": [
+    "Place another 500-share order",
+    "Recognize a partial fill and decide whether to keep the remaining 200 working",
+    "Cancel and re-enter at market",
+    "Log it as complete"
+   ],
+   "answer": 1,
+   "rationale": "The remaining 200 are still resting. Duplicating the order overbuys."
+  },
+  {
+   "id": "A9",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "A trailing stop of 5% is set on a position bought at 100. Price rises to 120, then falls. Where does the stop trigger?",
+   "options": [
+    "95",
+    "100",
+    "114",
+    "105"
+   ],
+   "answer": 2,
+   "rationale": "The stop ratchets up to 5% below the peak (120 \u00d7 0.95)."
+  },
+  {
+   "id": "A10",
+   "section": "A",
+   "sectionName": "Market structure and orders",
+   "stem": "At 7:15 a.m. your agent flags a pre-market gap and proposes a market buy. Why should the guardrail reject it?",
+   "options": [
+    "Pre-market is illegal for retail",
+    "Most platforms allow only limit orders in extended hours, and spreads are wide",
+    "Market orders are always rejected",
+    "The stop rule doesn't apply pre-market"
+   ],
+   "answer": 1,
+   "rationale": "Extended-hours liquidity is thin; a market order there is a slippage trap and usually not permitted anyway."
+  },
+  {
+   "id": "B1",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "A 14-period RSI reads 26. What does this tell you on its own?",
+   "options": [
+    "The stock will rise",
+    "Momentum has been strongly negative recently",
+    "The stock is undervalued",
+    "Buy immediately"
+   ],
+   "answer": 1,
+   "rationale": "RSI measures recent momentum, not value or direction of the next move."
+  },
+  {
+   "id": "B2",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "Price has been making higher highs for three weeks while RSI makes lower highs. Name the pattern.",
+   "options": [
+    "Golden cross",
+    "Bearish divergence",
+    "Breakout",
+    "Mean reversion"
+   ],
+   "answer": 1,
+   "rationale": "Price and indicator disagree; momentum is weakening under the rally."
+  },
+  {
+   "id": "B3",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "The 50-day SMA crosses above the 200-day SMA. Which is true?",
+   "options": [
+    "Guaranteed uptrend",
+    "Called a golden cross; a lagging trend signal",
+    "A sell signal",
+    "A volatility signal"
+   ],
+   "answer": 1,
+   "rationale": "Moving-average crosses confirm trends late; they don't predict."
+  },
+  {
+   "id": "B4",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "MACD line crosses above its signal line while the histogram flips positive. What is this generally read as?",
+   "options": [
+    "Bearish",
+    "Neutral",
+    "Bullish momentum shift",
+    "Overbought"
+   ],
+   "answer": 2,
+   "rationale": "The faster EMA is pulling ahead of the slower one."
+  },
+  {
+   "id": "B5",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "Bollinger Bands have narrowed to their tightest width in six months. What does that suggest?",
+   "options": [
+    "Low volatility, often preceding an expansion",
+    "An uptrend",
+    "A downtrend",
+    "Overbought"
+   ],
+   "answer": 0,
+   "rationale": "Band width measures volatility, not direction."
+  },
+  {
+   "id": "B6",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "ATR is 2.40 on a 60-dollar stock. Your rule sets stops at 2\u00d7 ATR. Where is the initial stop for a long entry at 60?",
+   "options": [
+    "57.60",
+    "55.20",
+    "58.80",
+    "50.40"
+   ],
+   "answer": 1,
+   "rationale": "60 \u2212 (2 \u00d7 2.40)."
+  },
+  {
+   "id": "B7",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "Price breaks above a resistance level that held four times, on volume 40% below average. How confident should the rule be?",
+   "options": [
+    "High; resistance broke",
+    "Low; breakouts without volume often fail",
+    "Irrelevant; volume doesn't matter",
+    "High; four tests means strong level"
+   ],
+   "answer": 1,
+   "rationale": "Volume is the confirmation for a breakout."
+  },
+  {
+   "id": "B8",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "Your agent uses a 5-period RSI instead of 14. What changes?",
+   "options": [
+    "Nothing",
+    "More signals, more noise",
+    "Fewer signals",
+    "RSI becomes a trend indicator"
+   ],
+   "answer": 1,
+   "rationale": "Shorter lookbacks react faster and whipsaw more."
+  },
+  {
+   "id": "B9",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "Price is trading well below VWAP all session. What does that describe?",
+   "options": [
+    "Sellers have dominated intraday",
+    "Buyers have dominated",
+    "Low volatility",
+    "A gap up"
+   ],
+   "answer": 0,
+   "rationale": "Average trade has printed above current price."
+  },
+  {
+   "id": "B10",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "A mean-reversion rule and a momentum rule both fire on the same stock, in opposite directions. What is the correct response?",
+   "options": [
+    "Take both",
+    "Take the momentum trade",
+    "Take the mean-reversion trade",
+    "Neither; the rules conflict, and the agent should log and skip"
+   ],
+   "answer": 3,
+   "rationale": "Conflicting signals are information; a supervised agent flags them rather than picking one arbitrarily."
+  },
+  {
+   "id": "B11",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "RSI has stayed above 70 for three weeks during a strong uptrend. What does that show?",
+   "options": [
+    "RSI is broken",
+    "Strong trends can pin oscillators at extremes",
+    "A reversal is imminent",
+    "The stock is overvalued"
+   ],
+   "answer": 1,
+   "rationale": "\"Overbought\" is a description, not a trigger."
+  },
+  {
+   "id": "B12",
+   "section": "B",
+   "sectionName": "Technical indicators",
+   "stem": "Your rule says \"RSI below 30.\" The stock's RSI hits 30.4 at the close and 29.8 in after-hours. Should the rule fire?",
+   "options": [
+    "Yes, after-hours counts",
+    "Depends on how the rule defines the bar \u2014 the spec must say",
+    "No, never",
+    "Yes, round down"
+   ],
+   "answer": 1,
+   "rationale": "Ambiguous rules produce ambiguous agents. Define the session and bar type in the rule."
+  },
+  {
+   "id": "C1",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "A company has 200 million shares at 45 dollars. Its market cap is:",
+   "options": [
+    "4.5 billion",
+    "9 billion",
+    "900 million",
+    "45 billion"
+   ],
+   "answer": 1,
+   "rationale": "200M \u00d7 45."
+  },
+  {
+   "id": "C2",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "Trailing EPS is 3.00 and the stock trades at 60. Trailing P/E is:",
+   "options": [
+    "20",
+    "30",
+    "0.05",
+    "180"
+   ],
+   "answer": 0,
+   "rationale": "60 \u00f7 3."
+  },
+  {
+   "id": "C3",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "Two companies both trade at 25\u00d7 earnings. One grows earnings 5% a year, the other 25%. Which has the lower PEG?",
+   "options": [
+    "The 5% grower",
+    "The 25% grower",
+    "Equal",
+    "Cannot tell"
+   ],
+   "answer": 1,
+   "rationale": "PEG = P/E \u00f7 growth: 5 vs. 1."
+  },
+  {
+   "id": "C4",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "Earnings beat estimates but the stock falls 12%. Most likely cause?",
+   "options": [
+    "Market manipulation",
+    "Weak forward guidance",
+    "A wash sale",
+    "Ex-dividend"
+   ],
+   "answer": 1,
+   "rationale": "The market trades on the future; guidance beats the print."
+  },
+  {
+   "id": "C5",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "A stock declares a 1-dollar dividend with ex-date Thursday. You buy Thursday morning. Do you receive it?",
+   "options": [
+    "Yes",
+    "No",
+    "Half",
+    "Only if held 60 days"
+   ],
+   "answer": 1,
+   "rationale": "Buyers on or after the ex-date do not receive the declared dividend."
+  },
+  {
+   "id": "C6",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "A Form 4 shows the CFO bought 50,000 shares on the open market. What is that?",
+   "options": [
+    "Insider trading",
+    "A legal, disclosed insider purchase",
+    "A buyback",
+    "A dividend reinvestment"
+   ],
+   "answer": 1,
+   "rationale": "Insiders may trade with disclosure and outside blackout windows."
+  },
+  {
+   "id": "C7",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "Operating cash flow is 800M; capex is 300M. Free cash flow is:",
+   "options": [
+    "1.1B",
+    "500M",
+    "300M",
+    "800M"
+   ],
+   "answer": 1,
+   "rationale": "OCF \u2212 capex."
+  },
+  {
+   "id": "C8",
+   "section": "C",
+   "sectionName": "Fundamentals and valuation",
+   "stem": "Your agent pulls an EPS figure from its own memory instead of a filing or data API. Why is this a problem?",
+   "options": [
+    "It isn't",
+    "The number may be hallucinated; every fact must come from a tool result",
+    "EPS isn't important",
+    "Memory is more current"
+   ],
+   "answer": 1,
+   "rationale": "Model recall is not a data source."
+  },
+  {
+   "id": "D1",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Account is 20,000. Risk per trade is 1%. Entry 50, stop 47. Position size?",
+   "options": [
+    "400 shares",
+    "200 shares",
+    "66 shares",
+    "67 shares"
+   ],
+   "answer": 2,
+   "rationale": "Risk 200 dollars \u00f7 3 dollars stop distance = 66.7; round down."
+  },
+  {
+   "id": "D2",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Same account, same risk. Entry 50, stop 49.50. Position size?",
+   "options": [
+    "400",
+    "200",
+    "40",
+    "4,000"
+   ],
+   "answer": 0,
+   "rationale": "200 \u00f7 0.50. Tighter stops mean bigger size \u2014 and more whipsaw."
+  },
+  {
+   "id": "D3",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "A rule wins 40% of the time. Average win 300, average loss 100. Expectancy per trade?",
+   "options": [
+    "\u221220",
+    "+60",
+    "+120",
+    "+200"
+   ],
+   "answer": 1,
+   "rationale": "(0.4 \u00d7 300) \u2212 (0.6 \u00d7 100)."
+  },
+  {
+   "id": "D4",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "A rule wins 80% of the time. Average win 50, average loss 300. Expectancy?",
+   "options": [
+    "+40",
+    "\u221220",
+    "+250",
+    "0"
+   ],
+   "answer": 1,
+   "rationale": "(0.8 \u00d7 50) \u2212 (0.2 \u00d7 300). High win rate, losing rule."
+  },
+  {
+   "id": "D5",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Account peaks at 25,000, falls to 20,000, recovers to 23,000. Max drawdown?",
+   "options": [
+    "8%",
+    "12%",
+    "20%",
+    "25%"
+   ],
+   "answer": 2,
+   "rationale": "5,000 \u00f7 25,000."
+  },
+  {
+   "id": "D6",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "You need what percent gain to recover from a 50% drawdown?",
+   "options": [
+    "50%",
+    "75%",
+    "100%",
+    "150%"
+   ],
+   "answer": 2,
+   "rationale": "Losses compound against you."
+  },
+  {
+   "id": "D7",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Your agent holds five positions in five semiconductor stocks, each sized at 1% risk. Effective risk is closer to:",
+   "options": [
+    "1%",
+    "5% concentrated in one theme",
+    "0.2%",
+    "Zero"
+   ],
+   "answer": 1,
+   "rationale": "Correlated positions are one big position."
+  },
+  {
+   "id": "D8",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "A cash account of 8,000 makes four day trades in a week. What happens?",
+   "options": [
+    "Nothing; PDT applies to margin accounts",
+    "Flagged as PDT",
+    "Account frozen",
+    "Fined"
+   ],
+   "answer": 0,
+   "rationale": "The PDT rule applies to margin accounts; cash accounts face settled-funds limits instead."
+  },
+  {
+   "id": "D9",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "A margin account with 20,000 equity makes four day trades in five business days. Result?",
+   "options": [
+    "Nothing",
+    "Flagged as pattern day trader; restricted until equity reaches 25,000",
+    "Account closed",
+    "Converted to cash account"
+   ],
+   "answer": 1,
+   "rationale": "The 25,000 minimum is the PDT threshold."
+  },
+  {
+   "id": "D10",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Position is up 15%. Your plan said take half at 10% and trail the rest. What is the correct action?",
+   "options": [
+    "Hold everything",
+    "Sell everything",
+    "Follow the plan: scale out half, trail the remainder",
+    "Add to the position"
+   ],
+   "answer": 2,
+   "rationale": "Plans exist to remove in-the-moment decisions."
+  },
+  {
+   "id": "D11",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "A trade thesis was \"breakout above 80 on volume.\" Price broke 80 on low volume and reversed. The trade lost. What goes in the post-mortem?",
+   "options": [
+    "Bad luck",
+    "The rule was followed",
+    "The volume condition was not met; entry violated the thesis",
+    "Nothing"
+   ],
+   "answer": 2,
+   "rationale": "The post-mortem checks execution against the thesis, not outcome."
+  },
+  {
+   "id": "D12",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "A trade followed every rule and lost. What goes in the journal?",
+   "options": [
+    "Change the rule",
+    "Good process, bad outcome; no change from one trade",
+    "Stop trading",
+    "Double size next time"
+   ],
+   "answer": 1,
+   "rationale": "Rules are judged over samples, not single trades."
+  },
+  {
+   "id": "D13",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Kelly says bet 20% of the account. Practitioners typically use:",
+   "options": [
+    "Full Kelly",
+    "A fraction, often a quarter to half",
+    "Double Kelly",
+    "Nothing"
+   ],
+   "answer": 1,
+   "rationale": "Full Kelly assumes perfect estimates and tolerates severe drawdowns."
+  },
+  {
+   "id": "D14",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Your buying power reads 40,000 on 20,000 cash. What is that?",
+   "options": [
+    "A bug",
+    "2:1 margin",
+    "Free money",
+    "Settled cash"
+   ],
+   "answer": 1,
+   "rationale": "Standard Reg T margin."
+  },
+  {
+   "id": "D15",
+   "section": "D",
+   "sectionName": "Risk and position management",
+   "stem": "Equity falls below maintenance and the broker issues a margin call. What are your options?",
+   "options": [
+    "Ignore it",
+    "Deposit cash or close positions; the broker may liquidate for you",
+    "Wait for a rebound",
+    "File a complaint"
+   ],
+   "answer": 1,
+   "rationale": "Margin calls are not optional."
+  },
+  {
+   "id": "E1",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "You bought 100 shares at 40 and 100 at 60. You sell 100 at 55 using FIFO. Taxable gain?",
+   "options": [
+    "+1,500",
+    "\u2212500",
+    "+500",
+    "0"
+   ],
+   "answer": 0,
+   "rationale": "FIFO closes the 40-dollar lot: (55 \u2212 40) \u00d7 100."
+  },
+  {
+   "id": "E2",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "Same lots, but you select the 60-dollar lot specifically. Result?",
+   "options": [
+    "+1,500 gain",
+    "\u2212500 loss",
+    "+500 gain",
+    "Not allowed"
+   ],
+   "answer": 1,
+   "rationale": "Specific-ID lets you choose; (55 \u2212 60) \u00d7 100."
+  },
+  {
+   "id": "E3",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "You sell at a loss on March 1 and buy the same stock on March 20. What happens to the loss?",
+   "options": [
+    "Deducted normally",
+    "Disallowed now and added to the new lot's basis (wash sale)",
+    "Doubled",
+    "Lost forever"
+   ],
+   "answer": 1,
+   "rationale": "30-day window before and after."
+  },
+  {
+   "id": "E4",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "Shares bought June 10, 2025 and sold June 10, 2026. Holding period?",
+   "options": [
+    "Long-term",
+    "Short-term",
+    "Exactly one year counts as long-term",
+    "Depends on state"
+   ],
+   "answer": 1,
+   "rationale": "Long-term requires more than one year; sell June 11 or later."
+  },
+  {
+   "id": "E5",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "Net capital losses for the year are 9,000. What happens on the federal return?",
+   "options": [
+    "All deducted",
+    "3,000 deducted against ordinary income; 6,000 carried forward",
+    "None deducted",
+    "Deducted against dividends only"
+   ],
+   "answer": 1,
+   "rationale": "Standard annual limit and carryforward."
+  },
+  {
+   "id": "E6",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "Your agent's journal records fills but not cost basis or lot dates. What does that break?",
+   "options": [
+    "Nothing",
+    "Tax reporting and lot selection",
+    "RSI",
+    "Order routing"
+   ],
+   "answer": 1,
+   "rationale": "Basis and dates are the tax record."
+  },
+  {
+   "id": "E7",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "A dividend on shares held 15 days around the ex-date is:",
+   "options": [
+    "Qualified",
+    "Non-qualified; taxed as ordinary income",
+    "Tax-free",
+    "A return of capital"
+   ],
+   "answer": 1,
+   "rationale": "Qualified status requires a 61-day holding window."
+  },
+  {
+   "id": "E8",
+   "section": "E",
+   "sectionName": "Tax and accounting",
+   "stem": "A part-time trader with 40 trades a year wants trader tax status. Likelihood?",
+   "options": [
+    "Automatic",
+    "Low; TTS requires substantial, frequent, continuous activity",
+    "Guaranteed with an LLC",
+    "Only for crypto"
+   ],
+   "answer": 1,
+   "rationale": "Few retail traders qualify."
+  },
+  {
+   "id": "F1",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "Your site publishes a weekly \"what our agent flagged\" newsletter to all subscribers with the same content. Is this investment advice requiring registration?",
+   "options": [
+    "Yes",
+    "Generally no; impersonal, general circulation fits the publisher's exclusion",
+    "Only if free",
+    "Only if profitable"
+   ],
+   "answer": 1,
+   "rationale": "Impersonal and regular is the key."
+  },
+  {
+   "id": "F2",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "A subscriber emails: \"I have 30k and I'm 55 \u2014 should I buy CHRW?\" You reply \"yes, 20% of your account.\" What did you just do?",
+   "options": [
+    "Customer service",
+    "Gave individualized advice; RIA territory",
+    "Marketing",
+    "Nothing regulated"
+   ],
+   "answer": 1,
+   "rationale": "Tailoring to a person's situation triggers registration."
+  },
+  {
+   "id": "F3",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "You offer to run your agent on a subscriber's Robinhood account for 20% of profits. What's the issue?",
+   "options": [
+    "None",
+    "Managing others' accounts for compensation requires RIA registration; performance fees have their own limits",
+    "Robinhood forbids it only",
+    "Tax only"
+   ],
+   "answer": 1,
+   "rationale": "Discretionary management is the clearest RIA trigger."
+  },
+  {
+   "id": "F4",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "Your landing page says \"Our agent returned 34% last quarter.\" What should compliance flag?",
+   "options": [
+    "Nothing",
+    "Performance claim: needs substantiation, disclosures, and invites scrutiny; better to show process",
+    "Font size",
+    "Only if untrue"
+   ],
+   "answer": 1,
+   "rationale": "Advertising rules and plain risk."
+  },
+  {
+   "id": "F5",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "A subscriber posts screenshots of paper-trade results and calls them real. Your responsibility?",
+   "options": [
+    "None",
+    "Correct the record; your platform labels paper results clearly",
+    "Ban them",
+    "Report to SEC"
+   ],
+   "answer": 1,
+   "rationale": "Mislabeled simulated results are a misrepresentation risk for you."
+  },
+  {
+   "id": "F6",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "A friend at a company tells you earnings will miss; you sell before the announcement. This is:",
+   "options": [
+    "Smart",
+    "Insider trading",
+    "Legal if under 10k",
+    "Legal in a paper account only"
+   ],
+   "answer": 1,
+   "rationale": "Material non-public information, regardless of source."
+  },
+  {
+   "id": "F7",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "Placing and canceling large orders to move price without intending to fill is:",
+   "options": [
+    "Hedging",
+    "Spoofing \u2014 illegal manipulation",
+    "Scaling",
+    "Market making"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "F8",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "Which body registers and examines broker-dealers?",
+   "options": [
+    "SEC only",
+    "FINRA, under SEC oversight",
+    "IRS",
+    "SIPC"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "F9",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "A brokerage fails. SIPC covers:",
+   "options": [
+    "Market losses",
+    "Missing securities and cash up to limits",
+    "Bad advice",
+    "Nothing"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "F10",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "Your app lets users write rules and run them on their own paper account. No recommendations are made. Which is the safest description of the product?",
+   "options": [
+    "Advisory service",
+    "Educational software and tooling",
+    "Broker",
+    "Fund"
+   ],
+   "answer": 1,
+   "rationale": "Keep the language matching the function."
+  },
+  {
+   "id": "F11",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "A credit-union prospect asks whether the Agent OS trading module can execute on member accounts. Correct answer?",
+   "options": [
+    "Yes",
+    "It can supervise and log; execution on customer accounts is a regulated activity the institution must own",
+    "Only with a disclaimer",
+    "Yes, for a fee"
+   ],
+   "answer": 1,
+   "rationale": "The institution is the registered party."
+  },
+  {
+   "id": "F12",
+   "section": "F",
+   "sectionName": "Regulation and compliance",
+   "stem": "Which disclaimer element is mandatory on every screen?",
+   "options": [
+    "Past performance figures",
+    "Plain statement that content is educational, not advice, and that trading involves risk",
+    "Company address",
+    "Logo"
+   ],
+   "answer": 1,
+   "rationale": "---"
+  },
+  {
+   "id": "G1",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "An agent that fetches quotes, evaluates a rule, and sends an alert is:",
+   "options": [
+    "An autotrader",
+    "An observer-only agent; the lowest-risk design",
+    "An RIA",
+    "A broker"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G2",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The agent reports \"CHRW filled at 92.10.\" No fill exists in the broker. What happened?",
+   "options": [
+    "Latency",
+    "Hallucination; the agent stated a result without a tool result",
+    "Broker error",
+    "Correct"
+   ],
+   "answer": 1,
+   "rationale": "Every fact must trace to a tool call."
+  },
+  {
+   "id": "G3",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Which check belongs outside the model, in code?",
+   "options": [
+    "Reasoning about the trend",
+    "Max position size",
+    "Summarizing the news",
+    "Writing the journal entry"
+   ],
+   "answer": 1,
+   "rationale": "Guardrails must not depend on the model obeying its prompt."
+  },
+  {
+   "id": "G4",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The system prompt says \"never place market orders.\" Is that a guardrail?",
+   "options": [
+    "Yes",
+    "No; it's an instruction the model could ignore, and must be enforced in the validation layer too",
+    "Yes, if in caps",
+    "Only for GPT models"
+   ],
+   "answer": 1,
+   "rationale": "Prompts are soft; code is hard."
+  },
+  {
+   "id": "G5",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The agent proposes a trade in JSON with symbol, action, size, reasoning, and invalidation. The invalidation field is empty. Correct response?",
+   "options": [
+    "Execute",
+    "Reject; a proposal without an invalidation condition is incomplete",
+    "Fill it in yourself",
+    "Ask the model to guess"
+   ],
+   "answer": 1,
+   "rationale": "Invalidation forces a falsifiable thesis."
+  },
+  {
+   "id": "G6",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Your scheduler fires the loop every minute during market hours. The rule uses daily bars. What is the problem?",
+   "options": [
+    "None",
+    "Wasted calls and repeated alerts on the same daily signal",
+    "Rate limits only",
+    "Wrong indicator"
+   ],
+   "answer": 1,
+   "rationale": "Match cadence to bar timeframe."
+  },
+  {
+   "id": "G7",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The execution step crashed after submitting an order but before logging it. On restart, the agent resubmits. What was missing?",
+   "options": [
+    "Retry logic",
+    "Idempotency via client order ID and a duplicate check",
+    "A faster server",
+    "A bigger model"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G8",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Which should the agent call before proposing any order?",
+   "options": [
+    "place_order",
+    "preview/review order",
+    "cancel_order",
+    "get_watchlists"
+   ],
+   "answer": 1,
+   "rationale": "Dry run shows cost, fees, and buying-power impact."
+  },
+  {
+   "id": "G9",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The approval gate sends a Slack message. A subscriber's teenager taps \"approve.\" What's the design flaw?",
+   "options": [
+    "None",
+    "Approval must be authenticated, not just clickable",
+    "Slack is wrong tool",
+    "Should be email"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G10",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The agent's reasoning says \"RSI is 28, strong buy.\" RSI from the tool result is 41. Diagnosis?",
+   "options": [
+    "Tool bug",
+    "The model reasoned from stale or invented data; reject and log",
+    "Both right",
+    "Rounding"
+   ],
+   "answer": 1,
+   "rationale": "Compare reasoning against the actual tool output."
+  },
+  {
+   "id": "G11",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "You backtest a rule and it returns 60% a year over five years after tuning eight parameters. What should you suspect?",
+   "options": [
+    "Genius",
+    "Overfitting",
+    "Low volatility",
+    "Data error only"
+   ],
+   "answer": 1,
+   "rationale": "Many parameters, one dataset."
+  },
+  {
+   "id": "G12",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Best practice for backtesting a rule?",
+   "options": [
+    "Tune on all data",
+    "Tune on one period, test on a later unseen period",
+    "Skip it",
+    "Tune per ticker"
+   ],
+   "answer": 1,
+   "rationale": "Out-of-sample testing."
+  },
+  {
+   "id": "G13",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The kill switch halts the loop but leaves open limit orders resting. Complete?",
+   "options": [
+    "Yes",
+    "No; kill must also cancel open orders",
+    "Yes, limits are safe",
+    "Only for market orders"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G14",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Audit log entries can be edited by the agent. Problem?",
+   "options": [
+    "None",
+    "Logs must be append-only; a mutable log isn't an audit trail",
+    "Storage only",
+    "Speed"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G15",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Which is the correct order of steps in the loop?",
+   "options": [
+    "Act \u2192 observe \u2192 reason",
+    "Observe \u2192 reason \u2192 propose \u2192 approve \u2192 act \u2192 log",
+    "Propose \u2192 act \u2192 observe",
+    "Log \u2192 act"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G16",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The agent is given the broker's full tool set including place_order, but the spec says observer-only. Fix?",
+   "options": [
+    "Trust the prompt",
+    "Expose only the read tools; capability should match the spec",
+    "Add a warning",
+    "Lower temperature"
+   ],
+   "answer": 1,
+   "rationale": "Least privilege."
+  },
+  {
+   "id": "G17",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "A rule file says: `flag when RSI < 35`. What's missing for it to be executable?",
+   "options": [
+    "Nothing",
+    "Symbol universe, bar timeframe, session, and RSI period",
+    "A model name",
+    "A stop"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G18",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Two agents \u2014 proposer and compliance checker \u2014 disagree. Who wins?",
+   "options": [
+    "Proposer",
+    "Compliance checker; it exists to veto",
+    "Coin flip",
+    "Larger model"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G19",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The model returns prose instead of the JSON schema. Correct handling?",
+   "options": [
+    "Parse with regex",
+    "Reject, retry with schema enforcement, log the failure",
+    "Execute anyway",
+    "Ignore"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G20",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The agent's weekly review shows three alerts fired correctly, one fired on a bad-data bar (a zero-volume print). Action?",
+   "options": [
+    "Ignore",
+    "Add a data-quality guard (minimum volume, sanity bounds)",
+    "Change the RSI period",
+    "Stop the agent"
+   ],
+   "answer": 1,
+   "rationale": "Fix the cause, not the symptom."
+  },
+  {
+   "id": "G21",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Rate limit hit mid-loop; quotes are missing for two symbols. The agent proposes trades on all five. Flaw?",
+   "options": [
+    "None",
+    "Proposals on symbols with no fresh data must be blocked",
+    "Retry later only",
+    "Reduce symbols"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G22",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Which belongs in the system prompt?",
+   "options": [
+    "API keys",
+    "Role, allowed actions, forbidden actions, output schema",
+    "Today's prices",
+    "Account balance"
+   ],
+   "answer": 1,
+   "rationale": "Secrets never go in prompts; live data comes from tools."
+  },
+  {
+   "id": "G23",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "A subscriber's agent has run 300 paper round trips with positive expectancy. What can you claim on the site?",
+   "options": [
+    "\"Proven 300-trade system\"",
+    "Nothing performance-related; you can teach the method",
+    "\"Guaranteed\"",
+    "\"SEC approved\""
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G24",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "The agent suggests adding a news-sentiment tool. What's the first guardrail question?",
+   "options": [
+    "Cost",
+    "Can the source be logged and verified, and can the model be forced to cite it rather than paraphrase from memory?",
+    "Speed",
+    "Language"
+   ],
+   "answer": 1,
+   "rationale": ""
+  },
+  {
+   "id": "G25",
+   "section": "G",
+   "sectionName": "Agent and automation",
+   "stem": "Capstone: what is the minimum artifact set to prove a supervised round trip?",
+   "options": [
+    "A screenshot",
+    "Rule file, audit log with trigger and approval, broker fill records, journal entry, post-mortem",
+    "A P&L number",
+    "A video"
+   ],
+   "answer": 1,
+   "rationale": "---"
+  }
+ ]
+}
