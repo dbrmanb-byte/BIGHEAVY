@@ -74,6 +74,7 @@ p { margin: 0 0 .75rem; }
 
 .legal { font-family: var(--mono); font-size: 11px; line-height: 1.7; color: var(--text-dim);
   border-top: 1px solid var(--line); padding: 1rem var(--pad) 2rem; max-width: var(--measure); margin: 0 auto; width: 100%; }
+.legal a { color: var(--gold); text-decoration-color: rgba(235,168,58,.5); }
 
 /* ---------- controls ---------- */
 .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }

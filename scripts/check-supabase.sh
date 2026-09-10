@@ -37,8 +37,15 @@ SLUGS=$(node -e '
 ')
 COUNT=$(echo "$SLUGS" | wc -w | tr -d ' ')
 
+# Books are sold per title, so a free app can carry one too (forge-trading does).
+BOOKS=$(node -e '
+  const r=require("./packages/registry/apps.json");
+  process.stdout.write(r.apps.filter(a=>a.ebook&&(a.status==="live"||a.status==="free")).map(a=>a.slug).join(" "));
+')
+BCOUNT=$(echo "$BOOKS" | wc -w | tr -d ' ')
+
 echo ""
-echo "  Checking $COUNT live apps against the project"
+echo "  Checking $COUNT live apps and $BCOUNT books against the project"
 echo ""
 
 # ---- migrations ----
@@ -73,10 +80,10 @@ if [ -z "$OBJECTS" ]; then
   bad "storage unreachable" "no objects listed — check the buckets exist"
 else
   miss=""
-  for s in $SLUGS; do
+  for s in $BOOKS; do
     echo "$OBJECTS" | grep -qx "/ebooks/$s.pdf" || miss="$miss $s.pdf"
   done
-  if [ -z "$miss" ]; then ok "all books uploaded" "$COUNT of $COUNT"
+  if [ -z "$miss" ]; then ok "all books uploaded" "$BCOUNT of $BCOUNT"
   else bad "books missing" "$miss — buyers of these get a 404 after paying"; fi
 
   missb=""

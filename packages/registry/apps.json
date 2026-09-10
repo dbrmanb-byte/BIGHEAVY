@@ -453,19 +453,6 @@
       }
     },
     {
-      "slug": "forge-trading",
-      "name": "Forge Trading",
-      "family": "forge",
-      "exam": "Agentic trading",
-      "audience": "People supervising AI trading agents",
-      "blurb": "120 terms and 90 scenarios for supervising a paper-trading agent — risk limits, order mechanics, and when to pull the plug. Free, and educational only: not investment advice.",
-      "accent": "#3E9C8B",
-      "status": "free",
-      "url": "/forge-trading/",
-      "terms": 120,
-      "questions": 90
-    },
-    {
       "slug": "keystone",
       "name": "Keystone",
       "family": "keystone",
@@ -512,6 +499,26 @@
         "forYou": "You are sitting a real estate salesperson or broker licensing exam.",
         "notFor": ""
       }
+    },
+    {
+      "slug": "forge-trading",
+      "name": "Forge Trading",
+      "family": "forge",
+      "exam": "Agentic trading",
+      "audience": "People supervising AI trading agents",
+      "blurb": "120 terms and 90 scenarios for supervising a paper-trading agent — risk limits, order mechanics, and when to pull the plug. Free, and educational only: not investment advice.",
+      "accent": "#3E9C8B",
+      "status": "free",
+      "url": "/forge-trading/",
+      "terms": 120,
+      "questions": 90,
+      "ebook": {
+        "title": "The Agentic Trading Companion",
+        "format": "PDF",
+        "price": 4.99,
+        "currency": "USD",
+        "hours": 1
+      }
     }
   ],
   "ebooks": {
@@ -519,7 +526,7 @@
     "price": 9.99,
     "currency": "USD",
     "format": "PDF",
-    "count": 10,
+    "count": 11,
     "promos": [
       {
         "id": "ebook1_pro10",

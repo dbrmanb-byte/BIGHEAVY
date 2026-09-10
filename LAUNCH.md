@@ -70,7 +70,8 @@ them without it.
 `storage cp` does not overwrite. Re-running the loops throws `KeyAlreadyExists`
 on anything already uploaded — that is the file being there, not an error.
 
-**Each PDF must be named `<slug>.pdf`** — `casebook.pdf`, not `casebook-lmsw.pdf`.
+**Each PDF must be named `<slug>.pdf`** — `casebook.pdf`, not `casebook-lmsw.pdf`;
+the trading book is `forge-trading.pdf`.
 The download route builds the path from the slug, so a mismatch 404s for someone
 who has already paid. `node scripts/check-ebooks.mjs` checks the names against
 the registry.
@@ -82,7 +83,7 @@ the registry.
 ```
 
 Read-only. It verifies the migrations applied, all three functions deployed, all
-ten PDFs and all ten banks uploaded, and the Stripe secrets set — every one of
+eleven PDFs and all ten paid banks uploaded, and the Stripe secrets set — every one of
 which fails silently in the same direction if it is missing: the site keeps
 working and quietly serves the free tier to someone who paid.
 
@@ -93,8 +94,10 @@ STRIPE_SECRET_KEY=sk_test_... node scripts/setup-stripe.mjs           # dry run
 STRIPE_SECRET_KEY=sk_test_... node scripts/setup-stripe.mjs --write
 ```
 
-Creates, from the registry: ten Pro prices at $7.99/mo (one per app), one
-Unlimited price at $14.99/mo, ten book prices at $9.99, and the two coupons.
+Creates, from the registry: ten Pro prices at $7.99/mo (one per paid app), one
+Unlimited price at $14.99/mo, eleven book prices (every app with an `ebook`
+entry, including the free Forge Trading — ten at $9.99, the trading book at
+$4.99, each from its registry entry), and the two coupons.
 
 The metadata is the part that matters, and it is why this is a script:
 

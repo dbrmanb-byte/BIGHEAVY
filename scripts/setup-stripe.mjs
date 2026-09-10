@@ -76,7 +76,10 @@ async function stripe(method, path, body) {
 /* ---------------- what to create ---------------- */
 
 const reg = JSON.parse(await readFile(join(ROOT, "packages/registry/apps.json"), "utf8"));
+// Pro prices exist only for paid ("live") apps. Books are sold per title, so a
+// free app can still carry one — forge-trading does.
 const live = reg.apps.filter(a => a.status === "live");
+const shipped = reg.apps.filter(a => a.status === "live" || a.status === "free");
 
 const PRO = 799, ALL_ACCESS = 1499;
 const money = c => "$" + (c / 100).toFixed(2);
@@ -109,12 +112,14 @@ plan.push({
 });
 
 // One-time price per companion book.
-for (const a of live.filter(x => x.ebook)) {
+for (const a of shipped.filter(x => x.ebook)) {
   plan.push({
     kind: "one_time",
     lookup_key: `ebook_${a.slug}`.replace(/-/g, "_"),
     product: a.ebook.title,
-    description: `Companion PDF for ${a.name}. Every term and rationale, in reading order.`,
+    description: a.status === "free"
+      ? `Companion PDF for ${a.name}. Yours to keep; your library always serves the latest edition.`
+      : `Companion PDF for ${a.name}. Every term and rationale, in reading order.`,
     amount: Math.round((a.ebook.price ?? reg.ebooks.price ?? 9.99) * 100),
     metadata: { ebook: a.slug },
   });

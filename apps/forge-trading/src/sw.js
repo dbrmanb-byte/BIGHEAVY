@@ -1,6 +1,6 @@
 /* Forge Trading service worker. VERSION follows the monorepo convention:
    bump it on any behaviour-changing deploy so installed copies update. */
-const VERSION = "forge-trading-v2";
+const VERSION = "forge-trading-v3";
 const CACHE = VERSION;
 const SHELL = ['./', './index.html', './styles.css', './app.js', './bank.json', './manifest.json', './icon.svg'];
 self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));

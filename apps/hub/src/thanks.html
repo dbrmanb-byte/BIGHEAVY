@@ -55,7 +55,7 @@
   } else if (bought.indexOf("ebook_") === 0) {
     var slug = bought.slice(6).replace(/_/g, "-");
     head.textContent = "The book is yours.";
-    body.textContent = "It lives in your library — sign in with the email you used at checkout and download it any time, on any device. Your subscription discount code arrives by email.";
+    body.textContent = "It lives in your library — sign in with the email you used at checkout and download it any time, on any device; the download is always the latest edition. Your subscription discount code arrives by email.";
     acts.innerHTML = '<a class="cta primary" href="./library.html">Open your library</a><a class="cta" href="/' + slug + '/">Study the app</a>';
   } else {
     var slug2 = bought.slice(4).replace(/_/g, "-");
