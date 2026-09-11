@@ -206,8 +206,20 @@ node scripts/check-config.mjs
 
 ```bash
 pnpm test                              # entitlement + coach
+node scripts/check-banks.mjs           # answer keys against their rationales
+node scripts/sync-free.mjs --check     # free samples still match the banks
 bash scripts/preflight.sh <slug>       # per site, all eleven
 ```
+
+`check-banks.mjs` needs the unpacked `content/` from step 2 and is the only
+check that reads the answer keys. Nothing else in this repo can tell that a
+question is keyed to the wrong choice: the app renders it, the tests pass, and
+a paying student is taught the wrong thing. Run it whenever a bank changes.
+
+After correcting a bank, `sync-free.mjs` carries the fix into the ten free
+questions in `content-free.js` — `split-content.mjs` will not, it refuses to
+run twice — and the corrected `bank.json` has to be re-uploaded to the private
+bucket, or the paid app keeps serving the old copy.
 
 Then, by hand:
 
