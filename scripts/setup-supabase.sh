@@ -53,7 +53,7 @@ fi
 # privacy is not something to leave to a click anyway.
 MIGRATION_DIR="supabase/migrations"
 
-FUNCTIONS=(content ebook-download stripe-webhook checkout notify)
+FUNCTIONS=(content ebook-download stripe-webhook checkout billing-portal notify)
 
 run() {
   if [ "$WRITE" = "--write" ]; then

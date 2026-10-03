@@ -225,7 +225,10 @@ Then, by hand:
 
 - [ ] Buy Pro on one app in test mode. Confirm that app unlocks and **a sibling does not**.
 - [ ] Buy Unlimited. Confirm all ten unlock.
-- [ ] Cancel. Confirm the tier drops at period end and local progress survives.
+- [ ] Cancel through **Manage subscription** (`/library.html`, or the account button in any app — the
+      `billing-portal` function opens Stripe's customer portal and creates its settings on first use).
+      Confirm a "Cancellation booked" notice, that access holds to period end, and that the tier then
+      drops and local progress survives.
 - [ ] Buy a book. Confirm it appears in `/library.html` and downloads watermarked.
 - [ ] Buy three books. Confirm the 20% Unlimited code arrives.
 - [ ] Load an app, go offline, confirm drills and glossary still work.

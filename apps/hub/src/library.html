@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Your library — BIGHEAVYINK</title>
-<meta name="description" content="Download the companion books you have bought.">
+<meta name="description" content="Download the companion books you have bought, and manage or cancel your subscription.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,6 +37,8 @@
   border-radius:5px;padding:9px 14px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;}
 .owned button:hover{filter:brightness(1.07);}
 .owned button:disabled{opacity:.6;cursor:default;filter:none;}
+.billing{margin-top:44px;padding-top:26px;border-top:1px solid var(--line);}
+.billing h2{font-family:var(--display);font-size:22px;letter-spacing:-.015em;margin:0 0 8px;}
 .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--text-dim);
   display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:6px;}
 </style>
@@ -58,7 +60,7 @@
 <main>
 <div class="wrap page">
   <p class="kicker">Your library</p>
-  <h1>The books you have bought.</h1>
+  <h1>Your books and your plan.</h1>
 
   <!-- signed out -->
   <section id="signedOut" class="hide">
@@ -87,6 +89,15 @@
     <p class="state" id="libState"></p>
     <div class="shelf" id="shelf"></div>
     <p class="msg" id="dlMsg"></p>
+
+    <div class="billing" id="billing">
+      <h2>Your subscription</h2>
+      <p class="state">Cancel, change your card or download receipts on Stripe's secure page. Cancelling stops the next charge; you keep access to the end of the month you have paid for, and your study progress is never erased.</p>
+      <div class="cta-row" style="margin-top:14px;">
+        <button class="cta primary" id="manageBtn" style="cursor:pointer;">Manage subscription</button>
+      </div>
+      <p class="msg" id="billMsg"></p>
+    </div>
   </section>
 
   <!-- no backend configured -->
@@ -124,6 +135,7 @@
 <script type="module">
 import * as SB from "./js/supabase-client.js";
 import * as Books from "./js/ebooks.js";
+import * as Checkout from "./js/checkout.js";
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -222,6 +234,13 @@ $("magicBtn").onclick = async () => {
 };
 
 $("signOutBtn").onclick = () => SB.signOut();
+
+$("manageBtn").onclick = async () => {
+  const btn = $("manageBtn");
+  btn.disabled = true; btn.textContent = "Opening…";
+  try { await Checkout.manage("/library.html#billing"); }
+  finally { btn.disabled = false; btn.textContent = "Manage subscription"; }
+};
 
 boot();
 </script>

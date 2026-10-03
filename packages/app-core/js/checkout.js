@@ -1,6 +1,8 @@
 // js/checkout.js
 // Start a Stripe Checkout from the browser.
 //
+// manage() opens Stripe's customer portal, where a subscriber cancels.
+//
 // start("pro_casebook") / start("all_access") / start("ebook_keystone"):
 // makes sure someone is signed in — the entitlement lands on an account, so
 // there is no anonymous checkout — then asks the checkout edge function for a
@@ -59,6 +61,38 @@ export async function start(lookupKey) {
   const out = await res.json().catch(() => ({}));
   if (!res.ok || !out.url) {
     alert(out.error || "Checkout could not start. Nothing was charged.");
+    return;
+  }
+  window.location.assign(out.url);
+}
+
+/** Open Stripe's customer portal: cancel, change card, receipts. Comes back to
+    returnPath on this site (default: where the reader is now). Signed-in only —
+    the portal is for the customer linked to this account and nobody else. */
+export async function manage(returnPath) {
+  const { url, key } = CFG();
+  if (!url || !key) { alert("Accounts are not switched on for this build."); return; }
+  try { await SB.init(url, key); } catch {
+    alert("Could not reach the sign-in service — check your connection and try again.");
+    return;
+  }
+  if (!SB.getUser()) {
+    const signedIn = await askForAccount();
+    if (!signedIn) return;
+  }
+  const { data } = await SB.getClient().auth.getSession();
+  const token = data?.session?.access_token;
+  if (!token) { alert("Sign-in did not stick — try again."); return; }
+
+  const back = returnPath || (location.pathname + location.hash);
+  const res = await fetch(`${url}/functions/v1/billing-portal`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, apikey: key },
+    body: JSON.stringify({ returnPath: back }),
+  });
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok || !out.url) {
+    alert(out.error || "Could not open subscription settings. Try again, or use the contact form.");
     return;
   }
   window.location.assign(out.url);

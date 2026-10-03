@@ -585,41 +585,27 @@ main{flex:1;overflow-y:auto;padding:var(--pad);}
 
 <!-- UPGRADE MODAL -->
 <div class="upgrade-scrim hide" id="upgradeScrim">
-  <div class="upgrade-modal">
+  <div class="upgrade-modal" id="upgradeModal">
     <button class="x" id="upgradeClose">&times;</button>
     <h2>Unlock full access</h2>
     <p class="upgrade-reason" id="upgradeReason">Upgrade to unlock this feature.</p>
     <div class="plan-cards">
-      <button class="plan-card" id="planProAnnual" data-plan="pro_annual">
+      <button class="plan-card" id="planPro" data-plan="pro">
         <div class="plan-info">
-          <p class="plan-name">Pro <span class="plan-save">Best value</span></p>
+          <p class="plan-name">Pro</p>
           <p class="plan-desc" id="proDesc">Full access to this app</p>
         </div>
-        <span class="plan-price">$59.99<small>/yr</small></span>
+        <span class="plan-price">$7.99<small>/mo</small></span>
       </button>
-      <button class="plan-card" id="planProMonthly" data-plan="pro_monthly">
+      <button class="plan-card featured" id="planAll" data-plan="all_access">
         <div class="plan-info">
-          <p class="plan-name">Pro Monthly</p>
-          <p class="plan-desc">Cancel anytime</p>
-        </div>
-        <span class="plan-price">$9.99<small>/mo</small></span>
-      </button>
-      <button class="plan-card featured" id="planAllAnnual" data-plan="all_access_annual">
-        <div class="plan-info">
-          <p class="plan-name">All Access <span class="plan-save">Save 50%</span></p>
-          <p class="plan-desc">Every app, current and future</p>
-        </div>
-        <span class="plan-price">$89.99<small>/yr</small></span>
-      </button>
-      <button class="plan-card" id="planAllMonthly" data-plan="all_access_monthly">
-        <div class="plan-info">
-          <p class="plan-name">All Access Monthly</p>
-          <p class="plan-desc">Every app, cancel anytime</p>
+          <p class="plan-name">Unlimited</p>
+          <p class="plan-desc">Every app, including new ones as they launch</p>
         </div>
         <span class="plan-price">$14.99<small>/mo</small></span>
       </button>
     </div>
-    <p class="upgrade-note">7-day free trial on annual plans. Cancel in your account settings or email support. Your study progress is never deleted.</p>
+    <p class="upgrade-note">Monthly. Cancel any time: tap the account button at the top, then Manage subscription. Your study progress is never deleted.</p>
   </div>
 </div>
 
@@ -1619,7 +1605,7 @@ function closeAuth() { $("authScrim").classList.add("hide"); $("authMsg").textCo
 
 $("userBtn").onclick = () => {
   if (SB.getUser()) {
-    if (confirm("Sign out?")) SB.signOut();
+    Tiers.openAccount();
   } else if (sbReady) {
     authMode = "signin";
     renderAuthForm();

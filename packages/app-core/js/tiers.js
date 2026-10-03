@@ -2,18 +2,12 @@
 // Manages subscription tiers on the client side.
 // Gates features, shows upgrade prompts, and redirects to Stripe Checkout.
 
-import { getClient, getUser, onAuthChange } from "./supabase-client.js";
+import { getClient, getUser, onAuthChange, signOut } from "./supabase-client.js";
+import * as Checkout from "./checkout.js";
 
-// ---- Stripe Checkout URLs ----
-// Replace these after creating products in the Stripe Dashboard.
-// Each key maps to a Stripe Payment Link or Checkout URL.
-// You can create these at: stripe.com/docs/payment-links
-const CHECKOUT_URLS = {
-  pro_monthly:        "",  // e.g. "https://buy.stripe.com/xxx"
-  pro_annual:         "",
-  all_access_monthly: "",
-  all_access_annual:  "",
-};
+// Purchases go through checkout.js — the checkout edge function creates the
+// Stripe session from a price lookup_key, so no payment link lives in source.
+// Cancelling goes through the same module's manage(), Stripe's customer portal.
 
 // ---- Tier state ----
 let _tier = { tier: "free", tier_app: null, is_active: true };
@@ -153,25 +147,85 @@ export function hideUpgrade() {
 }
 
 /**
- * Redirect to Stripe Checkout.
- * @param {'pro_monthly'|'pro_annual'|'all_access_monthly'|'all_access_annual'} plan
+ * Start a purchase from the upgrade modal.
+ * @param {'pro'|'all_access'} plan  pro covers this app (APP_ID); all_access, every app
  */
 export function checkout(plan) {
-  const url = CHECKOUT_URLS[plan];
-  if (!url) {
-    alert("Payment links are not configured yet. Set CHECKOUT_URLS in js/tiers.js.");
-    return;
-  }
+  if (plan === "all_access") return Checkout.start(Checkout.keyFor.allAccess());
+  if (plan === "pro" && APP_ID) return Checkout.start(Checkout.keyFor.pro(APP_ID));
+  alert("That plan is not available here. Nothing was charged.");
+}
 
+/** Has a paid plan of any kind — the thing a "Manage subscription" button needs. */
+export function hasSubscription() {
+  return _tier.is_active !== false && (_tier.tier === "pro" || _tier.tier === "all_access");
+}
+
+/* ---- Account sheet ----
+   What the account button opens once signed in: who you are, what you pay
+   for, and the way out — "Manage subscription" opens Stripe's portal, where
+   cancelling is one click. Built here so every app gets the same sheet. */
+let _sheet = null;
+
+export function openAccount() {
   const user = getUser();
-  // Append email as prefill if logged in
-  let checkoutUrl = url;
-  if (user?.email) {
-    const sep = url.includes("?") ? "&" : "?";
-    checkoutUrl += `${sep}prefilled_email=${encodeURIComponent(user.email)}`;
+  if (!user) return;
+  if (!_sheet) {
+    _sheet = document.createElement("div");
+    _sheet.id = "bhAccount";
+    _sheet.innerHTML = `
+      <style>
+        #bhAccount{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+          background:rgba(8,15,19,.75);padding:18px;}
+        #bhAccount[hidden]{display:none;}
+        #bhAccount .box{position:relative;background:var(--surface,#1B2F38);border:1px solid var(--line,#2E4A56);
+          border-radius:8px;padding:24px 22px;max-width:380px;width:100%;color:var(--text,#DCE8ED);}
+        #bhAccount h3{margin:0 0 4px;font-size:18px;font-weight:800;letter-spacing:-.01em;}
+        #bhAccount .who{margin:0 0 14px;font-size:13px;color:var(--text-dim,#8FA8B3);overflow-wrap:anywhere;}
+        #bhAccount .plan{margin:0 0 18px;font-size:14.5px;line-height:1.5;}
+        #bhAccount .row{display:flex;flex-direction:column;gap:9px;}
+        #bhAccount button.b{border-radius:5px;padding:11px 16px;font:inherit;font-weight:600;cursor:pointer;
+          border:1px solid var(--line,#2E4A56);background:none;color:inherit;}
+        #bhAccount button.gold{background:var(--gold,#EBA83A);border-color:var(--gold,#EBA83A);color:#141414;}
+        #bhAccount .fine{margin:12px 0 0;font-size:11.5px;line-height:1.5;color:var(--text-dim,#8FA8B3);}
+        #bhAccount .x{position:absolute;top:8px;right:12px;background:none;border:none;color:inherit;font-size:22px;cursor:pointer;}
+      </style>
+      <div class="box" role="dialog" aria-modal="true" aria-label="Your account">
+        <button class="x" data-a="close" aria-label="Close">&times;</button>
+        <h3>Your account</h3>
+        <p class="who"></p>
+        <p class="plan"></p>
+        <div class="row">
+          <button class="b gold" data-a="manage">Manage subscription</button>
+          <button class="b" data-a="upgrade">See plans</button>
+          <button class="b" data-a="signout">Sign out</button>
+        </div>
+        <p class="fine">Cancel any time under Manage subscription. Access runs to the end of the month you have paid for, and your study progress is never erased.</p>
+      </div>`;
+    document.body.appendChild(_sheet);
+    _sheet.addEventListener("click", e => {
+      const act = e.target === _sheet ? "close" : e.target.dataset?.a;
+      if (!act) return;
+      if (act === "close") _sheet.hidden = true;
+      else if (act === "manage") { e.target.textContent = "Opening…"; Checkout.manage(); }
+      else if (act === "upgrade") { _sheet.hidden = true; showUpgrade(); }
+      else if (act === "signout") { _sheet.hidden = true; signOut(); }
+    });
   }
-
-  window.open(checkoutUrl, "_blank");
+  const app = window.CASEBOOK_APP_NAME || "this app";
+  const paid = hasSubscription();
+  const plan = _tier.tier === "all_access" ? "Unlimited — every app is unlocked."
+    : isPro() ? `Pro — ${app} is fully unlocked.`
+    : isPaidElsewhere() ? "Pro — for a different app. This one is on the free tier."
+    : "Free tier.";
+  _sheet.querySelector(".who").textContent = user.email || "Signed in";
+  _sheet.querySelector(".plan").textContent = plan;
+  const manage = _sheet.querySelector('[data-a="manage"]');
+  manage.textContent = "Manage subscription";
+  manage.hidden = !paid;
+  _sheet.querySelector('[data-a="upgrade"]').hidden = _tier.tier === "all_access" && paid;
+  _sheet.querySelector(".fine").hidden = !paid;
+  _sheet.hidden = false;
 }
 
 /**

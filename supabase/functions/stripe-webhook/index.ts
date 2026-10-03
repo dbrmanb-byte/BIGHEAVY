@@ -148,7 +148,8 @@ Deno.serve(async (req: Request) => {
       case "customer.subscription.updated":
       case "customer.subscription.deleted": {
         const subscription = event.data.object as Stripe.Subscription;
-        await handleSubscriptionChange(supabase, subscription);
+        const previous = (event.data.previous_attributes ?? {}) as Partial<Stripe.Subscription>;
+        await handleSubscriptionChange(supabase, subscription, event.type, previous);
         break;
       }
 
@@ -199,7 +200,7 @@ async function handleCheckoutComplete(
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ["items.data.price.product"],
   });
-  await applySubscription(supabase, customerId, subscription);
+  await applySubscription(supabase, customerId, subscription, true);
 }
 
 // ============================================================
@@ -338,11 +339,18 @@ async function issueDiscount(supabase: any, customerId: string, email?: string |
   }
 }
 
+// subscription.updated fires for every renewal and every change, not just new
+// sign-ups — so only checkout announces a new subscription. Here the notices
+// are the ones worth knowing about: a cancellation booked through the customer
+// portal, a cancellation undone, and a subscription that has actually ended.
 async function handleSubscriptionChange(
   supabase: any,
-  subscription: Stripe.Subscription
+  subscription: Stripe.Subscription,
+  type: string,
+  previous: Partial<Stripe.Subscription>
 ) {
   const customerId = subscription.customer as string;
+  const endsOn = new Date(subscription.current_period_end * 1000).toISOString();
 
   if (subscription.status === "canceled" || subscription.status === "unpaid") {
     // Downgrade to free
@@ -351,21 +359,56 @@ async function handleSubscriptionChange(
       p_stripe_subscription_id: subscription.id,
       p_tier: "free",
       p_tier_app: null,
-      p_valid_until: new Date(subscription.current_period_end * 1000).toISOString(),
+      p_valid_until: endsOn,
     });
     console.log("Downgraded to free:", customerId);
+    if (type === "customer.subscription.deleted") {
+      const email = await emailFor(customerId);
+      await notify(`Subscription ended — ${email ?? customerId}`);
+      await notifyAgent({ event: "subscription_ended", email, customer_id: customerId, subscription_id: subscription.id });
+    }
     return;
   }
 
   if (subscription.status === "active" || subscription.status === "trialing") {
-    await applySubscription(supabase, customerId, subscription);
+    // A cancellation booked in the portal arrives as an update with access
+    // intact until the period ends — so the tier is re-applied, not removed.
+    await applySubscription(supabase, customerId, subscription, false);
+
+    if ("cancel_at_period_end" in previous && previous.cancel_at_period_end !== subscription.cancel_at_period_end) {
+      const email = await emailFor(customerId);
+      const day = endsOn.slice(0, 10);
+      if (subscription.cancel_at_period_end) {
+        const reason = subscription.cancellation_details?.feedback ?? null;
+        await notify(`Cancellation booked — ${email ?? customerId}, access ends ${day}${reason ? ` (reason: ${reason})` : ""}`);
+        await notifyAgent({
+          event: "subscription_cancel_scheduled", email, customer_id: customerId,
+          subscription_id: subscription.id, access_until: endsOn, reason,
+        });
+      } else {
+        await notify(`Cancellation undone — ${email ?? customerId} is staying subscribed`);
+        await notifyAgent({ event: "subscription_cancel_undone", email, customer_id: customerId, subscription_id: subscription.id });
+      }
+    }
   }
+}
+
+/** The subscription object carries no email; the customer record does. */
+async function emailFor(customerId: string): Promise<string | null> {
+  try {
+    const cust = await stripe.customers.retrieve(customerId);
+    if (!("deleted" in cust && cust.deleted)) return (cust as Stripe.Customer).email ?? null;
+  } catch (err) {
+    console.error("Could not load customer for notice:", customerId, err);
+  }
+  return null;
 }
 
 async function applySubscription(
   supabase: any,
   customerId: string,
-  subscription: Stripe.Subscription
+  subscription: Stripe.Subscription,
+  announce: boolean
 ) {
   const price = subscription.items.data[0]?.price;
   const mapping = await resolveEntitlement(price);
@@ -395,16 +438,10 @@ async function applySubscription(
   });
 
   console.log("Tier set:", mapping.tier, "for customer:", customerId);
+  if (!announce) return;
 
-  // The subscription object carries no email; the customer record does. A
-  // failed lookup still notifies — with the customer id as the fallback name.
-  let email: string | null = null;
-  try {
-    const cust = await stripe.customers.retrieve(customerId);
-    if (!("deleted" in cust && cust.deleted)) email = (cust as Stripe.Customer).email ?? null;
-  } catch (err) {
-    console.error("Could not load customer for notice:", customerId, err);
-  }
+  // A failed email lookup still notifies — with the customer id as the name.
+  const email = await emailFor(customerId);
 
   await notify(
     mapping.tier === "all_access"
