@@ -13,7 +13,8 @@
  * Usage: node scripts/assemble-site.mjs
  */
 
-import { cp, mkdir, rm, readFile, readdir, stat } from "node:fs/promises";
+import { cp, mkdir, rm, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -58,6 +59,104 @@ for (const a of reg.apps.filter(x => SHIPPED.has(x.status))) {
     process.exit(1);
   }
 }
+
+/* ---- Response headers ----------------------------------------------------
+   Netlify reads ONE _headers file, at the publish root. Each app's own
+   _headers was copied into site/<slug>/ and silently ignored, so its rules are
+   folded in here under the app's path. The root file also gets the Content
+   Security Policy, which can only be written now: it allows the site's inline
+   scripts by hash, and the hashes exist only once every page is built. */
+
+const CSP_HOSTS = {
+  // supabase-js comes from esm.sh; the tutor's WebLLM from esm.run, which
+  // redirects to jsDelivr.
+  script: ["https://esm.sh", "https://esm.run", "https://cdn.jsdelivr.net"],
+  // The service worker re-fetches fonts and CDN modules, and the tutor
+  // downloads model weights (Hugging Face, whose files redirect to *.hf.co)
+  // and its compiled model library (GitHub raw). Supabase is the backend; a
+  // custom Supabase domain would need adding here.
+  connect: ["https://*.supabase.co", "https://esm.sh", "https://esm.run", "https://cdn.jsdelivr.net",
+            "https://fonts.googleapis.com", "https://fonts.gstatic.com",
+            "https://huggingface.co", "https://*.huggingface.co", "https://*.hf.co",
+            "https://raw.githubusercontent.com"],
+};
+
+async function htmlFiles(dir) {
+  const out = [];
+  for (const e of await readdir(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) out.push(...await htmlFiles(p));
+    else if (e.name.endsWith(".html")) out.push(p);
+  }
+  return out;
+}
+
+// Every executable inline <script>, hashed exactly as the browser will see it.
+const hashes = new Set();
+for (const f of await htmlFiles(OUT)) {
+  const html = await readFile(f, "utf8");
+  for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    const attrs = m[1];
+    if (/\bsrc\s*=/i.test(attrs)) continue;
+    const type = (attrs.match(/\btype\s*=\s*["']?([^"'\s>]+)/i) || [])[1];
+    if (type && !/^(module|text\/javascript|application\/javascript)$/i.test(type)) continue;
+    hashes.add(`'sha256-${createHash("sha256").update(m[2], "utf8").digest("base64")}'`);
+  }
+}
+
+const csp = [
+  "default-src 'self'",
+  // wasm-unsafe-eval lets the tutor compile WebAssembly. It does not allow eval().
+  `script-src 'self' 'wasm-unsafe-eval' ${CSP_HOSTS.script.join(" ")} ${[...hashes].sort().join(" ")}`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: blob:",
+  "media-src 'self' data: blob:",
+  `connect-src 'self' ${CSP_HOSTS.connect.join(" ")} data: blob:`,
+  "worker-src 'self' blob:",
+  "manifest-src 'self'",
+  "frame-src 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+/* Split a _headers file into { path, lines } rules. */
+function rules(text) {
+  const out = [];
+  for (const line of text.split(/\r?\n/)) {
+    if (!line.trim() || line.trim().startsWith("#")) continue;
+    if (!/^\s/.test(line)) out.push({ path: line.trim(), lines: [] });
+    else if (out.length) out[out.length - 1].lines.push(line.trim());
+  }
+  return out;
+}
+
+const root = rules(await readFile(join(OUT, "_headers"), "utf8"));
+const all = root.find(r => r.path === "/*");
+if (!all) { console.error("assemble-site: the hub _headers has no /* rule"); process.exit(1); }
+// The apps' "Say it first" asks for the microphone, so it stays allowed for
+// this site's own pages. Camera and location remain off everywhere.
+all.lines = all.lines.filter(l => !/^(Permissions-Policy|Content-Security-Policy)\s*:/i.test(l));
+all.lines.push("Permissions-Policy: geolocation=(), microphone=(self), camera=()");
+all.lines.push(`Content-Security-Policy: ${csp}`);
+
+for (const s of slugs) {
+  const f = join(OUT, s, "_headers");
+  if (!existsSync(f)) continue;
+  for (const r of rules(await readFile(f, "utf8"))) {
+    // /* is already covered at the root, with the stricter site-wide values.
+    if (r.path === "/*") continue;
+    root.push({ path: `/${s}${r.path}`, lines: r.lines });
+  }
+  await rm(f);
+}
+
+await writeFile(join(OUT, "_headers"),
+  root.map(r => [r.path, ...r.lines.map(l => "  " + l)].join("\n")).join("\n\n") + "\n");
+console.log(`headers: CSP with ${hashes.size} inline-script hashes, ${root.length} rules`);
 
 async function du(dir) {
   let n = 0, bytes = 0;
