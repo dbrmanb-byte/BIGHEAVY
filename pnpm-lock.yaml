@@ -33,6 +33,8 @@ importers:
 
   apps/forge-trades: {}
 
+  apps/forge-trading: {}
+
   apps/hub: {}
 
   apps/keystone: {}
